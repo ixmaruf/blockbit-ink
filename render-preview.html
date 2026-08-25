@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blockbit Ink — NFT Renderer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d0a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    color: #ece6f6;
+  }
+  #info {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    background: rgba(117,56,245,0.15);
+    border: 1px solid rgba(117,56,245,0.3);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    backdrop-filter: blur(6px);
+  }
+  #info strong { color: #a37bff; }
+  #nft-canvas {
+    border-radius: 12px;
+    box-shadow: 0 0 60px rgba(117,56,245,0.3);
+  }
+  #loading {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0d0a1a;
+    z-index: 999;
+    font-size: 18px;
+    color: #a37bff;
+  }
+  #loading.hidden { display: none; }
+</style>
+</head>
+<body>
+<div id="loading">Generating NFT...</div>
+<div id="info"></div>
+<canvas id="nft-canvas"></canvas>
+
+<script src="traits.js"></script>
+<script src="generator.js"></script>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const tokenId = parseInt(params.get('id') || '1001', 10);
+  const seed = tokenId * 7919 + 31337;
+
+  const canvas = document.getElementById('nft-canvas');
+  const size = 2000;
+  canvas.width = size;
+  canvas.height = size;
+
+  try {
+    const renderer = new NFTRenderer(canvas);
+    const nftData = generateNFT(seed);
+    renderer.render(nftData);
+
+    const rarityName = nftData.rarity.tier || 'COMMON';
+    document.getElementById('info').innerHTML =
+      '<strong>Token #' + tokenId + '</strong><br>' +
+      'Seed: ' + seed + '<br>' +
+      'Rarity: <strong>' + rarityName + '</strong>';
+
+    document.getElementById('loading').classList.add('hidden');
+  } catch (e) {
+    document.getElementById('loading').textContent = 'Error: ' + e.message;
+    console.error(e);
+  }
+})();
+</script>
+</body>
+</html>
+

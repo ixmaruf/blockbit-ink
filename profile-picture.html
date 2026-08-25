@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Blockbit Ink — Profile Picture Generator</title>
+<style>
+  body { margin: 0; background: #0e0e1a; display: flex; justify-content: center; align-items: center; height: 100vh; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+const SIZE = 2000;
+const PX = 20;
+const GRID = SIZE / PX;
+
+const canvas = document.getElementById('canvas');
+canvas.width = SIZE;
+canvas.height = SIZE;
+const ctx = canvas.getContext('2d');
+
+const SKIN      = '#F5D6B8';
+const SKIN_SH   = '#D4A574';
+const SKIN_DK   = '#B88A5A';
+const HAIR      = '#1A1A2E';
+const HAIR_HI   = '#7538F5';
+const HAIR_SH2  = '#a37bff';
+const EYE_PURP  = '#7538F5';
+const OUTFIT    = '#1A1A2E';
+const OUTFIT_AC = '#7538F5';
+const GOLD      = '#FFD700';
+const GOLD_DK   = '#DAA520';
+const GOLD_LT   = '#FFE44D';
+const LOCKET_IN = '#0e0e1a';
+
+function px(x, y, c) {
+  if (x < 0 || x >= GRID || y < 0 || y >= GRID) return;
+  ctx.fillStyle = c;
+  ctx.fillRect(x * PX, y * PX, PX, PX);
+}
+
+function rect(x, y, w, h, c) {
+  for (let dy = 0; dy < h; dy++)
+    for (let dx = 0; dx < w; dx++)
+      px(x + dx, y + dy, c);
+}
+
+function drawBackground() {
+  rect(0, 0, GRID, GRID, '#7538F5');
+}
+
+function drawBody() {
+  const bodyY = 57;
+  const cx = 50;
+
+  rect(43, 49, 14, 10, SKIN);
+  rect(43, 57, 14, 3, SKIN_SH);
+
+  for (let y = 0; y < 8; y++) {
+    const w = 22 + y * 3;
+    const x = cx - Math.floor(w / 2);
+    rect(x, bodyY + y, w, 1, OUTFIT);
+  }
+
+  rect(16, 63, 68, 22, OUTFIT);
+  rect(8, 65, 16, 18, OUTFIT);
+  rect(76, 65, 16, 18, OUTFIT);
+  rect(4, 68, 8, 14, OUTFIT);
+  rect(88, 68, 8, 14, OUTFIT);
+
+  for (let i = 0; i < 5; i++) {
+    px(43 + i, 57 + i, SKIN);
+    px(57 - i, 57 + i, SKIN);
+  }
+  rect(45, 58, 10, 2, SKIN);
+
+  rect(10, 71, 80, 2, OUTFIT_AC);
+  rect(6, 79, 88, 8, '#0d0d1a');
+  rect(4, 83, 92, 10, '#0a0a14');
+  rect(2, 88, 96, 12, '#06060e');
+}
+
+function drawHead() {
+  const cx = 50, topY = 18;
+
+  // Top of head
+  rect(cx - 15, topY, 30, 4, SKIN);
+  // Forehead
+  rect(cx - 17, topY + 4, 34, 4, SKIN);
+  // Cheeks — wide
+  rect(cx - 18, topY + 8, 36, 6, SKIN);
+  // Upper jaw
+  rect(cx - 17, topY + 14, 34, 3, SKIN);
+  // Mid jaw
+  rect(cx - 15, topY + 17, 30, 3, SKIN);
+  // Lower jaw
+  rect(cx - 12, topY + 20, 24, 3, SKIN);
+  // Chin
+  rect(cx - 8, topY + 23, 16, 2, SKIN);
+  rect(cx - 6, topY + 25, 12, 2, SKIN);
+  rect(cx - 4, topY + 27, 8, 1, SKIN);
+
+  // Shadows
+  rect(cx - 18, topY + 8, 3, 14, SKIN_SH);
+  rect(cx - 16, topY + 10, 2, 10, SKIN_SH);
+  rect(cx + 15, topY + 8, 3, 14, SKIN_SH);
+  rect(cx + 14, topY + 10, 2, 10, SKIN_SH);
+  rect(cx - 4, topY + 26, 8, 1, SKIN_DK);
+  rect(cx - 6, topY + 24, 2, 3, SKIN_DK);
+  rect(cx + 4, topY + 24, 2, 3, SKIN_DK);
+
+  return { cx, topY };
+}
+
+function drawHair(cx, topY) {
+  // Main mass
+  rect(cx - 20, topY - 2, 40, 8, HAIR);
+  rect(cx - 18, topY - 6, 36, 6, HAIR);
+  rect(cx - 16, topY - 10, 32, 6, HAIR);
+  rect(cx - 12, topY - 13, 24, 5, HAIR);
+
+  // Big spikes
+  rect(cx - 12, topY - 24, 6, 16, HAIR);
+  rect(cx - 4,  topY - 28, 7, 20, HAIR);
+  rect(cx + 5,  topY - 26, 6, 18, HAIR);
+  rect(cx + 13, topY - 22, 6, 14, HAIR);
+  rect(cx - 18, topY - 16, 7, 10, HAIR);
+  rect(cx + 18, topY - 14, 6, 8, HAIR);
+  rect(cx - 1,  topY - 30, 5, 10, HAIR);
+  rect(cx + 10, topY - 20, 5, 10, HAIR);
+  rect(cx - 10, topY - 26, 3, 4, HAIR);
+  rect(cx + 2,  topY - 28, 3, 4, HAIR);
+  rect(cx + 8,  topY - 24, 3, 4, HAIR);
+
+  // Left sweep
+  rect(cx - 21, topY, 6, 28, HAIR);
+  rect(cx - 23, topY + 4, 5, 24, HAIR);
+  rect(cx - 22, topY + 22, 4, 14, HAIR);
+  rect(cx - 24, topY + 10, 3, 18, HAIR);
+
+  // Right sweep
+  rect(cx + 15, topY, 6, 28, HAIR);
+  rect(cx + 19, topY + 4, 5, 24, HAIR);
+  rect(cx + 19, topY + 22, 4, 14, HAIR);
+  rect(cx + 22, topY + 10, 3, 18, HAIR);
+
+  // Purple streaks
+  rect(cx - 8, topY - 22, 2, 14, HAIR_HI);
+  rect(cx + 3, topY - 26, 2, 16, HAIR_HI);
+  rect(cx + 11, topY - 20, 2, 12, HAIR_HI);
+  rect(cx - 20, topY + 6, 3, 20, HAIR_HI);
+  rect(cx + 18, topY + 6, 3, 20, HAIR_HI);
+  rect(cx - 14, topY - 8, 2, 6, HAIR_HI);
+  rect(cx + 8, topY - 10, 2, 6, HAIR_HI);
+
+  // Shine
+  rect(cx - 6, topY - 18, 2, 3, HAIR_SH2);
+  rect(cx + 5, topY - 22, 2, 3, HAIR_SH2);
+  rect(cx + 16, topY - 12, 2, 3, HAIR_SH2);
+  rect(cx - 22, topY + 14, 2, 3, HAIR_SH2);
+  rect(cx + 20, topY + 14, 2, 3, HAIR_SH2);
+
+  // Sideburns
+  rect(cx - 19, topY + 6, 3, 10, HAIR);
+  rect(cx + 16, topY + 6, 3, 10, HAIR);
+}
+
+function drawEyes(cx, topY) {
+  const eyeY = topY + 11;
+  const lx = cx - 14, rx = cx + 5;
+
+  rect(lx, eyeY, 9, 8, '#FFFFFF');
+  rect(rx, eyeY, 9, 8, '#FFFFFF');
+  rect(lx + 1, eyeY + 1, 7, 6, EYE_PURP);
+  rect(rx + 1, eyeY + 1, 7, 6, EYE_PURP);
+  rect(lx + 2, eyeY + 2, 5, 4, '#5a2ad4');
+  rect(rx + 2, eyeY + 2, 5, 4, '#5a2ad4');
+  rect(lx + 3, eyeY + 3, 3, 3, '#000000');
+  rect(rx + 3, eyeY + 3, 3, 3, '#000000');
+  rect(lx + 2, eyeY + 1, 2, 2, '#FFFFFF');
+  rect(rx + 2, eyeY + 1, 2, 2, '#FFFFFF');
+  rect(lx + 6, eyeY + 5, 1, 1, 'rgba(255,255,255,0.7)');
+  rect(rx + 6, eyeY + 5, 1, 1, 'rgba(255,255,255,0.7)');
+  rect(lx, eyeY, 9, 2, '#E0D0C0');
+  rect(rx, eyeY, 9, 2, '#E0D0C0');
+  rect(lx - 1, eyeY - 3, 11, 2, HAIR);
+  rect(rx - 1, eyeY - 3, 11, 2, HAIR);
+  rect(lx, eyeY - 4, 9, 1, HAIR);
+  rect(rx, eyeY - 4, 9, 1, HAIR);
+}
+
+function drawNose(cx, topY) {
+  const ny = topY + 21;
+  rect(cx - 1, ny, 2, 2, SKIN_SH);
+  rect(cx + 1, ny + 1, 2, 1, SKIN_SH);
+}
+
+function drawMouth(cx, topY) {
+  const my = topY + 27;
+  rect(cx - 5, my, 10, 2, '#C47A5A');
+  rect(cx - 4, my + 2, 8, 1, '#B06A4A');
+  px(cx - 6, my - 1, '#C47A5A');
+  px(cx + 5, my - 1, '#C47A5A');
+}
+
+function drawChainAndLocket(cx, topY) {
+  const neckY = topY + 28;
+  const chainY = neckY + 1;
+
+  // Chain links
+  for (let i = 0; i < 12; i++) {
+    const x = cx - 7 - i * 2;
+    const y = chainY + Math.floor(i * 0.7);
+    rect(x, y, 2, 2, GOLD);
+  }
+  for (let i = 0; i < 12; i++) {
+    const x = cx + 7 + i * 2;
+    const y = chainY + Math.floor(i * 0.7);
+    rect(x, y, 2, 2, GOLD);
+  }
+  rect(cx - 6, chainY + 8, 2, 3, GOLD);
+  rect(cx + 5, chainY + 8, 2, 3, GOLD);
+
+  // Locket position in grid coords
+  const locketGridX = cx - 9;
+  const locketGridY = chainY + 11;
+  const locketGridW = 18;
+  const locketGridH = 14;
+
+  // Convert to pixels
+  const lxPx = locketGridX * PX;
+  const lyPx = locketGridY * PX;
+  const lwPx = locketGridW * PX;
+  const lhPx = locketGridH * PX;
+
+  // Gold outer frame (in grid)
+  rect(locketGridX - 2, locketGridY - 2, locketGridW + 4, locketGridH + 4, GOLD);
+  rect(locketGridX - 2, locketGridY - 2, locketGridW + 4, 1, GOLD_LT);
+  rect(locketGridX - 2, locketGridY - 2, 1, locketGridH + 2, GOLD_LT);
+  rect(locketGridX + locketGridW + 1, locketGridY - 1, 1, locketGridH + 2, GOLD_DK);
+  rect(locketGridX - 1, locketGridY + locketGridH + 1, locketGridW + 2, 1, GOLD_DK);
+
+  // Inner dark
+  rect(locketGridX, locketGridY, locketGridW, locketGridH, LOCKET_IN);
+
+  // Draw text using canvas API — coordinates in actual pixels
+  const textCenterX = lxPx + lwPx / 2;
+  
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold 56px monospace';
+  
+  // Shadow
+  ctx.shadowColor = '#7538F5';
+  ctx.shadowBlur = 12;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+  
+  // Stroke for visibility
+  ctx.strokeStyle = '#7538F5';
+  ctx.lineWidth = 3;
+  ctx.strokeText('BLOCKBIT', textCenterX, lyPx + lhPx * 0.35);
+  ctx.strokeText('INK', textCenterX, lyPx + lhPx * 0.7);
+  
+  // Fill
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText('BLOCKBIT', textCenterX, lyPx + lhPx * 0.35);
+  ctx.fillText('INK', textCenterX, lyPx + lhPx * 0.7);
+  
+  // Reset shadow
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+}
+
+function drawSparkles() {
+  const dots = [[8,6],[92,10],[10,90],[90,86],[5,46],[95,38],[50,3],[50,96],[26,5],[74,5]];
+  for (const [x, y] of dots) {
+    px(x, y, 'rgba(255,255,255,0.25)');
+    px(x+1, y, 'rgba(255,255,255,0.12)');
+    px(x, y+1, 'rgba(255,255,255,0.12)');
+  }
+}
+
+function draw() {
+  drawBackground();
+  drawSparkles();
+  drawBody();
+  const { cx, topY } = drawHead();
+  drawHair(cx, topY);
+  drawEyes(cx, topY);
+  drawNose(cx, topY);
+  drawMouth(cx, topY);
+  drawChainAndLocket(cx, topY);
+}
+
+draw();
+</script>
+</body>
+</html>
+
+
