@@ -1,8 +1,9 @@
 /* ==========================================================================
    BLOCKBIT INK — MASTER INTERACTIVE APP ENGINE
+   Ambient Particles, Live Procedural DNA Forge, 3D Card Tilts, FAQ Drawer
    ========================================================================== */
 
-// === AMBIENT PARTICLES (Light Cyber Aesthetic) ===
+// === AMBIENT PARTICLES (Electric Azure & Royal Violet) ===
 class AmbientScene {
   constructor(canvas) {
     this.canvas = canvas;
@@ -17,7 +18,6 @@ class AmbientScene {
     this.resize();
     window.addEventListener('resize', () => this.resize());
 
-    // Soft glowing energy particles (Electric Blue & Royal Purple)
     for (let i = 0; i < 45; i++) {
       this.particles.push({
         x: Math.random() * this.canvas.width,
@@ -119,8 +119,8 @@ function randomizeForgeWarrior() {
     const outfitEl = document.getElementById('traitOutfit');
 
     if (nameEl) nameEl.textContent = 'Warrior #' + String(randomId).padStart(4, '0');
-    if (rankEl) rankEl.textContent = (traits.Rank || 'Epic') + ' Tier';
-    if (clanEl) clanEl.textContent = traits.Clan || 'Honoo (Fire)';
+    if (rankEl) rankEl.textContent = (traits.Rank || 'Epic') + ' Rank';
+    if (clanEl) clanEl.textContent = traits.Clan || 'Honoo (Flame)';
     if (weaponEl) weaponEl.textContent = traits.Weapon || 'Katana of Ink';
     if (auraEl) auraEl.textContent = traits.Aura || 'Cyber Plasma';
     if (outfitEl) outfitEl.textContent = traits.Outfit || 'Cyber Kimono';
@@ -160,12 +160,12 @@ function initNav() {
 
 // === FAQ Accordion ===
 function initFAQ() {
-  document.querySelectorAll('.faq-card').forEach(item => {
-    const btn = item.querySelector('.faq-btn');
-    if (!btn) return;
-    btn.addEventListener('click', () => {
+  document.querySelectorAll('.faq-accordion-card').forEach(item => {
+    const trigger = item.querySelector('.faq-toggle-trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', () => {
       const wasActive = item.classList.contains('active');
-      document.querySelectorAll('.faq-card').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.faq-accordion-card').forEach(i => i.classList.remove('active'));
       if (!wasActive) item.classList.add('active');
     });
   });
@@ -197,7 +197,7 @@ function initCountUp() {
 
 // === 3D Perspective Tilt on Hover ===
 function initTiltCards() {
-  document.querySelectorAll('.gallery-card, .clan-card, .perk-card, .roadmap-card').forEach(card => {
+  document.querySelectorAll('.roster-card, .elemental-clan-card, .architecture-card, .roadmap-phase-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;

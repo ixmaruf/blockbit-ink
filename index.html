@@ -3,68 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BLOCKBIT INK — 1,999 Digital Warriors on Ink Blockchain</title>
+  <title>BLOCKBIT INK — 1,999 Digital Warriors on Ink Superchain</title>
   <meta name="description" content="1,999 unique digital anime warriors drawn from the genesis block of Ink Superchain by Kraken.">
   <meta name="theme-color" content="#7c3aed">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Ambient Luminous Particle Canvas -->
   <canvas id="ambient-canvas"></canvas>
 
-  <div class="main-wrap">
+  <div class="site-wrapper">
     <!-- NAVIGATION -->
     <nav class="nav" id="nav">
-      <div class="nav-inner">
+      <div class="nav-container">
         <a href="#" class="nav-brand">
-          <img src="logo-purple.jpg" alt="Blockbit Ink" class="nav-logo-img">
-          <div class="nav-brand-text">
-            <span class="brand-title">BLOCKBIT</span>
-            <span class="brand-subtitle">BUILT ON INK</span>
+          <div class="brand-icon-wrap">
+            <img src="logo-purple.jpg" alt="Blockbit Ink Logo" class="brand-icon-img">
+          </div>
+          <div class="brand-title-group">
+            <span class="brand-name">BLOCKBIT INK</span>
+            <span class="brand-network-tag">Superchain Layer 2</span>
           </div>
         </a>
 
-        <div class="nav-links">
-          <a href="#forge">Forge</a>
-          <a href="#clans">Clans</a>
-          <a href="#collection">Showcase</a>
-          <a href="#utility">Utility</a>
-          <a href="#roadmap">Roadmap</a>
-          <a href="#faq">FAQ</a>
+        <div class="nav-links-menu">
+          <a href="#forge" class="nav-link">DNA Forge</a>
+          <a href="#orders" class="nav-link">Six Orders</a>
+          <a href="#roster" class="nav-link">Showcase</a>
+          <a href="#architecture" class="nav-link">Architecture</a>
+          <a href="#roadmap" class="nav-link">Roadmap</a>
+          <a href="#faq" class="nav-link">Knowledge</a>
         </div>
 
         <div class="nav-actions">
-          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="Twitter / X">
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="btn-icon-link" aria-label="Official X Profile">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
-          <a href="whitelist.html" class="nav-btn">Mint Pass</a>
+          <a href="whitelist.html" class="nav-cta-btn">
+            <span>VIP Mint Pass</span>
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </div>
     </nav>
 
     <!-- HERO SECTION -->
-    <section class="hero" id="hero">
-      <div class="hero-inner">
-        <div class="hero-pill">
-          <span class="ink-badge-dot"></span>
-          <span>Genesis Realm • Built on Ink Blockchain</span>
+    <section class="hero-section" id="hero">
+      <div class="hero-content">
+        <div class="hero-pill-badge">
+          <span class="live-beacon"></span>
+          <span>Genesis Drop • Ink Superchain by Kraken</span>
         </div>
 
-        <h1 class="hero-title">
-          1,999 WARRIORS<br>
-          <span class="gradient-blue-purple">FORGED IN DIGITAL INK</span>
+        <h1 class="hero-heading">
+          <span class="calligraphy-accent">1,999 WARRIORS</span><br>
+          <span class="gradient-text-azure-violet">FORGED IN DIGITAL INK</span>
         </h1>
 
-        <p class="hero-lead">
-          An elite anime order rising on the Superchain. Algorithmically assembled from 100+ hand-crafted traits, each warrior carries permanent on-chain ancestry and exclusive ecosystem utility.
+        <p class="hero-description">
+          An elite cryptographic order rising on Ink Superchain. Procedurally assembled from 100+ hand-drawn vector trait layers, each warrior carries immutable lineage and Tier 1 ecosystem utility.
         </p>
 
-        <div class="hero-actions">
+        <div class="hero-button-group">
           <a href="whitelist.html" class="btn btn-primary">
-            <span>Apply For Whitelist</span>
+            <span>Begin Whitelist Quest</span>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
           <a href="#forge" class="btn btn-secondary">
@@ -72,234 +77,258 @@
           </a>
         </div>
 
-        <div class="hero-stats">
-          <div class="stat-item">
-            <span class="stat-num" data-count="1999">0</span>
-            <span class="stat-tag">Total Supply</span>
+        <div class="hero-stats-grid">
+          <div class="stat-cell">
+            <span class="stat-number" data-count="1999">0</span>
+            <span class="stat-descriptor">Collection Cap</span>
           </div>
-          <div class="stat-item">
-            <span class="stat-num" data-count="6">0</span>
-            <span class="stat-tag">Great Clans</span>
+          <div class="stat-cell">
+            <span class="stat-number" data-count="6">0</span>
+            <span class="stat-descriptor">Elemental Orders</span>
           </div>
-          <div class="stat-item">
-            <span class="stat-num" data-count="100">0</span>
-            <span class="stat-tag">Custom Traits</span>
+          <div class="stat-cell">
+            <span class="stat-number" data-count="100">0</span>
+            <span class="stat-descriptor">Vector Traits</span>
           </div>
-          <div class="stat-item">
-            <span class="stat-num" data-count="4">0</span>
-            <span class="stat-tag">Rarity Tiers</span>
+          <div class="stat-cell">
+            <span class="stat-number" data-count="4">0</span>
+            <span class="stat-descriptor">Rarity Ranks</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- INFINITE MARQUEE SHOWCASE STRIP -->
-    <div class="marquee-wrap">
-      <div class="marquee-track">
-        <div class="marquee-card"><img src="nft-preview/1.png" alt="Warrior #1"></div>
-        <div class="marquee-card"><img src="nft-preview/42.png" alt="Warrior #42"></div>
-        <div class="marquee-card"><img src="nft-preview/100.png" alt="Warrior #100"></div>
-        <div class="marquee-card"><img src="nft-preview/200.png" alt="Warrior #200"></div>
-        <div class="marquee-card"><img src="nft-preview/300.png" alt="Warrior #300"></div>
-        <div class="marquee-card"><img src="nft-preview/500.png" alt="Warrior #500"></div>
-        <div class="marquee-card"><img src="nft-preview/700.png" alt="Warrior #700"></div>
-        <div class="marquee-card"><img src="nft-preview/1000.png" alt="Warrior #1000"></div>
-        <!-- Duplicate for continuous loop -->
-        <div class="marquee-card"><img src="nft-preview/1.png" alt="Warrior #1"></div>
-        <div class="marquee-card"><img src="nft-preview/42.png" alt="Warrior #42"></div>
-        <div class="marquee-card"><img src="nft-preview/100.png" alt="Warrior #100"></div>
-        <div class="marquee-card"><img src="nft-preview/200.png" alt="Warrior #200"></div>
-        <div class="marquee-card"><img src="nft-preview/300.png" alt="Warrior #300"></div>
-        <div class="marquee-card"><img src="nft-preview/500.png" alt="Warrior #500"></div>
-        <div class="marquee-card"><img src="nft-preview/700.png" alt="Warrior #700"></div>
-        <div class="marquee-card"><img src="nft-preview/1000.png" alt="Warrior #1000"></div>
+    <div class="marquee-container">
+      <div class="marquee-stream">
+        <div class="marquee-character-card"><img src="nft-preview/1.png" alt="Warrior #1"></div>
+        <div class="marquee-character-card"><img src="nft-preview/42.png" alt="Warrior #42"></div>
+        <div class="marquee-character-card"><img src="nft-preview/100.png" alt="Warrior #100"></div>
+        <div class="marquee-character-card"><img src="nft-preview/200.png" alt="Warrior #200"></div>
+        <div class="marquee-character-card"><img src="nft-preview/300.png" alt="Warrior #300"></div>
+        <div class="marquee-character-card"><img src="nft-preview/500.png" alt="Warrior #500"></div>
+        <div class="marquee-character-card"><img src="nft-preview/700.png" alt="Warrior #700"></div>
+        <div class="marquee-character-card"><img src="nft-preview/1000.png" alt="Warrior #1000"></div>
+        <!-- Duplicated Stream for Continuous Gliding -->
+        <div class="marquee-character-card"><img src="nft-preview/1.png" alt="Warrior #1"></div>
+        <div class="marquee-character-card"><img src="nft-preview/42.png" alt="Warrior #42"></div>
+        <div class="marquee-character-card"><img src="nft-preview/100.png" alt="Warrior #100"></div>
+        <div class="marquee-character-card"><img src="nft-preview/200.png" alt="Warrior #200"></div>
+        <div class="marquee-character-card"><img src="nft-preview/300.png" alt="Warrior #300"></div>
+        <div class="marquee-character-card"><img src="nft-preview/500.png" alt="Warrior #500"></div>
+        <div class="marquee-character-card"><img src="nft-preview/700.png" alt="Warrior #700"></div>
+        <div class="marquee-character-card"><img src="nft-preview/1000.png" alt="Warrior #1000"></div>
       </div>
     </div>
 
     <!-- LIVE WARRIOR DNA FORGE -->
-    <section class="section-pad" id="forge">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-tag">Interactive DNA Generator</span>
-          <h2 class="section-heading">The Warrior <span class="gradient-blue-purple">Forge</span></h2>
-          <p class="section-subtext">Experience our procedural generative renderer live on the canvas. Randomize to forge warriors across 12 layered visual traits.</p>
+    <section class="section-wrapper" id="forge">
+      <div class="content-container">
+        <div class="section-header-block">
+          <span class="section-kicker">Interactive Synthesis Engine</span>
+          <h2 class="section-main-title">The Warrior <span class="gradient-text-azure-violet">DNA Forge</span></h2>
+          <p class="section-lead-text">Experience our procedural generative renderer in real time. Synthesize custom warriors across 12 layered visual trait matrices.</p>
         </div>
 
-        <div class="forge-box">
-          <div class="forge-canvas-holder">
+        <div class="dna-forge-panel">
+          <div class="forge-canvas-frame">
             <canvas id="forgeCanvas" width="400" height="400"></canvas>
           </div>
-          <div class="forge-details">
-            <h3 class="forge-title" id="forgeName">Warrior #0042</h3>
-            <span class="forge-tier-badge" id="forgeRank">Legendary Tier</span>
-            <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
-              Forged dynamically from our mathematical rarity table on Ink Blockchain.
+          <div class="forge-meta-details">
+            <h3 class="forge-warrior-title" id="forgeName">Warrior #0042</h3>
+            <span class="forge-rarity-chip" id="forgeRank">Legendary Rank</span>
+            <p style="color: var(--ink-slate); font-size: 1.05rem; line-height: 1.75;">
+              Synthesized mathematically through our generative trait algorithm on Ink Blockchain.
             </p>
 
-            <div class="traits-pill-grid">
-              <div class="trait-pill">
-                <div class="trait-label">Clan</div>
-                <div class="trait-val" id="traitClan">Honoo (Fire)</div>
+            <div class="traits-matrix-grid">
+              <div class="trait-matrix-card">
+                <div class="trait-matrix-key">Clan Order</div>
+                <div class="trait-matrix-value" id="traitClan">Honoo (Flame)</div>
               </div>
-              <div class="trait-pill">
-                <div class="trait-label">Weapon</div>
-                <div class="trait-val" id="traitWeapon">Katana of Ink</div>
+              <div class="trait-matrix-card">
+                <div class="trait-matrix-key">Weapon Sigil</div>
+                <div class="trait-matrix-value" id="traitWeapon">Katana of Ink</div>
               </div>
-              <div class="trait-pill">
-                <div class="trait-label">Aura</div>
-                <div class="trait-val" id="traitAura">Cyber Plasma</div>
+              <div class="trait-matrix-card">
+                <div class="trait-matrix-key">Photonic Aura</div>
+                <div class="trait-matrix-value" id="traitAura">Cyber Plasma</div>
               </div>
-              <div class="trait-pill">
-                <div class="trait-label">Outfit</div>
-                <div class="trait-val" id="traitOutfit">Cyber Kimono</div>
+              <div class="trait-matrix-card">
+                <div class="trait-matrix-key">Armor Vestment</div>
+                <div class="trait-matrix-value" id="traitOutfit">Cyber Kimono</div>
               </div>
             </div>
 
             <button type="button" class="btn btn-primary" onclick="randomizeForgeWarrior()">
-              <span>🎲 Randomize Warrior</span>
+              <span>Synthesize Warrior</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             </button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- THE 6 GREAT CLANS -->
-    <section class="section-pad" id="clans" style="background: #ffffff;">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-tag">Elemental Lineage</span>
-          <h2 class="section-heading">The 6 Great <span class="gradient-blue-purple">Clans</span></h2>
-          <p class="section-subtext">Every warrior belongs to an ancient elemental order that dictates their visual aura, prowess, and faction rewards.</p>
+    <!-- THE 6 ELEMENTAL ORDERS -->
+    <section class="section-wrapper" id="orders" style="background: #ffffff;">
+      <div class="content-container">
+        <div class="section-header-block">
+          <span class="section-kicker">Elemental Lineages</span>
+          <h2 class="section-main-title">The Six Elemental <span class="gradient-text-azure-violet">Orders</span></h2>
+          <p class="section-lead-text">Every warrior belongs to an ancient elemental covenant that dictates their visual aura, prowess, and faction rewards.</p>
         </div>
 
-        <div class="clans-grid">
-          <div class="clan-card">
-            <div class="clan-icon-wrap">🌪️</div>
-            <h3 class="clan-name">Kaze (Wind)</h3>
-            <p class="clan-desc">Aerial vanguards wielding tempest blasters, fluid strikes, and cyber wind shrouds.</p>
+        <div class="elemental-clans-grid">
+          <!-- Wind Order -->
+          <div class="elemental-clan-card">
+            <div class="clan-sigil-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.41 18.2c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l.59-.59C8.03 20.26 9.93 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7 0 1.74-.63 3.34-1.69 4.58l-1.46-1.46C16.54 14.34 17 13.23 17 12c0-2.76-2.24-5-5-5-1.23 0-2.34.46-3.12 1.15L7.42 6.69C8.66 5.63 10.26 5 12 5z"/></svg>
+            </div>
+            <h3 class="clan-title">Kaze (Wind)</h3>
+            <p class="clan-summary">Aerial vanguards wielding tempest blasters, kinetic wind shrouds, and hyper-velocity aerial strikes.</p>
           </div>
-          <div class="clan-card">
-            <div class="clan-icon-wrap">🔥</div>
-            <h3 class="clan-name">Honoo (Fire)</h3>
-            <p class="clan-desc">Front-line berserkers who channel pure molten plasma into hyper-heated blade edges.</p>
+
+          <!-- Fire Order -->
+          <div class="elemental-clan-card">
+            <div class="clan-sigil-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5s-4.5 4.5-4.5 8.5c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5c0-4-4.5-8.5-4.5-8.5zm0 18.5c-4.4 0-8-3.6-8-8 0-3.5 2.5-6.8 4.7-9.1.4-.4 1.1-.1 1.1.5v1.2c0 2.2 1.8 4 4 4s4-1.8 4-4v-1.2c0-.6.7-.9 1.1-.5C20.5 6.2 23 9.5 23 13c0 4.4-3.6 8-8 8h-3z"/></svg>
+            </div>
+            <h3 class="clan-title">Honoo (Flame)</h3>
+            <p class="clan-summary">Front-line berserkers who channel pure molten plasma into hyper-heated blade edges and thermal shockwaves.</p>
           </div>
-          <div class="clan-card">
-            <div class="clan-icon-wrap">🌊</div>
-            <h3 class="clan-name">Mizu (Water)</h3>
-            <p class="clan-desc">Adaptive cyber tacticians deploying kinetic liquid shields and sub-zero crystalline darts.</p>
+
+          <!-- Water Order -->
+          <div class="elemental-clan-card">
+            <div class="clan-sigil-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            </div>
+            <h3 class="clan-title">Mizu (Water)</h3>
+            <p class="clan-summary">Adaptive cyber tacticians deploying kinetic liquid shields and sub-zero crystalline projectiles.</p>
           </div>
-          <div class="clan-card">
-            <div class="clan-icon-wrap">⛰️</div>
-            <h3 class="clan-name">Tsuchi (Earth)</h3>
-            <p class="clan-desc">Indomitable guardians encased in seismic heavy exo-armor and devastating titan hammers.</p>
+
+          <!-- Earth Order -->
+          <div class="elemental-clan-card">
+            <div class="clan-sigil-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2zm0 4.8l6.2 12.4H5.8L12 6.8z"/></svg>
+            </div>
+            <h3 class="clan-title">Tsuchi (Earth)</h3>
+            <p class="clan-summary">Indomitable guardians encased in seismic heavy exo-armor and devastating titan hammers.</p>
           </div>
-          <div class="clan-card">
-            <div class="clan-icon-wrap">✨</div>
-            <h3 class="clan-name">Hikari (Light)</h3>
-            <p class="clan-desc">Enlightened scholars whose radiant photonic auras bend the laws of on-chain reality.</p>
+
+          <!-- Light Order -->
+          <div class="elemental-clan-card">
+            <div class="clan-sigil-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.5 7.5L22 11l-7.5 2.5L12 21l-2.5-7.5L2 11l7.5-2.5z"/></svg>
+            </div>
+            <h3 class="clan-title">Hikari (Light)</h3>
+            <p class="clan-summary">Enlightened scholars whose radiant photonic auras bend the cryptographic laws of on-chain reality.</p>
           </div>
-          <div class="clan-card">
-            <div class="clan-icon-wrap">🌑</div>
-            <h3 class="clan-name">Kage (Shadow)</h3>
-            <p class="clan-desc">Phantom infiltrators operating silently within the cryptographic substrate of the network.</p>
+
+          <!-- Shadow Order -->
+          <div class="elemental-clan-card">
+            <div class="clan-sigil-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1 0-16 8 8 0 0 1 0 16z"/><path d="M12 4a8 8 0 0 0 0 16V4z"/></svg>
+            </div>
+            <h3 class="clan-title">Kage (Shadow)</h3>
+            <p class="clan-summary">Phantom infiltrators operating silently within the cryptographic substrate of the network.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SHOWCASE ROSTER -->
-    <section class="section-pad" id="collection">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-tag">Genesis Roster</span>
-          <h2 class="section-heading">Champion <span class="gradient-blue-purple">Showcase</span></h2>
-          <p class="section-subtext">A glimpse of the 1,999 legendary avatars forged in the genesis drop.</p>
+    <!-- ROSTER SHOWCASE -->
+    <section class="section-wrapper" id="roster">
+      <div class="content-container">
+        <div class="section-header-block">
+          <span class="section-kicker">Genesis Archive</span>
+          <h2 class="section-main-title">Champion <span class="gradient-text-azure-violet">Showcase</span></h2>
+          <p class="section-lead-text">A preview of the 1,999 legendary avatars forged in the genesis drop. Select any card to inspect lineage.</p>
         </div>
 
-        <div class="gallery-grid">
-          <div class="gallery-card" onclick="alert('Warrior #1 — Clan Kaze (Wind), Legendary Tier')"><img src="nft-preview/1.png" alt="Warrior #1"></div>
-          <div class="gallery-card" onclick="alert('Warrior #42 — Clan Honoo (Fire), Epic Tier')"><img src="nft-preview/42.png" alt="Warrior #42"></div>
-          <div class="gallery-card" onclick="alert('Warrior #100 — Clan Mizu (Water), Rare Tier')"><img src="nft-preview/100.png" alt="Warrior #100"></div>
-          <div class="gallery-card" onclick="alert('Warrior #200 — Clan Tsuchi (Earth), Epic Tier')"><img src="nft-preview/200.png" alt="Warrior #200"></div>
-          <div class="gallery-card" onclick="alert('Warrior #300 — Clan Hikari (Light), Legendary Tier')"><img src="nft-preview/300.png" alt="Warrior #300"></div>
-          <div class="gallery-card" onclick="alert('Warrior #500 — Clan Kage (Shadow), Epic Tier')"><img src="nft-preview/500.png" alt="Warrior #500"></div>
-          <div class="gallery-card" onclick="alert('Warrior #700 — Clan Honoo (Fire), Rare Tier')"><img src="nft-preview/700.png" alt="Warrior #700"></div>
-          <div class="gallery-card" onclick="alert('Warrior #1000 — Clan Kaze (Wind), Legendary Tier')"><img src="nft-preview/1000.png" alt="Warrior #1000"></div>
+        <div class="roster-gallery-grid">
+          <div class="roster-card" onclick="alert('Warrior #1 — Order: Kaze (Wind) | Tier: Legendary')"><img src="nft-preview/1.png" alt="Warrior #1"></div>
+          <div class="roster-card" onclick="alert('Warrior #42 — Order: Honoo (Flame) | Tier: Epic')"><img src="nft-preview/42.png" alt="Warrior #42"></div>
+          <div class="roster-card" onclick="alert('Warrior #100 — Order: Mizu (Water) | Tier: Rare')"><img src="nft-preview/100.png" alt="Warrior #100"></div>
+          <div class="roster-card" onclick="alert('Warrior #200 — Order: Tsuchi (Earth) | Tier: Epic')"><img src="nft-preview/200.png" alt="Warrior #200"></div>
+          <div class="roster-card" onclick="alert('Warrior #300 — Order: Hikari (Light) | Tier: Legendary')"><img src="nft-preview/300.png" alt="Warrior #300"></div>
+          <div class="roster-card" onclick="alert('Warrior #500 — Order: Kage (Shadow) | Tier: Epic')"><img src="nft-preview/500.png" alt="Warrior #500"></div>
+          <div class="roster-card" onclick="alert('Warrior #700 — Order: Honoo (Flame) | Tier: Rare')"><img src="nft-preview/700.png" alt="Warrior #700"></div>
+          <div class="roster-card" onclick="alert('Warrior #1000 — Order: Kaze (Wind) | Tier: Legendary')"><img src="nft-preview/1000.png" alt="Warrior #1000"></div>
         </div>
       </div>
     </section>
 
-    <!-- UTILITY & SUPERCHAIN PERKS -->
-    <section class="section-pad" id="utility" style="background: #ffffff;">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-tag">Superchain Architecture</span>
-          <h2 class="section-heading">Ecosystem & <span class="gradient-blue-purple">Utility</span></h2>
-          <p class="section-subtext">Built to leverage the raw speed, instant finality, and low gas fees of Ink Superchain by Kraken.</p>
+    <!-- ARCHITECTURE & UTILITY -->
+    <section class="section-wrapper" id="architecture" style="background: #ffffff;">
+      <div class="content-container">
+        <div class="section-header-block">
+          <span class="section-kicker">Superchain Infrastructure</span>
+          <h2 class="section-main-title">Network & <span class="gradient-text-azure-violet">Utility</span></h2>
+          <p class="section-lead-text">Engineered to leverage the ultra-fast execution, low gas fees, and high throughput of Ink Superchain by Kraken.</p>
         </div>
 
-        <div class="perks-grid">
-          <div class="perk-card">
-            <div class="perk-num">01 / SPEED</div>
-            <h3 class="perk-title">Sub-Second Finality</h3>
-            <p class="perk-desc">Built natively on Kraken's Layer 2 for instant minting, trading, and fractional gas fees.</p>
+        <div class="architecture-perks-grid">
+          <div class="architecture-card">
+            <div class="architecture-index">01 / LATENCY</div>
+            <h3 class="architecture-title">Sub-Second Finality</h3>
+            <p class="architecture-desc">Deployed natively on Kraken's Layer 2 for frictionless minting, trading, and fractional gas fees.</p>
           </div>
-          <div class="perk-card">
-            <div class="perk-num">02 / IMMUTABLE</div>
-            <h3 class="perk-title">100% On-Chain DNA</h3>
-            <p class="perk-desc">All 12 trait attributes and vector metadata are permanently anchored to decentralized storage.</p>
+          <div class="architecture-card">
+            <div class="architecture-index">02 / IMMUTABLE</div>
+            <h3 class="architecture-title">100% On-Chain DNA</h3>
+            <p class="architecture-desc">All 12 trait attributes and vector metadata are permanently anchored to decentralized storage.</p>
           </div>
-          <div class="perk-card">
-            <div class="perk-num">03 / LIQUIDITY</div>
-            <h3 class="perk-title">Marketplace Ready</h3>
-            <p class="perk-desc">Fully standard ERC-721 compliant with native verified trading across OpenSea and Superchain DEXs.</p>
+          <div class="architecture-card">
+            <div class="architecture-index">03 / LIQUIDITY</div>
+            <h3 class="architecture-title">ERC-721 Ready</h3>
+            <p class="architecture-desc">Fully standard compliant with verified instant trading across OpenSea and Superchain DEXs.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ROADMAP -->
-    <section class="section-pad" id="roadmap">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-tag">Execution Path</span>
-          <h2 class="section-heading">The <span class="gradient-blue-purple">Roadmap</span></h2>
-          <p class="section-subtext">Our multi-stage blueprint for long-term realm expansion across the Superchain.</p>
+    <section class="section-wrapper" id="roadmap">
+      <div class="content-container">
+        <div class="section-header-block">
+          <span class="section-kicker">Strategic Blueprint</span>
+          <h2 class="section-main-title">The Execution <span class="gradient-text-azure-violet">Roadmap</span></h2>
+          <p class="section-lead-text">Our multi-phase roadmap for sustained realm growth and holder value across the Superchain ecosystem.</p>
         </div>
 
-        <div class="roadmap-grid">
-          <div class="roadmap-card">
-            <span class="roadmap-badge">Phase 01</span>
-            <h3 class="roadmap-title">Genesis Genesis</h3>
+        <div class="roadmap-phase-grid">
+          <div class="roadmap-phase-card">
+            <span class="roadmap-phase-badge">Phase 01</span>
+            <h3 class="roadmap-phase-title">Initiation</h3>
             <ul>
               <li>Portal & DNA Forge Live</li>
               <li>VIP Whitelist Quest</li>
-              <li>Clan Alliances Built</li>
+              <li>Clan Alliances Established</li>
             </ul>
           </div>
-          <div class="roadmap-card">
-            <span class="roadmap-badge">Phase 02</span>
-            <h3 class="roadmap-title">The Mint</h3>
+          <div class="roadmap-phase-card">
+            <span class="roadmap-phase-badge">Phase 02</span>
+            <h3 class="roadmap-phase-title">The Mint</h3>
             <ul>
-              <li>Guaranteed VIP Mint</li>
-              <li>Public Mint Event</li>
+              <li>Guaranteed VIP Mint Event</li>
+              <li>Public Allocation Launch</li>
               <li>Metadata & Lore Reveal</li>
             </ul>
           </div>
-          <div class="roadmap-card">
-            <span class="roadmap-badge">Phase 03</span>
-            <h3 class="roadmap-title">Ecosystem</h3>
+          <div class="roadmap-phase-card">
+            <span class="roadmap-phase-badge">Phase 03</span>
+            <h3 class="roadmap-phase-title">Ecosystem</h3>
             <ul>
               <li>Exclusive Holder Hub</li>
-              <li>Clan Treasury Staking</li>
-              <li>Physical Merch Drops</li>
+              <li>Clan Staking Protocols</li>
+              <li>Physical Apparel Drops</li>
             </ul>
           </div>
-          <div class="roadmap-card">
-            <span class="roadmap-badge">Phase 04</span>
-            <h3 class="roadmap-title">Expansion</h3>
+          <div class="roadmap-phase-card">
+            <span class="roadmap-phase-badge">Phase 04</span>
+            <h3 class="roadmap-phase-title">Expansion</h3>
             <ul>
-              <li>Season 2 Anime Realm</li>
+              <li>Season 2 Lore Drop</li>
               <li>Cross-Chain Bridges</li>
               <li>Decentralized Clan DAO</li>
             </ul>
@@ -308,57 +337,57 @@
       </div>
     </section>
 
-    <!-- FAQ SECTION -->
-    <section class="section-pad" id="faq" style="background: #ffffff;">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-tag">Knowledge Base</span>
-          <h2 class="section-heading">Frequently Asked <span class="gradient-blue-purple">Questions</span></h2>
+    <!-- KNOWLEDGE BASE (FAQ) -->
+    <section class="section-wrapper" id="faq" style="background: #ffffff;">
+      <div class="content-container">
+        <div class="section-header-block">
+          <span class="section-kicker">Knowledge Base</span>
+          <h2 class="section-main-title">Frequently Asked <span class="gradient-text-azure-violet">Questions</span></h2>
         </div>
 
-        <div class="faq-list">
-          <div class="faq-card">
-            <button class="faq-btn">
+        <div class="faq-accordion-list">
+          <div class="faq-accordion-card">
+            <button class="faq-toggle-trigger">
               <span>What is Blockbit Ink?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="faq-indicator-icon" width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-body"><p>Blockbit Ink is a collection of 1,999 unique generative anime/pixel digital warriors, mathematically compiled from 12 trait layers on Ink Blockchain by Kraken.</p></div>
+            <div class="faq-drawer-content"><p>Blockbit Ink is a collection of 1,999 unique generative anime/pixel digital warriors, mathematically compiled from 12 trait layers on Ink Superchain by Kraken.</p></div>
           </div>
-          <div class="faq-card">
-            <button class="faq-btn">
+          <div class="faq-accordion-card">
+            <button class="faq-toggle-trigger">
               <span>What network is this deployed on?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="faq-indicator-icon" width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-body"><p>Ink Blockchain — Kraken's official Layer 2 built on the Optimism Superchain ecosystem, engineered for sub-second speeds and ultra-low transaction costs.</p></div>
+            <div class="faq-drawer-content"><p>Ink Blockchain — Kraken's official Layer 2 built on the Optimism Superchain ecosystem, engineered for sub-second speeds and ultra-low transaction costs.</p></div>
           </div>
-          <div class="faq-card">
-            <button class="faq-btn">
+          <div class="faq-accordion-card">
+            <button class="faq-toggle-trigger">
               <span>How do I qualify for the Whitelist?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="faq-indicator-icon" width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-body"><p>Click 'Mint Pass' in the navigation to complete our 4-step quest. Approved wallets receive a downloadable cryptographic VIP Mint Pass with guaranteed minting privileges.</p></div>
+            <div class="faq-drawer-content"><p>Click 'VIP Mint Pass' in the navigation to complete our 4-step quest. Approved wallets receive a downloadable cryptographic VIP Mint Pass with guaranteed minting privileges.</p></div>
           </div>
-          <div class="faq-card">
-            <button class="faq-btn">
+          <div class="faq-accordion-card">
+            <button class="faq-toggle-trigger">
               <span>What is the supply and mint cost?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="faq-indicator-icon" width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-body"><p>Total collection supply is strictly capped at 1,999 NFTs. Mint price will be 0.05 ETH on Ink Chain, with exclusive discounts for Whitelist pass holders.</p></div>
+            <div class="faq-drawer-content"><p>Total collection supply is strictly capped at 1,999 NFTs. Mint price will be 0.05 ETH on Ink Chain, with exclusive discounts for Whitelist pass holders.</p></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA BANNER -->
-    <section class="section-pad">
-      <div class="container">
-        <div class="cta-box">
-          <span class="section-tag" style="background:#ffffff;">Genesis Allocation</span>
-          <h2 class="section-heading" style="font-size:3.2rem;margin-bottom:1.5rem;">Forge Your <span class="gradient-blue-purple">VIP Mint Pass</span></h2>
-          <p class="section-subtext" style="max-width:680px;margin:0 auto 2.5rem;">
-            Whitelist allocations are strictly limited. Complete the quest now to secure guaranteed early access on Ink Blockchain.
+    <!-- CALL TO ACTION -->
+    <section class="section-wrapper">
+      <div class="content-container">
+        <div class="cta-banner-box">
+          <span class="section-kicker" style="background:#ffffff;">Genesis Allocation</span>
+          <h2 class="section-main-title" style="font-size:3.4rem;margin-bottom:1.5rem;">Forge Your <span class="gradient-text-azure-violet">VIP Mint Pass</span></h2>
+          <p class="section-lead-text" style="max-width:700px;margin:0 auto 2.75rem;">
+            Whitelist allocations are strictly limited. Complete the initiation quest now to secure guaranteed early access on Ink Blockchain.
           </p>
-          <a href="whitelist.html" class="btn btn-primary" style="padding:1.25rem 3rem;font-size:1.05rem;">
+          <a href="whitelist.html" class="btn btn-primary" style="padding:1.3rem 3.2rem;font-size:1.05rem;">
             <span>Begin Whitelist Quest</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -367,21 +396,23 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="footer">
-      <div class="footer-inner">
-        <img src="logo-purple.jpg" alt="Blockbit Ink" class="nav-logo-img" style="width:52px;height:52px;">
-        <div class="brand-title" style="font-size:1.6rem;">BLOCKBIT <span style="color:var(--ink-purple);">INK</span></div>
-        <div class="footer-links">
+    <footer class="footer-wrap">
+      <div class="footer-content-box">
+        <div class="brand-icon-wrap" style="width:56px;height:56px;">
+          <img src="logo-purple.jpg" alt="Blockbit Ink" class="brand-icon-img">
+        </div>
+        <div class="brand-name" style="font-size:1.6rem;">BLOCKBIT <span style="color:var(--ink-violet);">INK</span></div>
+        <div class="footer-nav-links">
           <a href="whitelist.html">Whitelist</a>
           <a href="#">OpenSea</a>
           <a href="#">Discord</a>
-          <a href="#">Twitter</a>
+          <a href="#">Twitter / X</a>
         </div>
-        <div class="footer-chain-badge">
+        <div class="footer-network-badge">
           <img src="ink-logo.webp" alt="Ink" style="width:20px;height:20px;border-radius:4px;">
           <span>Ink Superchain by Kraken</span>
         </div>
-        <div class="footer-copy">&copy; 2026 Blockbit Ink. All rights reserved.</div>
+        <div class="footer-legal-copy">&copy; 2026 Blockbit Ink. All rights reserved.</div>
       </div>
     </footer>
   </div>
