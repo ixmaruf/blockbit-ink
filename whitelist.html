@@ -88,32 +88,29 @@
 
     <div class="wl-wrap">
       <div class="wl-container">
-        <!-- Countdown Timer -->
-        <div class="wl-timer" id="wlTimer">
-          <div class="timer-content">
-            <span class="timer-label">Whitelist Closes In</span>
-            <div class="timer-display">
-              <span class="timer-hours" id="timerHours"></span>
-              <span class="timer-unit-text">h</span>
-              <span class="timer-mins" id="timerMins"></span>
-              <span class="timer-unit-text">m</span>
-              <span class="timer-secs" id="timerSecs"></span>
-              <span class="timer-unit-text">s</span>
+        <!-- Header with Sleek Integrated Timer Badge -->
+        <div class="wl-header">
+          <h1>Genesis <span class="accent">Whitelist</span></h1>
+          <div class="wl-timer" id="wlTimer">
+            <div class="timer-content">
+              <span class="timer-label">CLOSES IN</span>
+              <div class="timer-display">
+                <span class="timer-hours" id="timerHours"></span>
+                <span class="timer-unit-text">h</span>
+                <span class="timer-mins" id="timerMins"></span>
+                <span class="timer-unit-text">m</span>
+                <span class="timer-secs" id="timerSecs"></span>
+                <span class="timer-unit-text">s</span>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="wl-header">
-          <p class="sec-kicker"><span class="line"></span>Initiation Quest</p>
-          <h1>Join the <span class="accent">Whitelist</span></h1>
-          <p>Complete all steps to earn your guaranteed allocation for the genesis mint.</p>
         </div>
 
         <!-- Progress -->
         <div class="progress-bar" id="progressBar">
           <div class="progress-step active" data-step="1">
             <div class="progress-dot">1</div>
-            <div class="progress-label">X Username</div>
+            <div class="progress-label">X Handle</div>
           </div>
           <div class="progress-step" data-step="2">
             <div class="progress-dot">2</div>
@@ -121,7 +118,7 @@
           </div>
           <div class="progress-step" data-step="3">
             <div class="progress-dot">3</div>
-            <div class="progress-label">Follow X</div>
+            <div class="progress-label">Tasks</div>
           </div>
           <div class="progress-step" data-step="4">
             <div class="progress-dot">4</div>
@@ -132,12 +129,10 @@
         <!-- Step 1: X Username -->
         <div class="form-panel active" data-panel="1">
           <div class="form-card">
-            <h2>Step 1 &mdash; X Username</h2>
-            <p class="desc">Enter your X (Twitter) handle so we can verify your community presence.</p>
+            <h2>Step 1 &mdash; X Handle</h2>
             <div class="field">
-              <label for="twitterHandle">X Username</label>
+              <label for="twitterHandle">Your X (Twitter) Handle</label>
               <input type="text" id="twitterHandle" placeholder="@yourhandle" autocomplete="off" spellcheck="false" required>
-              <p class="field-hint" id="twitterHint">Include the @ symbol (e.g. @yourhandle)</p>
               <p class="field-error" id="twitterError"></p>
             </div>
             <div class="form-nav">
@@ -153,10 +148,9 @@
         <!-- Step 2: Wallet -->
         <div class="form-panel" data-panel="2">
           <div class="form-card">
-            <h2>Step 2 &mdash; Wallet</h2>
-            <p class="desc">Enter your wallet address on the Ink (EVM) network for whitelist eligibility.</p>
+            <h2>Step 2 &mdash; EVM Wallet</h2>
             <div class="field">
-              <label for="walletAddr">Wallet Address (0x&hellip;)</label>
+              <label for="walletAddr">Ink / EVM Wallet Address</label>
               <input type="text" id="walletAddr" placeholder="0x..." autocomplete="off" spellcheck="false" required>
               <p class="field-error" id="walletError"></p>
             </div>
@@ -173,9 +167,7 @@
         <!-- Step 3: Follow X (Social Task Gate) -->
         <div class="form-panel" data-panel="3">
           <div class="form-card">
-            <h2>Step 3 &mdash; Follow &amp; Engage</h2>
-            <p class="desc">Complete the social tasks below. Each button opens X in a new tab. Once you've completed the action, click the button here to mark it done.</p>
-
+            <h2>Step 3 &mdash; Community Tasks</h2>
             <div class="social-tasks">
               <button type="button" class="action-btn" id="taskFollow" data-task="follow">
                 <span class="action-icon">
@@ -224,7 +216,7 @@
         <!-- Step 4: Whitelist Confirmed & Mint Pass -->
         <div class="form-panel" data-panel="4">
           <div class="form-card">
-            <h2>Step 4 &mdash; Whitelist Confirmed!</h2>
+            <h2>Genesis Pass Confirmed!</h2>
             <p class="desc">Your whitelist allocation is confirmed and recorded. Download your Genesis Mint Pass and share your initiation on X.</p>
 
             <div class="confirm-summary" id="confirmSummary">
