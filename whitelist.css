@@ -1,398 +1,330 @@
-/* Blockbit Ink — Whitelist styles */
+/* ─── Blockbit Ink Whitelist — 4-Step Wizard ─── */
 
-.wl-wrap {
+:root {
+  --bg:       #0b0b0f;
+  --surface:  #16181f;
+  --border:   rgba(200, 170, 255, 0.12);
+  --purple:   #a882ff;
+  --purple-d: #8a6adf;
+  --txt:      #e0d5ff;
+  --txt-dim:  #8a7abb;
+  --txt-mute: #5a4f7a;
+  --success:  #33a155;
+  --error:    #e55;
+  --yellow:   #efbf2e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: 'Silkscreen', monospace;
   min-height: 100vh;
-  padding: 7rem 1.5rem 4rem;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.wl-container {
-  max-width: 760px;
-  width: 100%;
-  position: relative;
-  z-index: 10;
-}
-
-.wl-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.wl-header h1 {
-  font-family: var(--serif);
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 700;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-}
-
-.wl-header p {
-  color: var(--slate);
-  font-size: 0.95rem;
-  line-height: 1.7;
-}
-
-.wl-header .accent { color: var(--violet); }
-
-.wl-back-btn {
-  padding: 0.45rem 1rem;
-  font-size: 0.6rem;
-}
-
-/* Progress Bar */
-.progress-bar {
-  display: flex;
-  margin-bottom: 3rem;
-  position: relative;
-}
-
-.progress-bar::before {
-  content: '';
-  position: absolute;
-  top: 18px;
-  left: 36px;
-  right: 36px;
-  height: 2px;
-  background: var(--border);
-  z-index: 0;
-}
-
-.progress-step {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  position: relative;
-  z-index: 1;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
 }
 
-.progress-dot {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--r-full);
-  background: #fff;
-  border: 2px solid var(--border);
-  display: grid;
-  place-items: center;
-  font-family: var(--serif);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--muted);
-  transition: all 0.3s;
-}
+a { color: var(--purple); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-.progress-step.active .progress-dot {
-  background: var(--violet);
-  border-color: var(--violet);
-  color: #fff;
-  box-shadow: 0 0 16px var(--g-shadow);
-}
-
-.progress-step.done .progress-dot {
-  background: #10B981;
-  border-color: #10B981;
-  color: #fff;
-}
-
-.progress-label {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-align: center;
-}
-
-.progress-step.active .progress-label { color: var(--violet); }
-.progress-step.done .progress-label { color: #10B981; }
-
-/* Form Panels */
-.form-panel {
-  display: none;
-  animation: formIn 0.5s ease;
-}
-
-.form-panel.active { display: block; }
-
-@keyframes formIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.form-card {
-  background: rgba(255, 255, 255, 0.95);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+/* ─── Container ─── */
+.wizard-container {
+  width: 100%;
+  max-width: 540px;
+  background: var(--surface);
   border: 1px solid var(--border);
-  padding: 2.5rem;
+  border-radius: 14px;
+  padding: 32px 28px 28px;
+  position: relative;
 }
 
-.form-card h2 {
-  font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.form-card .desc {
-  font-size: 0.9rem;
-  color: var(--slate);
-  margin-bottom: 2rem;
-}
-
-.field { margin-bottom: 1.5rem; }
-
-.field label {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--slate);
+/* ─── Header ─── */
+.wizard-header { text-align: center; margin-bottom: 28px; }
+.wizard-header h1 {
+  font-size: 26px;
+  color: var(--txt);
   margin-bottom: 6px;
 }
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1.5px solid var(--border);
-  background: var(--bg);
-  font-family: var(--sans);
-  font-size: 0.92rem;
-  color: var(--ink);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: var(--violet);
-  box-shadow: 0 0 0 3px var(--violet-soft);
-}
-
-.field input.invalid,
-.field select.invalid,
-.field textarea.invalid {
-  border-color: #DC2626;
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
-}
-
-.field textarea { resize: vertical; min-height: 100px; }
-
-.field-error {
-  display: none;
-  margin-top: 6px;
-  font-size: 0.78rem;
-  color: #DC2626;
-}
-
-.field-error.show { display: block; }
-
-.form-nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2rem;
-  gap: 1rem;
-}
-
-/* Clan grid */
-.clan-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
-  margin-bottom: 1rem;
-}
-
-.clan-option {
-  position: relative;
-  padding: 1.25rem 0.75rem;
-  border: 1.5px solid var(--border);
-  background: var(--bg);
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.clan-option:hover {
-  border-color: var(--violet);
-  transform: translateY(-2px);
-}
-
-.clan-option input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.clan-option input[type="radio"]:checked ~ .clan-name,
-.clan-option.selected {
-  border-color: var(--violet);
-  background: rgba(124, 58, 237, 0.06);
-  box-shadow: 0 0 0 3px var(--violet-soft);
-}
-
-.clan-sigil { font-size: 1.6rem; line-height: 1; }
-.clan-name {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--ink);
-}
-.clan-desc {
-  font-size: 0.72rem;
-  color: var(--slate);
-  line-height: 1.4;
-}
-
-/* Pass */
-.pass-wrapper {
-  background: linear-gradient(135deg, #0B0A12 0%, #1E1B2E 100%);
-  padding: 1.25rem;
-  border: 1px solid var(--border);
-  margin-bottom: 1rem;
-}
-
-#mintPass {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-  border-radius: 4px;
-}
-
-.pass-meta {
-  font-family: var(--sans);
-  font-size: 0.82rem;
-  color: var(--slate);
-  line-height: 1.7;
-  padding: 0.75rem 0;
-  border-top: 1px solid var(--border);
-}
-
-/* Success */
-.success-box {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid var(--border);
-}
-
-.success-box .checkmark {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--r-full);
-  background: #10B981;
-  display: grid;
-  place-items: center;
-  margin: 0 auto 1.5rem;
-}
-
-.success-box h2 {
-  font-family: var(--serif);
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-}
-
-.success-box p {
-  color: var(--slate);
-  margin-bottom: 2rem;
-}
-
-.success-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-/* Submission status */
-.submit-status {
-  display: none;
-  margin-top: 1.25rem;
-  padding: 0.75rem 1rem;
-  font-size: 0.85rem;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 4px;
+.wizard-header p {
+  font-size: 12px;
+  color: var(--txt-dim);
   line-height: 1.5;
 }
 
-.submit-status.show { display: block; }
-
-.submit-status.pending {
-  border-color: var(--violet);
-  background: var(--violet-soft);
-  color: var(--violet-deep);
+/* ─── Progress bar ─── */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 28px;
 }
-
-.submit-status.pending::before {
-  content: '';
-  display: inline-block;
-  width: 12px;
-  height: 12px;
+.progress-step {
+  width: 10px; height: 10px;
   border-radius: 50%;
-  background: var(--violet);
-  margin-right: 8px;
-  vertical-align: middle;
-  animation: pulse 1s infinite;
+  background: var(--txt-mute);
+  transition: background 0.3s, transform 0.2s;
+  cursor: default;
+}
+.progress-step.active {
+  background: var(--purple);
+  transform: scale(1.3);
+}
+.progress-step.done {
+  background: var(--success);
 }
 
-.submit-status.error {
-  border-color: #DC2626;
-  background: rgba(220, 38, 38, 0.08);
-  color: #B91C1C;
+/* ─── Panels ─── */
+.form-panel { display: none; }
+.form-panel.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.form-panel h2 {
+  font-size: 18px;
+  color: var(--txt);
+  margin-bottom: 6px;
+}
+.form-panel .step-sub {
+  font-size: 12px;
+  color: var(--txt-dim);
+  margin-bottom: 20px;
 }
 
-.submit-status .retry-btn {
-  margin-left: 8px;
-  padding: 4px 12px;
-  font-size: 0.78rem;
+/* ─── Inputs ─── */
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 12px;
+  color: var(--txt-dim);
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--txt);
+  font-family: 'Silkscreen', monospace;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.field input::placeholder { color: var(--txt-mute); }
+.field input:focus { border-color: var(--purple); }
+.field-error {
+  font-size: 11px;
+  color: var(--error);
+  margin-top: 4px;
+  min-height: 16px;
+}
+.field-hint {
+  font-size: 11px;
+  color: var(--txt-mute);
+  margin-top: 4px;
+}
+
+/* ─── Social task buttons (action-btn) ─── */
+.social-tasks { margin-bottom: 20px; }
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--yellow);
+  color: #16181f;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Silkscreen', monospace;
+  font-size: 13px;
   font-weight: 600;
-  background: #DC2626;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.1s;
+  margin-bottom: 12px;
+}
+.action-btn:hover { transform: scale(1.01); }
+.action-btn:active { transform: scale(0.98); }
+
+.action-btn .action-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.action-btn .action-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.action-btn .action-status {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Completed state: green */
+.action-btn.completed {
+  background: #33a155;
+  color: #f7f1e5;
+  cursor: default;
+}
+.action-btn.completed:hover { transform: none; }
+
+/* ─── Continue button ─── */
+.btn-continue {
+  width: 100%;
+  padding: 14px;
+  background: var(--txt-mute);
+  color: #16181f;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Silkscreen', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transition: background 0.3s, opacity 0.3s;
+}
+.btn-continue:not(:disabled) {
+  background: var(--yellow);
+  cursor: pointer;
+  opacity: 1;
+}
+.btn-continue:not(:disabled):hover { transform: scale(1.01); }
+.btn-continue:not(:disabled):active { transform: scale(0.98); }
+
+/* ─── Generic button ─── */
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--purple);
   color: #fff;
   border: none;
-  border-radius: 3px;
+  border-radius: 10px;
+  font-family: 'Silkscreen', monospace;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-bottom: 12px;
 }
-
-.submit-status .retry-btn:hover { background: #B91C1C; }
-
-.submit-status.info {
-  border-color: #2563EB;
-  background: rgba(37, 99, 235, 0.06);
-  color: #1D4ED8;
-}
-
-.btn-primary:disabled,
-.btn-outline:disabled {
-  opacity: 0.5;
+.btn:hover { background: var(--purple-d); transform: scale(1.01); }
+.btn:active { transform: scale(0.98); }
+.btn:disabled {
+  background: var(--txt-mute);
+  color: #16181f;
   cursor: not-allowed;
-  pointer-events: none;
+  opacity: 0.7;
+}
+.btn:disabled:hover { transform: none; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--txt-dim);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: rgba(168,130,255,0.08); color: var(--txt); }
+
+.btn-sm {
+  padding: 10px 18px;
+  width: auto;
+  font-size: 13px;
+  margin-bottom: 0;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+/* ─── Confirm summary ─── */
+.confirm-summary {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.confirm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.confirm-row:last-child { border-bottom: none; }
+.confirm-row .confirm-label {
+  font-size: 12px;
+  color: var(--txt-mute);
+  text-transform: uppercase;
+}
+.confirm-row .confirm-value {
+  font-size: 14px;
+  color: var(--txt);
+  font-weight: 600;
+}
+.confirm-serial .confirm-value {
+  color: var(--purple);
+  font-size: 16px;
 }
 
-@media (max-width: 768px) {
-  .wl-wrap { padding: 5.5rem 1rem 3rem; }
-  .form-card { padding: 1.5rem; }
-  .progress-label { font-size: 0.5rem; }
-  .clan-grid { grid-template-columns: repeat(2, 1fr); }
+/* ─── Mint pass canvas ─── */
+.mint-pass-wrap {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.mint-pass-wrap canvas {
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.pass-meta {
+  font-size: 11px;
+  color: var(--txt-mute);
+  margin-top: 8px;
 }
 
+/* ─── Success panel ─── */
+.success-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.success-panel h2 {
+  font-size: 22px;
+  color: var(--success);
+  margin-bottom: 10px;
+}
+#successMessage {
+  font-size: 13px;
+  color: var(--txt-dim);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ─── Submit status ─── */
+.submit-status {
+  font-size: 12px;
+  text-align: center;
+  min-height: 18px;
+  margin-bottom: 8px;
+}
+.submit-status.error { color: var(--error); }
+
+/* ─── Button row ─── */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+.btn-row .btn { margin-bottom: 0; flex: 1; }
+
+/* ─── Responsive ─── */
 @media (max-width: 480px) {
-  .clan-grid { grid-template-columns: 1fr; }
+  .wizard-container { padding: 20px 16px; }
+  .wizard-header h1 { font-size: 20px; }
+  .action-btn { font-size: 12px; padding: 12px 14px; }
+  .btn-row { flex-direction: column; gap: 8px; }
 }

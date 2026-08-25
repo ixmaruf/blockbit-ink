@@ -29,14 +29,10 @@ const HEADERS = [
   'Timestamp',
   'Twitter Handle',
   'Wallet Address',
-  'Clan',
   'Serial',
   'User Agent',
   'IP Hint'
 ];
-
-/** Allowed clans — anything else is rejected. */
-const ALLOWED_CLANS = ['Kaze', 'Honoo', 'Mizu', 'Tsuchi', 'Hikari', 'Kage'];
 
 /** Minimum milliseconds between two successful submissions from the same wallet address. */
 const MIN_INTERVAL_MS = 30 * 1000;
@@ -84,13 +80,12 @@ function setupSheet() {
       .setHorizontalAlignment('center');
     sheet.setFrozenRows(1);
     // Reasonable default column widths
-    sheet.setColumnWidth(1, 180);
-    sheet.setColumnWidth(2, 160);
-    sheet.setColumnWidth(3, 360);
-    sheet.setColumnWidth(4, 90);
-    sheet.setColumnWidth(5, 180);
-    sheet.setColumnWidth(6, 280);
-    sheet.setColumnWidth(7, 120);
+    sheet.setColumnWidth(1, 180); // Timestamp
+    sheet.setColumnWidth(2, 160); // Twitter Handle
+    sheet.setColumnWidth(3, 360); // Wallet Address
+    sheet.setColumnWidth(4, 180); // Serial
+    sheet.setColumnWidth(5, 280); // User Agent
+    sheet.setColumnWidth(6, 120); // IP Hint
   }
   return 'Sheet ready. Headers written: ' + sheet.getName();
 }
@@ -143,7 +138,7 @@ function jsonResponse_(obj) {
 
 /**
  * doPost — main endpoint hit by whitelist.js on step 4 submission.
- * Expected body: { twitter, wallet, clan, serial }
+ * Expected body: { twitter, wallet, serial }
  */
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -161,7 +156,6 @@ function doPost(e) {
 
     const twitter = String(payload.twitter || '').replace(/^@/, '').trim();
     const wallet = String(payload.wallet || '').trim();
-    const clan = String(payload.clan || '').trim();
     const serial = String(payload.serial || '').trim();
     const userAgent = String(payload.userAgent || e?.parameters?.userAgent || '').slice(0, 240);
 
@@ -171,9 +165,6 @@ function doPost(e) {
     }
     if (!isValidEvmAddress(wallet)) {
       return jsonResponse_({ ok: false, error: 'Invalid wallet address.' });
-    }
-    if (ALLOWED_CLANS.indexOf(clan) === -1) {
-      return jsonResponse_({ ok: false, error: 'Invalid clan.' });
     }
     if (!isValidSerial(serial)) {
       return jsonResponse_({ ok: false, error: 'Invalid serial.' });
@@ -205,7 +196,6 @@ function doPost(e) {
       new Date(),
       '@' + twitter,
       wallet,
-      clan,
       serial,
       userAgent,
       // Apps Script cannot directly read the client IP from a Web App POST,
