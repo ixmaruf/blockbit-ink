@@ -299,14 +299,32 @@ function randomizeForgeWarrior() {
 }
 window.randomizeForgeWarrior = randomizeForgeWarrior;
 
-/* ── TOP BANNER WHITELIST SYNC ── */
+/* ── TOP BANNER WHITELIST SYNC (0ms Instant Display + Background Refresh) ── */
+const DEFAULT_WL_SETTINGS = {
+  whitelistOpen: 'On',
+  timerStart: '2026-08-26 00:00',
+  timerDuration: '48',
+  postUrl: 'https://x.com/BlockbitInk/status/2091943576175624421'
+};
+
+function getLocalWlSettings() {
+  try {
+    const raw = sessionStorage.getItem('bbi_wl_settings') || localStorage.getItem('bbi_wl_settings');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') return parsed;
+    }
+  } catch (e) {}
+  return DEFAULT_WL_SETTINGS;
+}
+
+let bannerInterval = null;
+
 function initTopBanner() {
   const labelEl = document.getElementById('top-banner-label');
   const countEl = document.getElementById('top-countdown');
   const pulseEl = document.getElementById('bannerPulse');
   if (!labelEl || !countEl) return;
-
-  let bannerInterval = null;
 
   function applySettings(settings) {
     if (!settings) return;
@@ -327,7 +345,7 @@ function initTopBanner() {
       return;
     }
 
-    // When Open: Parse Bangladesh time (UTC+6)
+    // Parse Bangladesh time (UTC+6)
     const startStr = settings.timerStart || '';
     let startMs;
     if (startStr.indexOf('T') > -1) {
@@ -385,12 +403,10 @@ function initTopBanner() {
     bannerInterval = setInterval(updateBannerTimer, 1000);
   }
 
-  // Clear old localStorage cache
-  try {
-    localStorage.removeItem('blockbit_wl_settings');
-  } catch (e) {}
+  // 1. Instant 0ms Render with local/cached settings
+  applySettings(getLocalWlSettings());
 
-  // Fetch live settings directly from Google Apps Script with fallback
+  // 2. Fetch live updates in background (non-blocking)
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const endpoint = (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint)
     ? window.BLOCKBIT_CONFIG.sheetEndpoint
@@ -400,12 +416,21 @@ function initTopBanner() {
     .then(function (res) { return res.json(); })
     .then(function (data) {
       if (data && data.ok && data.settings) {
+        try {
+          sessionStorage.setItem('bbi_wl_settings', JSON.stringify(data.settings));
+          localStorage.setItem('bbi_wl_settings', JSON.stringify(data.settings));
+        } catch (e) {}
         applySettings(data.settings);
       }
     })
     .catch(function (err) {
-      console.warn('Banner settings fetch failed:', err);
+      console.warn('Background banner sync failed:', err);
     });
 }
 
-document.addEventListener('DOMContentLoaded', initTopBanner);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initTopBanner);
+} else {
+  initTopBanner();
+}
+window.addEventListener('pageshow', initTopBanner);

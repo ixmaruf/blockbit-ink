@@ -88,8 +88,26 @@
     return h >>> 0;
   }
 
-  /* ─── Endpoint Config with built-in fallback ─── */
+  /* ─── Endpoint Config & Settings with built-in fallback ─── */
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
+  const DEFAULT_WL_SETTINGS = {
+    whitelistOpen: 'On',
+    timerStart: '2026-08-26 00:00',
+    timerDuration: '48',
+    postUrl: 'https://x.com/BlockbitInk/status/2091943576175624421'
+  };
+
+  function getLocalWlSettings() {
+    try {
+      const raw = sessionStorage.getItem('bbi_wl_settings') || localStorage.getItem('bbi_wl_settings');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_WL_SETTINGS;
+  }
+
   function getSheetEndpoint() {
     return (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint)
       ? window.BLOCKBIT_CONFIG.sheetEndpoint
@@ -568,14 +586,27 @@
     else clearErr(walletErr);
   });
 
-  /* ─── Init: Always Fresh Live Settings from Google Apps Script ─── */
-  (function initApp() {
+  /* ─── Init: 0ms Instant Render + Background Fresh Sync ─── */
+  function initApp() {
+    const initial = getLocalWlSettings();
+    appSettings = initial;
+    currentPostUrl = initial.postUrl || 'https://x.com/BlockbitInk';
+    initTimer(initial);
+
+    // Background fetch from Google Apps Script (non-blocking)
     fetchSettings().then(function (fresh) {
       if (fresh) {
         appSettings = fresh;
         currentPostUrl = fresh.postUrl || 'https://x.com/BlockbitInk';
+        try {
+          sessionStorage.setItem('bbi_wl_settings', JSON.stringify(fresh));
+          localStorage.setItem('bbi_wl_settings', JSON.stringify(fresh));
+        } catch (e) {}
         initTimer(fresh);
       }
     });
-  })();
+  }
+
+  initApp();
+  window.addEventListener('pageshow', initApp);
 })();
