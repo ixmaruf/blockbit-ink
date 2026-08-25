@@ -518,7 +518,7 @@
       showToast('Pass image downloaded! Attach the downloaded pass to your post on X.');
     }
 
-    // 3. Open Twitter intent after a short delay
+    // 3. Open Twitter intent with URL parameter for automatic Large Card image preview
     setTimeout(function () {
       var shareText = encodeURIComponent(
         'I just secured my spot on the Blockbit Ink Whitelist.\n\n' +
@@ -526,7 +526,8 @@
         '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
         '@BlockbitInk #BlockbitInk #NFT #InkBlockchain'
       );
-      window.open('https://x.com/intent/tweet?text=' + shareText, '_blank', 'noopener,noreferrer');
+      var shareUrl = encodeURIComponent('https://blockbitink.xyz/whitelist.html');
+      window.open('https://x.com/intent/tweet?text=' + shareText + '&url=' + shareUrl, '_blank', 'noopener,noreferrer');
     }, 600);
   }
 
