@@ -38,6 +38,7 @@
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html, body { overflow-x: clip; -webkit-overflow-scrolling: touch; }
 
 body {
   font-family: var(--sans);
@@ -84,7 +85,7 @@ body {
   background-size: 180px;
 }
 
-.site-wrap { position: relative; z-index: 3; overflow-x: hidden; }
+.site-wrap { position: relative; z-index: 3; }
 
 /* ── TOP BANNER ── */
 .top-banner {
