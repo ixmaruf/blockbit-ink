@@ -600,3 +600,30 @@ a:hover { text-decoration: underline; }
   margin-top: 6px;
   font-style: italic;
 }
+
+/* ─── Toast Notification ─── */
+.wl-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(11, 10, 18, 0.95);
+  color: #fff;
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  backdrop-filter: blur(12px);
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  max-width: 90vw;
+}
+.wl-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

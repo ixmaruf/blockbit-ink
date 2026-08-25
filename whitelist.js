@@ -61,6 +61,23 @@
     return true;
   }
 
+  /* ─── Toast helper ─── */
+  function showToast(msg) {
+    let toast = document.getElementById('wlToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'wlToast';
+      toast.className = 'wl-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.classList.remove('show');
+    }, 5000);
+  }
+
   /* ─── FNV-1a (32-bit) ─── */
   function fnv1a(str) {
     let h = 0x811c9dc5;
@@ -78,21 +95,17 @@
     return match ? match[1] : null;
   }
 
-  /* ─── Fetch settings from Apps Script ─── */
+  /* ─── Fetch settings from Apps Script (Always Fresh) ─── */
   async function fetchSettings() {
     try {
-      const resp = await fetch(BLOCKBIT_CONFIG.sheetEndpoint + '?action=settings');
+      const url = BLOCKBIT_CONFIG.sheetEndpoint + '?action=settings&_nocache=' + Date.now();
+      const resp = await fetch(url, { cache: 'no-store' });
       const data = await resp.json();
       if (data.ok && data.settings) return data.settings;
     } catch (err) {
       console.warn('Settings fetch failed, using defaults:', err);
     }
-    return {
-      postUrl: 'https://x.com/BlockbitInk',
-      timerStart: new Date().toISOString(),
-      timerDuration: '48',
-      whitelistOpen: 'true'
-    };
+    return null;
   }
 
   /* ─── Initialize countdown timer ─── */
@@ -433,7 +446,12 @@
           break;
         }
         case 'quote': {
-          const shareText = encodeURIComponent('Just joined the Blockbit Ink whitelist. 1,999 anime pixel warriors forged on Ink Blockchain by Kraken. #BlockbitInk #NFT');
+          const shareText = encodeURIComponent(
+            'I just secured my spot on the Blockbit Ink Whitelist.\n\n' +
+            '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
+            'Official Initiation Quest completed.\n\n' +
+            '@BlockbitInk #BlockbitInk #NFT #InkBlockchain'
+          );
           const postUrl = encodeURIComponent(currentPostUrl || 'https://x.com/BlockbitInk');
           url = 'https://x.com/intent/tweet?text=' + shareText + '&url=' + postUrl;
           break;
@@ -448,12 +466,12 @@
     });
   });
 
-  /* ─── Share on X ─── */
+  /* ─── Share on X (Auto copy image + download + intent) ─── */
   function shareOnX() {
     var canvas = document.getElementById('mintPass');
     if (!canvas) return;
 
-    // First download the mint pass image
+    // 1. Download pass image
     var link = document.createElement('a');
     link.download = 'blockbit-ink-pass-' + serial + '.png';
     link.href = canvas.toDataURL('image/png');
@@ -461,15 +479,35 @@
     link.click();
     document.body.removeChild(link);
 
-    // Then open Twitter intent after a short delay
+    // 2. Attempt copying pass image directly to clipboard
+    try {
+      canvas.toBlob(function (blob) {
+        if (blob && navigator.clipboard && window.ClipboardItem) {
+          navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]).then(function () {
+            showToast('Pass image copied to clipboard & downloaded! Press Ctrl+V on X to attach it.');
+          }).catch(function () {
+            showToast('Pass image downloaded! Attach the downloaded pass to your post on X.');
+          });
+        } else {
+          showToast('Pass image downloaded! Attach the downloaded pass to your post on X.');
+        }
+      }, 'image/png');
+    } catch (e) {
+      showToast('Pass image downloaded! Attach the downloaded pass to your post on X.');
+    }
+
+    // 3. Open Twitter intent after a short delay
     setTimeout(function () {
       var shareText = encodeURIComponent(
-        'I just secured my spot on the Blockbit Ink whitelist.\n\n' +
+        'I just secured my spot on the Blockbit Ink Whitelist.\n\n' +
+        'Mint Pass Serial: ' + serial + '\n\n' +
         '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
         '@BlockbitInk #BlockbitInk #NFT #InkBlockchain'
       );
-      window.open('https://twitter.com/intent/tweet?text=' + shareText, '_blank', 'noopener,noreferrer,width=600,height=500');
-    }, 800);
+      window.open('https://x.com/intent/tweet?text=' + shareText, '_blank', 'noopener,noreferrer');
+    }, 600);
   }
 
   /* ─── Confirm step buttons ─── */
