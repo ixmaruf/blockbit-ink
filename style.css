@@ -84,7 +84,7 @@ body::before {
 }
 
 /* === FULLSCREEN CANVAS ANIMATION === */
-#village-canvas, #ambient-canvas {
+#ambient-canvas {
   position: fixed;
   top: 0;
   left: 0;

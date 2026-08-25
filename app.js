@@ -1,52 +1,143 @@
-/* Blockbit Ink - Game Style Animations */
+/* ==========================================================================
+   Blockbit Ink — Master Interactive App & Ambient Light Animation Engine
+   ========================================================================== */
 
-let _hiddenCanvas, _renderer;
-try {
-  _hiddenCanvas = document.createElement('canvas');
-  _renderer = new NFTRenderer(_hiddenCanvas);
-} catch (e) {
-  _renderer = { render: () => {} };
-}
+// === AMBIENT CANVAS PARTICLES (Light Theme) ===
+class AmbientScene {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.particles = [];
+    this.clouds = [];
+    this.lastTime = performance.now();
+    this.time = 0;
+    this.init();
+  }
 
-function renderNFTTo(targetCanvas, nftData, size) {
-  try {
-    targetCanvas.width = size;
-    targetCanvas.height = size;
-    _renderer.render(nftData);
-    const tCtx = targetCanvas.getContext('2d');
-    tCtx.drawImage(_hiddenCanvas, 0, 0, size, size);
-  } catch (e) {}
-}
+  init() {
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize the village scene
-  if (typeof VillageScene !== 'undefined') {
-    const canvas = document.getElementById('village-canvas');
-    if (canvas) {
-      const scene = new VillageScene(canvas);
-      scene.start();
+    // Ambient floating clouds
+    for (let i = 0; i < 6; i++) {
+      this.clouds.push({
+        x: Math.random() * this.canvas.width,
+        y: 20 + Math.random() * (this.canvas.height * 0.45),
+        w: 120 + Math.random() * 180,
+        h: 40 + Math.random() * 50,
+        speed: 0.15 + Math.random() * 0.25,
+        opacity: 0.12 + Math.random() * 0.15
+      });
     }
+
+    // Glowing energy motes (Electric Blue & Royal Purple)
+    for (let i = 0; i < 35; i++) {
+      this.particles.push({
+        x: Math.random() * this.canvas.width,
+        y: Math.random() * this.canvas.height,
+        r: 1.5 + Math.random() * 2.5,
+        speedY: 0.2 + Math.random() * 0.45,
+        speedX: (Math.random() - 0.5) * 0.3,
+        phase: Math.random() * Math.PI * 2,
+        color: Math.random() > 0.5 ? 'rgba(124, 58, 237, ' : 'rgba(2, 132, 199, '
+      });
+    }
+
+    this.animate();
+  }
+
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+  }
+
+  update(dt) {
+    this.time += dt;
+
+    this.clouds.forEach(c => {
+      c.x += c.speed * dt * 60;
+      if (c.x > this.canvas.width + 250) {
+        c.x = -250;
+        c.y = 20 + Math.random() * (this.canvas.height * 0.45);
+      }
+    });
+
+    this.particles.forEach(p => {
+      p.y -= p.speedY * dt * 60;
+      p.x += Math.sin(p.phase + this.time * 1.5) * 0.5;
+      if (p.y < -20) {
+        p.y = this.canvas.height + 20;
+        p.x = Math.random() * this.canvas.width;
+      }
+    });
+  }
+
+  draw() {
+    const ctx = this.ctx;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Soft luminous mist
+    this.clouds.forEach(c => {
+      const grad = ctx.createRadialGradient(c.x + c.w/2, c.y + c.h/2, 10, c.x + c.w/2, c.y + c.h/2, c.w/2);
+      grad.addColorStop(0, `rgba(124, 58, 237, ${c.opacity})`);
+      grad.addColorStop(0.6, `rgba(2, 132, 199, ${c.opacity * 0.5})`);
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(c.x + c.w/2, c.y + c.h/2, c.w/2, c.h/2, 0, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Luminous glowing sparks
+    this.particles.forEach(p => {
+      const alpha = 0.3 + Math.sin(p.phase + this.time * 2) * 0.25;
+      ctx.fillStyle = p.color + Math.max(0.1, alpha) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  animate() {
+    const now = performance.now();
+    const dt = Math.min((now - this.lastTime) / 1000, 0.1);
+    this.lastTime = now;
+
+    this.update(dt);
+    this.draw();
+
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+// === DOM READY INITIALIZATION ===
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('ambient-canvas');
+  if (canvas) {
+    new AmbientScene(canvas);
   }
 
   initNav();
   initScrollAnimations();
   initFAQ();
   initCountUp();
-  initMagneticButtons();
   initTiltCards();
-  initStagger();
 });
 
-// === Navigation ===
+// === Navigation Scroll Effect ===
 function initNav() {
   const nav = document.getElementById('nav');
   if (!nav) return;
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 50);
+    nav.classList.toggle('scrolled', window.scrollY > 40);
   });
 }
 
-// === Scroll Animations ===
+// === Scroll Reveal Animations ===
 function initScrollAnimations() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -54,16 +145,18 @@ function initScrollAnimations() {
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-  document.querySelectorAll('.fade-in, .slide-left, .slide-right, .scale-in, .stagger').forEach(el => {
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in, .scale-in, .stagger').forEach(el => {
     observer.observe(el);
   });
 }
 
-// === FAQ ===
+// === FAQ Accordion ===
 function initFAQ() {
   document.querySelectorAll('.faq-item').forEach(item => {
-    item.querySelector('.faq-question').addEventListener('click', () => {
+    const btn = item.querySelector('.faq-question');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
       const wasActive = item.classList.contains('active');
       document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
       if (!wasActive) item.classList.add('active');
@@ -71,7 +164,7 @@ function initFAQ() {
   });
 }
 
-// === Count Up ===
+// === Count Up Number Animation ===
 function initCountUp() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -79,12 +172,15 @@ function initCountUp() {
         const el = entry.target;
         const target = parseInt(el.dataset.count);
         let current = 0;
-        const increment = target / 60;
+        const increment = target / 50;
         const timer = setInterval(() => {
           current += increment;
-          if (current >= target) { current = target; clearInterval(timer); }
+          if (current >= target) { 
+            current = target; 
+            clearInterval(timer); 
+          }
           el.textContent = Math.floor(current).toLocaleString();
-        }, 25);
+        }, 30);
         observer.unobserve(el);
       }
     });
@@ -92,30 +188,15 @@ function initCountUp() {
   document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
 }
 
-// === Magnetic Buttons ===
-function initMagneticButtons() {
-  document.querySelectorAll('.btn-wood').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = '';
-    });
-  });
-}
-
-// === Tilt Cards ===
+// === 3D Perspective Tilt on Hover ===
 function initTiltCards() {
   document.querySelectorAll('.gallery-card, .feature-card, .roadmap-item').forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = (e.clientY - rect.top) / rect.height;
-      const tiltX = (y - 0.5) * 10;
-      const tiltY = (x - 0.5) * -10;
+      const tiltX = (y - 0.5) * 8;
+      const tiltY = (x - 0.5) * -8;
       card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-6px)`;
     });
     card.addEventListener('mouseleave', () => {
@@ -123,5 +204,3 @@ function initTiltCards() {
     });
   });
 }
-
-function initStagger() {}

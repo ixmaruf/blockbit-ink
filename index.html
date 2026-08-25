@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blockbit Ink - Enter the Realm</title>
   <meta name="description" content="Blockbit Ink: 1,999 unique generative anime/pixel NFTs. Built on Ink Blockchain by Kraken.">
-  <meta name="theme-color" content="#a855f7">
+  <meta name="theme-color" content="#7c3aed">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- GAME VILLAGE SCENE - Full screen canvas background -->
-  <canvas id="village-canvas"></canvas>
+  <!-- Ambient Luminous Particle Canvas -->
+  <canvas id="ambient-canvas"></canvas>
 
   <!-- Game UI Overlay -->
   <div class="game-ui">
@@ -27,6 +27,7 @@
         <div class="nav-links">
           <a href="#about">About</a>
           <a href="#collection">Collection</a>
+          <a href="#features">Features</a>
           <a href="#roadmap">Roadmap</a>
           <a href="#faq">FAQ</a>
           <a href="whitelist.html" class="nav-cta">Enter the Realm</a>
@@ -34,7 +35,7 @@
       </div>
     </nav>
 
-    <!-- HERO - Centered on top of the village scene -->
+    <!-- HERO SECTION -->
     <section class="hero" id="hero">
       <div class="hero-content fade-in">
         <div class="hero-badge">
@@ -50,11 +51,11 @@
           Where pixels meet purpose, and every block tells a story.
         </p>
         <div class="hero-actions">
-          <a href="whitelist.html" class="btn btn-wood btn-lg">
+          <a href="whitelist.html" class="btn btn-primary btn-lg">
             <span>Enter the Realm</span>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#collection" class="btn btn-scroll btn-lg">View the Scroll</a>
+          <a href="#collection" class="btn btn-secondary btn-lg">View Collection</a>
         </div>
         <div class="hero-stats">
           <div class="stat-plank">
@@ -78,13 +79,9 @@
       <div class="scroll-hint">↓ Scroll to explore the realm ↓</div>
     </section>
 
-    <!-- COLLECTION - Floating scroll/parchment sections -->
+    <!-- COLLECTION SECTION -->
     <section class="section" id="collection">
       <div class="parchment fade-in">
-        <div class="parchment-corner tl"></div>
-        <div class="parchment-corner tr"></div>
-        <div class="parchment-corner bl"></div>
-        <div class="parchment-corner br"></div>
         <div class="section-badge">The Collection</div>
         <h2 class="section-title">Choose Your <span class="text-gradient">Warrior</span></h2>
         <p class="section-desc">1,999 unique characters, each forged with distinct personality and style. Pick your champion from the realm.</p>
@@ -101,13 +98,9 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- ABOUT / LORE SECTION -->
     <section class="section" id="about">
       <div class="parchment fade-in">
-        <div class="parchment-corner tl"></div>
-        <div class="parchment-corner tr"></div>
-        <div class="parchment-corner bl"></div>
-        <div class="parchment-corner br"></div>
         <div class="section-badge">The Lore</div>
         <h2 class="section-title">What is <span class="text-gradient">Blockbit Ink</span>?</h2>
         <p class="section-desc">
@@ -127,13 +120,9 @@
       </div>
     </section>
 
-    <!-- FEATURES -->
+    <!-- FEATURES SECTION -->
     <section class="section" id="features">
       <div class="parchment fade-in">
-        <div class="parchment-corner tl"></div>
-        <div class="parchment-corner tr"></div>
-        <div class="parchment-corner bl"></div>
-        <div class="parchment-corner br"></div>
         <div class="section-badge">Features</div>
         <h2 class="section-title">Why <span class="text-gradient">Blockbit Ink</span>?</h2>
         <p class="section-desc">More than pixels — these are living digital identities on the blockchain.</p>
@@ -148,13 +137,9 @@
       </div>
     </section>
 
-    <!-- ROADMAP -->
+    <!-- ROADMAP SECTION -->
     <section class="section" id="roadmap">
       <div class="parchment fade-in">
-        <div class="parchment-corner tl"></div>
-        <div class="parchment-corner tr"></div>
-        <div class="parchment-corner bl"></div>
-        <div class="parchment-corner br"></div>
         <div class="section-badge">The Journey</div>
         <h2 class="section-title">The <span class="text-gradient">Roadmap</span></h2>
         <p class="section-desc">From the first drop to the final reveal — here's our path.</p>
@@ -167,13 +152,9 @@
       </div>
     </section>
 
-    <!-- FAQ -->
+    <!-- FAQ SECTION -->
     <section class="section" id="faq">
       <div class="parchment fade-in">
-        <div class="parchment-corner tl"></div>
-        <div class="parchment-corner tr"></div>
-        <div class="parchment-corner bl"></div>
-        <div class="parchment-corner br"></div>
         <div class="section-badge">Questions</div>
         <h2 class="section-title">The <span class="text-gradient">Scroll</span> of Knowledge</h2>
         <div class="faq-list stagger">
@@ -209,7 +190,7 @@
       </div>
     </section>
 
-    <!-- CTA -->
+    <!-- CTA BANNER -->
     <section class="section" id="whitelist-cta">
       <div class="cta-banner scale-in">
         <div class="cta-banner-content">
@@ -218,7 +199,7 @@
           <p class="section-desc" style="margin-left:auto;margin-right:auto;">
             Whitelist spots are limited. Secure your place in the realm.
           </p>
-          <a href="whitelist.html" class="btn btn-wood btn-lg">
+          <a href="whitelist.html" class="btn btn-primary btn-lg">
             <span>Begin the Ritual</span>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -226,7 +207,7 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
       <img src="logo-purple.jpg" alt="Blockbit Ink" class="footer-logo">
       <div class="footer-text">Blockbit<span class="logo-accent">Ink</span></div>
@@ -247,7 +228,6 @@
 
   <script src="traits.js"></script>
   <script src="generator.js"></script>
-  <script src="village-scene.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
