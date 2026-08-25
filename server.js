@@ -39,7 +39,7 @@ const SECURITY_HEADERS = {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "script-src 'self' 'unsafe-inline'",
-    "connect-src 'self'",
+    "connect-src 'self' https://script.google.com https://script.googleusercontent.com",
     "frame-ancestors 'self'",
     "base-uri 'self'"
   ].join('; ')

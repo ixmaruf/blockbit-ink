@@ -62,6 +62,16 @@ function isValidSerial(serial) {
   return typeof serial === 'string' && /^BBI-\d{4}-[0-9A-F]{6}$/.test(serial);
 }
 
+/** Simple health check — confirms the web app is live. */
+function doGet() {
+  return jsonResponse_({
+    ok: true,
+    service: 'Blockbit Ink Whitelist API',
+    version: 2,
+    timestamp: new Date().toISOString()
+  });
+}
+
 /** Run once after pasting this code to create the header row automatically. */
 function setupSheet() {
   const sheet = getOrCreateSheet_();
