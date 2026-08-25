@@ -22,9 +22,6 @@ desktop.ini
 *.sublime-project
 *.sublime-workspace
 
-# Private runtime config — never commit the deployed Apps Script URL
-whitelist-config.js
-
 # Playwright MCP artifacts
 .playwright-mcp/
 

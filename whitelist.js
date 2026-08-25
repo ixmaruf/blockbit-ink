@@ -88,6 +88,14 @@
     return h >>> 0;
   }
 
+  /* ─── Endpoint Config with built-in fallback ─── */
+  const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
+  function getSheetEndpoint() {
+    return (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint)
+      ? window.BLOCKBIT_CONFIG.sheetEndpoint
+      : DEFAULT_ENDPOINT;
+  }
+
   /* ─── Extract tweet ID from URL ─── */
   function extractTweetId(url) {
     if (!url) return null;
@@ -98,7 +106,7 @@
   /* ─── Fetch settings from Apps Script (Always Fresh) ─── */
   async function fetchSettings() {
     try {
-      const url = BLOCKBIT_CONFIG.sheetEndpoint + '?action=settings&_nocache=' + Date.now();
+      const url = getSheetEndpoint() + '?action=settings&_nocache=' + Date.now();
       const resp = await fetch(url, { cache: 'no-store' });
       const data = await resp.json();
       if (data.ok && data.settings) return data.settings;
@@ -361,7 +369,7 @@
     };
 
     try {
-      const resp = await fetch(BLOCKBIT_CONFIG.sheetEndpoint, {
+      const resp = await fetch(getSheetEndpoint(), {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)

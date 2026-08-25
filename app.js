@@ -390,19 +390,22 @@ function initTopBanner() {
     localStorage.removeItem('blockbit_wl_settings');
   } catch (e) {}
 
-  // Fetch live settings directly from Google Apps Script
-  if (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint) {
-    fetch(BLOCKBIT_CONFIG.sheetEndpoint + '?action=settings&_nocache=' + Date.now(), { cache: 'no-store' })
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (data && data.ok && data.settings) {
-          applySettings(data.settings);
-        }
-      })
-      .catch(function (err) {
-        console.warn('Banner settings fetch failed:', err);
-      });
-  }
+  // Fetch live settings directly from Google Apps Script with fallback
+  const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
+  const endpoint = (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint)
+    ? window.BLOCKBIT_CONFIG.sheetEndpoint
+    : DEFAULT_ENDPOINT;
+
+  fetch(endpoint + '?action=settings&_nocache=' + Date.now(), { cache: 'no-store' })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data && data.ok && data.settings) {
+        applySettings(data.settings);
+      }
+    })
+    .catch(function (err) {
+      console.warn('Banner settings fetch failed:', err);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', initTopBanner);
