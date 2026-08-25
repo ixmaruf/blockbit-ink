@@ -226,21 +226,41 @@ function rowToObject_(row) {
 }
 
 /**
- * Look up the most recent submission row for a wallet (case-insensitive).
- * Returns the row object or null.
+ * Look up whether a Twitter handle already exists (case-insensitive).
  */
-function findLatestByWallet_(wallet) {
+function findByTwitter_(twitter) {
   const sheet = getOrCreateSheet_();
   const last = sheet.getLastRow();
   if (last < 2) return null;
-  const walletNorm = wallet.toLowerCase();
-  // Scan top-to-bottom in reverse to find the latest match.
-  for (let r = last; r >= 2; r--) {
-    const walletCell = String(sheet.getRange(r, 3).getValue() || '').toLowerCase();
-    if (walletCell === walletNorm) {
+  const twitterNorm = String(twitter || '').toLowerCase().replace(/^@/, '').trim();
+  const values = sheet.getRange(2, 2, last - 1, 1).getValues();
+  for (let r = 0; r < values.length; r++) {
+    const val = String(values[r][0] || '').toLowerCase().replace(/^@/, '').trim();
+    if (val === twitterNorm) {
       return {
-        rowNumber: r,
-        data: rowToObject_(sheet.getRange(r, 1, 1, HEADERS.length).getValues()[0])
+        rowNumber: r + 2,
+        twitter: values[r][0]
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Look up whether a Wallet address already exists (case-insensitive).
+ */
+function findByWallet_(wallet) {
+  const sheet = getOrCreateSheet_();
+  const last = sheet.getLastRow();
+  if (last < 2) return null;
+  const walletNorm = String(wallet || '').toLowerCase().trim();
+  const values = sheet.getRange(2, 3, last - 1, 1).getValues();
+  for (let r = 0; r < values.length; r++) {
+    const val = String(values[r][0] || '').toLowerCase().trim();
+    if (val === walletNorm) {
+      return {
+        rowNumber: r + 2,
+        wallet: values[r][0]
       };
     }
   }
@@ -255,13 +275,13 @@ function jsonResponse_(obj) {
 }
 
 /**
- * doPost — main endpoint hit by whitelist.js on step 4 submission.
+ * doPost — main endpoint hit by whitelist.js on step 3 submission.
  * Expected body: { twitter, wallet, serial }
  */
 function doPost(e) {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(15000)) {
-    return jsonResponse_({ ok: false, error: 'Server is busy, please retry.' });
+    return jsonResponse_({ ok: false, error: 'Server is busy, please retry in a few seconds.' });
   }
 
   try {
@@ -277,36 +297,38 @@ function doPost(e) {
     const serial = String(payload.serial || '').trim();
     const userAgent = String(payload.userAgent || e?.parameters?.userAgent || '').slice(0, 240);
 
-    // Validate
+    // Format Validations
     if (!isValidTwitterHandle(twitter)) {
-      return jsonResponse_({ ok: false, error: 'Invalid Twitter handle.' });
+      return jsonResponse_({ ok: false, error: 'Invalid Twitter handle.', field: 'twitter' });
     }
     if (!isValidEvmAddress(wallet)) {
-      return jsonResponse_({ ok: false, error: 'Invalid wallet address.' });
+      return jsonResponse_({ ok: false, error: 'Invalid wallet address.', field: 'wallet' });
     }
     if (!isValidSerial(serial)) {
       return jsonResponse_({ ok: false, error: 'Invalid serial.' });
     }
 
-    // Duplicate / rate-limit check
-    const existing = findLatestByWallet_(wallet);
-    if (existing) {
-        const count = countByWallet_(wallet);
-        if (count >= MAX_PER_WALLET) {
-          return jsonResponse_({
-            ok: false,
-            error: 'This wallet has already been registered.',
-            alreadyRegistered: true
-          });
-        }
-        const lastTs = new Date(existing.data.Timestamp).getTime();
-        if (Date.now() - lastTs < MIN_INTERVAL_MS) {
-          return jsonResponse_({
-            ok: false,
-            error: 'Please wait a moment before resubmitting.'
-          });
-        }
-      }
+    // 1. Check Duplicate Twitter Username
+    const existingTwitter = findByTwitter_(twitter);
+    if (existingTwitter) {
+      return jsonResponse_({
+        ok: false,
+        error: 'This X (Twitter) username (@' + twitter + ') is already registered on the whitelist.',
+        field: 'twitter',
+        duplicate: true
+      });
+    }
+
+    // 2. Check Duplicate Wallet Address
+    const existingWallet = findByWallet_(wallet);
+    if (existingWallet) {
+      return jsonResponse_({
+        ok: false,
+        error: 'This wallet address (' + wallet.slice(0, 6) + '...' + wallet.slice(-4) + ') is already registered on the whitelist.',
+        field: 'wallet',
+        duplicate: true
+      });
+    }
 
     // Append the row
     const sheet = getOrCreateSheet_();

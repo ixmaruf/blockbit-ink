@@ -10,8 +10,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/jpeg" href="logo-purple.jpg">
-  <link rel="stylesheet" href="style.css?v=5">
-  <link rel="stylesheet" href="whitelist.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="whitelist.css?v=6">
 </head>
 <body>
   <!-- Ambient Animations -->
@@ -184,19 +184,20 @@
 
             <div class="form-nav">
               <button type="button" class="btn-outline" data-prev="2">Back</button>
-              <button type="button" class="btn-primary btn-continue" id="continueStep3" disabled data-next="4">
-                <span>Continue</span>
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <button type="button" class="btn-primary btn-continue" id="submitAndClaim" disabled>
+                <span>Submit &amp; Claim Slot</span>
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
+            <p class="field-error" id="step3Error" style="margin-top: 12px; text-align: center; font-weight: 500; font-size: 0.88rem;"></p>
           </div>
         </div>
 
-        <!-- Step 4: Confirm & Submit -->
+        <!-- Step 4: Whitelist Confirmed & Mint Pass -->
         <div class="form-panel" data-panel="4">
           <div class="form-card">
-            <h2>Step 4 &mdash; Confirm &amp; Submit</h2>
-            <p class="desc">Review your details and submit your whitelist application.</p>
+            <h2>Step 4 &mdash; Whitelist Confirmed!</h2>
+            <p class="desc">Your whitelist allocation is confirmed and recorded. Download your Genesis Mint Pass and share your initiation on X.</p>
 
             <div class="confirm-summary" id="confirmSummary">
               <div class="confirm-row">
@@ -221,24 +222,16 @@
             <div class="share-section">
               <button type="button" class="btn-share" id="shareOnX">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                <span>Post on X</span>
+                <span>Share Post on X</span>
               </button>
             </div>
 
-            <div class="submit-status" id="submitStatus"></div>
-
             <div class="form-nav">
-              <button type="button" class="btn-outline" data-prev="3">Back</button>
-              <div class="form-nav-actions">
-                <button type="button" class="btn-outline" id="downloadPass">
-                  <span>Download PNG</span>
-                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M10 3v12m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button type="button" class="btn-primary" id="submitFinal">
-                  <span>Submit &amp; Claim Slot</span>
-                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
+              <a href="index.html" class="btn-outline">Return to Portal</a>
+              <button type="button" class="btn-primary" id="downloadPass">
+                <span>Download Pass</span>
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M10 3v12m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
             </div>
           </div>
         </div>
@@ -261,8 +254,8 @@
     </div>
   </div>
 
-  <script src="app.js?v=5"></script>
-  <script src="whitelist-config.js?v=5"></script>
-  <script src="whitelist.js?v=5"></script>
+  <script src="app.js?v=7"></script>
+  <script src="whitelist-config.js?v=7"></script>
+  <script src="whitelist.js?v=7"></script>
 </body>
 </html>

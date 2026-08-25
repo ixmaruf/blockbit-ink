@@ -18,12 +18,12 @@
   const walletInput  = document.getElementById('walletAddr');
   const twitterErr   = document.getElementById('twitterError');
   const walletErr    = document.getElementById('walletError');
-  const submitStatus = document.getElementById('submitStatus');
+  const step3Err     = document.getElementById('step3Error');
   const confirmTwitter = document.getElementById('confirmTwitter');
   const confirmWallet  = document.getElementById('confirmWallet');
   const confirmSerial  = document.getElementById('confirmSerial');
   const passMeta       = document.getElementById('passMeta');
-  const continueBtn    = document.getElementById('continueStep3');
+  const submitAndClaimBtn = document.getElementById('submitAndClaim');
 
   /* ─── Helpers ─── */
   function getTwitterRaw() { return (twitterInput.value || '').trim(); }
@@ -323,20 +323,38 @@
     link.click();
   }
 
-  /* ─── Submit to Google Sheets ─── */
+  /* ─── Submit to Google Sheets (Directly on Step 3) ─── */
   async function submitApplication() {
     if (submitted) return;
-    submitted = true;
 
-    const btn = document.getElementById('submitFinal');
-    btn.disabled = true;
-    btn.querySelector('span').textContent = 'Submitting...';
-    submitStatus.textContent = '';
-    submitStatus.className = 'submit-status';
+    if (!validateTwitterInput()) {
+      goToStep(1);
+      return;
+    }
+    const w = getWallet();
+    if (!w || !isValidWallet(w)) {
+      goToStep(2);
+      return;
+    }
+
+    const allDone = tasksCompleted.follow && tasksCompleted.like && tasksCompleted.repost && tasksCompleted.quote;
+    if (!allDone) {
+      showErr(step3Err, 'Please complete all social tasks above first.');
+      return;
+    }
+
+    const tw = getTwitterClean();
+    if (!serial) {
+      serial = generateSerial(tw, w);
+    }
+
+    submitAndClaimBtn.disabled = true;
+    submitAndClaimBtn.querySelector('span').textContent = 'Submitting & Verifying...';
+    clearErr(step3Err);
 
     const payload = {
-      twitter: '@' + getTwitterClean(),
-      wallet:  getWallet(),
+      twitter: '@' + tw,
+      wallet:  w,
       serial:  serial,
       source:  'blockbit-ink-site',
       ts:      new Date().toISOString()
@@ -352,23 +370,28 @@
 
       if (data.ok) {
         submitted = true;
-        localStorage.setItem('blockbit-whitelisted', '1');
-        localStorage.setItem('blockbit-serial', serial);
-        document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-        document.querySelector('[data-panel="success"]').classList.add('active');
-        document.getElementById('successMessage').textContent =
-          data.duplicate
-            ? 'This wallet has already been whitelisted. Your serial is ' + serial + '.'
-            : 'Your whitelist application has been recorded. Your serial is ' + serial + '. Keep it safe — you will need it to claim your mint slot.';
+        goToStep(4);
+        showToast('Whitelist spot confirmed & Pass generated!');
       } else {
-        throw new Error(data.error || 'Submission failed');
+        submitAndClaimBtn.disabled = false;
+        submitAndClaimBtn.querySelector('span').textContent = 'Submit & Claim Slot';
+        
+        const errMsg = data.error || 'Submission failed. Please try again.';
+        showErr(step3Err, errMsg);
+        showToast(errMsg);
+
+        if (data.field === 'twitter') {
+          showErr(twitterErr, errMsg);
+        } else if (data.field === 'wallet') {
+          showErr(walletErr, errMsg);
+        }
       }
     } catch (err) {
-      submitted = false;
-      btn.disabled = false;
-      btn.querySelector('span').textContent = 'Submit & Claim Slot';
-      submitStatus.textContent = err.message || 'Network error — please try again.';
-      submitStatus.className = 'submit-status error';
+      submitAndClaimBtn.disabled = false;
+      submitAndClaimBtn.querySelector('span').textContent = 'Submit & Claim Slot';
+      const netErr = err.message || 'Network error — please check connection and retry.';
+      showErr(step3Err, netErr);
+      showToast(netErr);
     }
   }
 
@@ -395,7 +418,8 @@
       btn.querySelector('.action-status').textContent = 'Done';
     }
     const allDone = tasksCompleted.follow && tasksCompleted.like && tasksCompleted.repost && tasksCompleted.quote;
-    continueBtn.disabled = !allDone;
+    submitAndClaimBtn.disabled = !allDone;
+    if (allDone) clearErr(step3Err);
   }
 
   /* ─── Clear any old legacy cache on device ─── */
@@ -506,11 +530,12 @@
     }, 600);
   }
 
-  /* ─── Confirm step buttons ─── */
-  document.getElementById('downloadPass').addEventListener('click', downloadPass);
-  document.getElementById('downloadSuccess').addEventListener('click', downloadPass);
-  document.getElementById('submitFinal').addEventListener('click', submitApplication);
-  document.getElementById('shareOnX').addEventListener('click', shareOnX);
+  /* ─── Button event bindings ─── */
+  if (submitAndClaimBtn) submitAndClaimBtn.addEventListener('click', submitApplication);
+  const dlPassBtn = document.getElementById('downloadPass');
+  if (dlPassBtn) dlPassBtn.addEventListener('click', downloadPass);
+  const shareBtn = document.getElementById('shareOnX');
+  if (shareBtn) shareBtn.addEventListener('click', shareOnX);
 
   /* ─── Input validation on input & blur ─── */
   twitterInput.addEventListener('input', function () {
