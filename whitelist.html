@@ -3,383 +3,379 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blockbit Ink — VIP Whitelist Quest & Mint Pass</title>
-  <meta name="description" content="Apply for the Blockbit Ink whitelist. 1,999 unique generative anime/pixel NFTs on Ink Blockchain.">
+  <title>VIP Whitelist Quest — BLOCKBIT INK</title>
+  <meta name="description" content="Apply for the Blockbit Ink VIP Whitelist. 1,999 unique generative anime/pixel NFTs on Ink Superchain.">
   <meta name="theme-color" content="#7c3aed">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Whitelist Specific Styles */
-    .wl-container {
-      max-width: 820px;
-      margin: 7.5rem auto 5rem;
+    .wl-box-container {
+      max-width: 860px;
+      margin: 8rem auto 5rem;
       padding: 0 1.5rem;
       position: relative;
       z-index: 1;
     }
 
-    .wl-card {
+    .wl-panel {
       background: #ffffff;
-      border-radius: var(--radius-lg);
-      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      border: 1.5px solid var(--border-subtle);
       box-shadow: var(--shadow-lg);
-      padding: 3.5rem 3rem;
+      padding: 4rem 3.5rem;
       position: relative;
-      overflow: hidden;
     }
 
-    .wl-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--blue-primary), var(--purple-primary));
-    }
-
-    .wl-header {
+    .wl-head {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 3rem;
     }
 
-    .wl-progress {
+    .wl-prog-wrap {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 2.5rem;
+      margin-bottom: 3rem;
       position: relative;
     }
 
-    .wl-progress::before {
+    .wl-prog-wrap::before {
       content: '';
       position: absolute;
       top: 50%;
-      left: 10%;
-      right: 10%;
-      height: 2.5px;
+      left: 12%;
+      right: 12%;
+      height: 3px;
       background: #e2e8f0;
       transform: translateY(-50%);
       z-index: 0;
     }
 
-    .wl-progress-bar {
+    .wl-prog-fill {
       position: absolute;
       top: 50%;
-      left: 10%;
-      height: 2.5px;
-      background: linear-gradient(90deg, var(--blue-primary), var(--purple-primary));
+      left: 12%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ink-blue), var(--ink-purple));
       transform: translateY(-50%);
       z-index: 0;
       transition: width 0.4s ease;
       width: 0%;
     }
 
-    .wl-step-node {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
+    .wl-step-pill {
+      width: 46px;
+      height: 46px;
+      border-radius: var(--radius-full);
       background: #ffffff;
-      border: 2px solid var(--border-light);
+      border: 2px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-light);
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-soft);
       position: relative;
       z-index: 1;
       transition: all 0.3s ease;
     }
 
-    .wl-step-node.active {
-      border-color: var(--purple-primary);
-      color: var(--purple-primary);
-      box-shadow: 0 0 15px var(--purple-glow);
+    .wl-step-pill.active {
+      border-color: var(--ink-purple);
+      color: var(--ink-purple);
+      box-shadow: 0 0 20px var(--ink-purple-glow);
     }
 
-    .wl-step-node.completed {
-      background: linear-gradient(135deg, var(--blue-primary), var(--purple-primary));
+    .wl-step-pill.completed {
+      background: linear-gradient(135deg, var(--ink-blue), var(--ink-purple));
       border-color: transparent;
       color: #ffffff;
     }
 
-    .step-section {
+    .step-view {
       display: none;
     }
 
-    .step-section.active {
+    .step-view.active {
       display: block;
       animation: fadeInStep 0.4s ease;
     }
 
     @keyframes fadeInStep {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .form-group {
+    .input-group {
       margin-bottom: 2rem;
     }
 
-    .form-group label {
+    .input-group label {
       display: block;
       font-family: var(--font-display);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      color: var(--text-dark);
+      color: var(--ink-navy);
       margin-bottom: 0.75rem;
     }
 
-    .form-control {
+    .input-field {
       width: 100%;
-      padding: 1rem 1.25rem;
-      background: var(--bg-subtle);
-      border: 1.5px solid var(--border-light);
+      padding: 1.1rem 1.4rem;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
       border-radius: var(--radius-md);
       font-family: var(--font-body);
       font-size: 1rem;
-      color: var(--text-dark);
+      color: var(--ink-navy);
       outline: none;
       transition: all 0.25s ease;
     }
 
-    .form-control:focus {
+    .input-field:focus {
       background: #ffffff;
-      border-color: var(--purple-primary);
-      box-shadow: 0 0 0 4px var(--purple-soft);
+      border-color: var(--ink-purple);
+      box-shadow: 0 0 0 4px var(--ink-purple-soft);
     }
 
-    .clan-grid {
+    .clans-select-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
 
-    .clan-card {
-      background: var(--bg-subtle);
-      border: 2px solid var(--border-light);
+    .clan-select-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 1.5rem 1rem;
+      padding: 1.75rem 1rem;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .clan-card:hover {
+    .clan-select-box:hover {
       background: #ffffff;
-      border-color: var(--blue-primary);
+      border-color: var(--ink-blue);
       transform: translateY(-4px);
     }
 
-    .clan-card.selected {
+    .clan-select-box.selected {
       background: #ffffff;
-      border-color: var(--purple-primary);
-      box-shadow: 0 0 20px var(--purple-glow);
+      border-color: var(--ink-purple);
+      box-shadow: 0 0 25px var(--ink-purple-glow);
     }
 
-    .clan-icon {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
+    .clan-select-icon {
+      font-size: 2rem;
+      margin-bottom: 0.6rem;
     }
 
-    .clan-name {
+    .clan-select-title {
       font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-dark);
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--ink-navy);
     }
 
-    .btn-group {
+    .form-btn-row {
       display: flex;
       justify-content: space-between;
       margin-top: 2.5rem;
     }
 
     /* VIP Holographic Pass Ticket Canvas */
-    .ticket-container {
+    .ticket-display {
       text-align: center;
       margin: 1.5rem 0;
     }
 
     #passCanvas {
       max-width: 100%;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
-      border: 2px solid var(--purple-primary);
-      margin-bottom: 1.5rem;
+      border: 2px solid var(--ink-purple);
+      margin-bottom: 1.75rem;
     }
 
     /* Checker Section */
-    .checker-box {
+    .status-checker-card {
       margin-top: 3.5rem;
-      background: var(--bg-subtle);
-      border-radius: var(--radius-lg);
-      border: 1.5px solid var(--border-light);
-      padding: 2.5rem 2rem;
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1.5px solid var(--border-subtle);
+      box-shadow: var(--shadow-md);
+      padding: 3rem 2.5rem;
       text-align: center;
     }
   </style>
 </head>
 <body>
-  <!-- Ambient Luminous Particle Canvas -->
+  <!-- Ambient Luminous Canvas -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
-        <img src="logo-purple.jpg" alt="Blockbit Ink" class="nav-logo-img">
-        <span class="logo-text">Blockbit<span class="logo-accent">Ink</span></span>
-      </a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="index.html#forge">Warrior Forge</a>
-        <a href="index.html#collection">Collection</a>
-        <a href="index.html#clans">Clans</a>
-        <a href="index.html#roadmap">Roadmap</a>
-        <a href="index.html#faq">FAQ</a>
+  <div class="main-wrap">
+    <!-- NAVIGATION -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-brand">
+          <img src="logo-purple.jpg" alt="Blockbit Ink" class="nav-logo-img">
+          <div class="nav-brand-text">
+            <span class="brand-title">BLOCKBIT</span>
+            <span class="brand-subtitle">BUILT ON INK</span>
+          </div>
+        </a>
+
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#forge">Forge</a>
+          <a href="index.html#clans">Clans</a>
+          <a href="index.html#collection">Showcase</a>
+          <a href="index.html#roadmap">Roadmap</a>
+          <a href="index.html#faq">FAQ</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- WHITELIST QUEST CONTAINER -->
+    <div class="wl-box-container">
+      <div class="wl-panel">
+        <div class="wl-head">
+          <span class="section-tag">Genesis Initiation</span>
+          <h1 class="section-heading" style="font-size: 2.75rem; margin-bottom: 0.75rem;">VIP Whitelist <span class="gradient-blue-purple">Quest</span></h1>
+          <p class="section-subtext" style="max-width: 600px; margin: 0 auto;">Complete the quest to forge your official on-chain VIP Mint Pass on Ink Superchain.</p>
+        </div>
+
+        <!-- Step Progress Bar -->
+        <div class="wl-prog-wrap">
+          <div class="wl-prog-fill" id="wlProgressBar"></div>
+          <div class="wl-step-pill active" id="node1">1</div>
+          <div class="wl-step-pill" id="node2">2</div>
+          <div class="wl-step-pill" id="node3">3</div>
+          <div class="wl-step-pill" id="node4">4</div>
+        </div>
+
+        <form id="wlForm" onsubmit="return false;">
+          <!-- Step 1: Wallet Address -->
+          <div class="step-view active" id="step1">
+            <div class="input-group">
+              <label for="walletInput">EVM / Ink Chain Wallet Address (0x...)</label>
+              <input type="text" id="walletInput" class="input-field" placeholder="0x71C...3924" required>
+              <small style="color: var(--text-soft); font-size: 0.85rem; margin-top: 8px; display: block;">
+                Enter your authorized EVM wallet address to be added to the Genesis allowlist contract.
+              </small>
+            </div>
+            <div class="form-btn-row" style="justify-content: flex-end;">
+              <button type="button" class="btn btn-primary" onclick="nextStep(1)">Next Step →</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Social Quest -->
+          <div class="step-view" id="step2">
+            <div class="input-group">
+              <label for="twitterInput">Twitter / X Username</label>
+              <input type="text" id="twitterInput" class="input-field" placeholder="@username" required>
+            </div>
+            <div class="input-group">
+              <label for="discordInput">Discord Handle</label>
+              <input type="text" id="discordInput" class="input-field" placeholder="username#0000">
+            </div>
+            <div class="form-btn-row">
+              <button type="button" class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+              <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next Step →</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Clan Selection -->
+          <div class="step-view" id="step3">
+            <label style="display: block; font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--ink-navy); margin-bottom: 1.25rem;">
+              Choose Your Clan Allegiance
+            </label>
+            <div class="clans-select-grid">
+              <div class="clan-select-box selected" onclick="selectClan(this, 'Kaze (Wind)')">
+                <div class="clan-select-icon">🌪️</div>
+                <div class="clan-select-title">Kaze (Wind)</div>
+              </div>
+              <div class="clan-select-box" onclick="selectClan(this, 'Honoo (Fire)')">
+                <div class="clan-select-icon">🔥</div>
+                <div class="clan-select-title">Honoo (Fire)</div>
+              </div>
+              <div class="clan-select-box" onclick="selectClan(this, 'Mizu (Water)')">
+                <div class="clan-select-icon">🌊</div>
+                <div class="clan-select-title">Mizu (Water)</div>
+              </div>
+              <div class="clan-select-box" onclick="selectClan(this, 'Tsuchi (Earth)')">
+                <div class="clan-select-icon">⛰️</div>
+                <div class="clan-select-title">Tsuchi (Earth)</div>
+              </div>
+              <div class="clan-select-box" onclick="selectClan(this, 'Hikari (Light)')">
+                <div class="clan-select-icon">✨</div>
+                <div class="clan-select-title">Hikari (Light)</div>
+              </div>
+              <div class="clan-select-box" onclick="selectClan(this, 'Kage (Shadow)')">
+                <div class="clan-select-icon">🌑</div>
+                <div class="clan-select-title">Kage (Shadow)</div>
+              </div>
+            </div>
+            <input type="hidden" id="clanInput" value="Kaze (Wind)">
+            <div class="form-btn-row">
+              <button type="button" class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+              <button type="button" class="btn btn-primary" onclick="submitApplication()">Forge VIP Mint Pass ✨</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Success Pass Generator -->
+          <div class="step-view" id="step4">
+            <div class="ticket-display">
+              <span class="section-tag" style="background:#ecfdf5;color:#059669;border-color:#10b981;">✓ ALLOCATION CONFIRMED</span>
+              <h2 class="section-heading" style="font-size: 2.2rem; margin: 0.5rem 0 1.5rem;">Your VIP Mint Pass</h2>
+              
+              <canvas id="passCanvas" width="640" height="340"></canvas>
+              
+              <div style="display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;">
+                <button type="button" class="btn btn-primary" onclick="downloadPass()">📥 Download VIP Pass (PNG)</button>
+                <a href="index.html" class="btn btn-secondary">Return to Realm</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Whitelist Status Checker -->
+      <div class="status-checker-card">
+        <h3 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; color: var(--ink-navy); margin-bottom: 0.5rem;">Check Whitelist Status</h3>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Enter your wallet address to verify your allocation status on Ink Blockchain.</p>
+        <div style="display: flex; gap: 1rem; max-width: 540px; margin: 0 auto;">
+          <input type="text" id="checkAddressInput" class="input-field" placeholder="0x...">
+          <button type="button" class="btn btn-primary" style="padding: 0 2rem; white-space: nowrap;" onclick="checkStatus()">Verify</button>
+        </div>
+        <div id="checkResult" style="margin-top: 1.5rem; font-weight: 700; font-size: 1.05rem;"></div>
       </div>
     </div>
-  </nav>
 
-  <!-- Whitelist Application Container -->
-  <div class="wl-container">
-    <div class="wl-card">
-      <div class="wl-header">
-        <span class="section-badge">Priority Realm Access</span>
-        <h1 class="section-title">VIP Whitelist <span class="text-gradient">Quest</span></h1>
-        <p class="section-desc" style="margin: 0 auto;">Complete the 4-step initiation to forge your official on-chain VIP Mint Pass.</p>
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="brand-title" style="font-size:1.4rem;">BLOCKBIT <span style="color:var(--ink-purple);">INK</span></div>
+        <div class="footer-copy">&copy; 2026 Blockbit Ink. Built on Ink Superchain by Kraken.</div>
       </div>
-
-      <!-- Step Progress Bar -->
-      <div class="wl-progress">
-        <div class="wl-progress-bar" id="wlProgressBar"></div>
-        <div class="wl-step-node active" id="node1">1</div>
-        <div class="wl-step-node" id="node2">2</div>
-        <div class="wl-step-node" id="node3">3</div>
-        <div class="wl-step-node" id="node4">4</div>
-      </div>
-
-      <form id="wlForm" onsubmit="return false;">
-        <!-- Step 1: Wallet Address -->
-        <div class="step-section active" id="step1">
-          <div class="form-group">
-            <label for="walletInput">EVM / Ink Chain Wallet Address (0x...)</label>
-            <input type="text" id="walletInput" class="form-control" placeholder="0x71C...3924" required>
-            <small style="color: var(--text-light); font-size: 0.82rem; margin-top: 6px; display: block;">
-              Enter your EVM compatible wallet address that will be authorized for guaranteed minting.
-            </small>
-          </div>
-          <div class="btn-group" style="justify-content: flex-end;">
-            <button type="button" class="btn btn-primary" onclick="nextStep(1)">Next Step →</button>
-          </div>
-        </div>
-
-        <!-- Step 2: Social Quest -->
-        <div class="step-section" id="step2">
-          <div class="form-group">
-            <label for="twitterInput">Twitter / X Username</label>
-            <input type="text" id="twitterInput" class="form-control" placeholder="@username" required>
-          </div>
-          <div class="form-group">
-            <label for="discordInput">Discord Username</label>
-            <input type="text" id="discordInput" class="form-control" placeholder="username#0000">
-          </div>
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
-            <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next Step →</button>
-          </div>
-        </div>
-
-        <!-- Step 3: Clan Selection -->
-        <div class="step-section" id="step3">
-          <label style="display: block; font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; margin-bottom: 1.25rem;">
-            Choose Your Clan Allegiance
-          </label>
-          <div class="clan-grid">
-            <div class="clan-card selected" onclick="selectClan(this, 'Kaze (Wind)', '🌪️')">
-              <div class="clan-icon">🌪️</div>
-              <div class="clan-name">Kaze (Wind)</div>
-            </div>
-            <div class="clan-card" onclick="selectClan(this, 'Honoo (Fire)', '🔥')">
-              <div class="clan-icon">🔥</div>
-              <div class="clan-name">Honoo (Fire)</div>
-            </div>
-            <div class="clan-card" onclick="selectClan(this, 'Mizu (Water)', '🌊')">
-              <div class="clan-icon">🌊</div>
-              <div class="clan-name">Mizu (Water)</div>
-            </div>
-            <div class="clan-card" onclick="selectClan(this, 'Tsuchi (Earth)', '⛰️')">
-              <div class="clan-icon">⛰️</div>
-              <div class="clan-name">Tsuchi (Earth)</div>
-            </div>
-            <div class="clan-card" onclick="selectClan(this, 'Hikari (Light)', '✨')">
-              <div class="clan-icon">✨</div>
-              <div class="clan-name">Hikari (Light)</div>
-            </div>
-            <div class="clan-card" onclick="selectClan(this, 'Kage (Shadow)', '🌑')">
-              <div class="clan-icon">🌑</div>
-              <div class="clan-name">Kage (Shadow)</div>
-            </div>
-          </div>
-          <input type="hidden" id="clanInput" value="Kaze (Wind)">
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
-            <button type="button" class="btn btn-primary" onclick="submitApplication()">Forge VIP Mint Pass ✨</button>
-          </div>
-        </div>
-
-        <!-- Step 4: Success Pass Generator -->
-        <div class="step-section" id="step4">
-          <div class="ticket-container">
-            <span class="section-badge" style="background:#ecfdf5;color:#059669;border-color:#10b981;">✓ APPLICATION VERIFIED</span>
-            <h2 class="section-title" style="font-size: 2rem; margin: 0.5rem 0 1.5rem;">Your VIP Mint Pass</h2>
-            
-            <canvas id="passCanvas" width="600" height="320"></canvas>
-            
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-              <button type="button" class="btn btn-primary" onclick="downloadPass()">📥 Download VIP Pass (PNG)</button>
-              <a href="index.html" class="btn btn-secondary">Return to Realm</a>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <!-- Whitelist Status Checker -->
-    <div class="checker-box">
-      <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--text-dark); margin-bottom: 0.5rem;">Check Whitelist Status</h3>
-      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.25rem;">Enter your wallet address to verify your allocation status on Ink Blockchain.</p>
-      <div style="display: flex; gap: 0.75rem; max-width: 520px; margin: 0 auto;">
-        <input type="text" id="checkAddressInput" class="form-control" placeholder="0x...">
-        <button type="button" class="btn btn-primary" style="padding: 0 1.75rem; white-space: nowrap;" onclick="checkStatus()">Verify</button>
-      </div>
-      <div id="checkResult" style="margin-top: 1.25rem; font-weight: 700; font-size: 1rem;"></div>
-    </div>
+    </footer>
   </div>
-
-  <footer class="footer">
-    <div class="footer-text">Blockbit<span class="logo-accent">Ink</span></div>
-    <div class="footer-brand">1,999 unique warriors. Built on Ink Blockchain.</div>
-    <div class="footer-copy">&copy; 2026 Blockbit Ink. All rights reserved.</div>
-  </footer>
 
   <script src="app.js"></script>
   <script>
     let currentStep = 1;
     let selectedClanName = 'Kaze (Wind)';
-    let selectedClanEmoji = '🌪️';
 
     function updateProgress(step) {
       currentStep = step;
-      document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.step-view').forEach(s => s.classList.remove('active'));
       document.getElementById('step' + step).classList.add('active');
 
-      const percent = ((step - 1) / 3) * 80;
+      const percent = ((step - 1) / 3) * 76;
       document.getElementById('wlProgressBar').style.width = percent + '%';
 
       for (let i = 1; i <= 4; i++) {
@@ -412,11 +408,10 @@
       updateProgress(fromStep - 1);
     }
 
-    function selectClan(el, name, emoji) {
-      document.querySelectorAll('.clan-card').forEach(c => c.classList.remove('selected'));
+    function selectClan(el, name) {
+      document.querySelectorAll('.clan-select-box').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
       selectedClanName = name;
-      selectedClanEmoji = emoji;
       document.getElementById('clanInput').value = name;
     }
 
@@ -427,7 +422,6 @@
       const clan = selectedClanName;
       const passNum = Math.floor(1000 + Math.random() * 9000);
 
-      // Save to localStorage
       const entry = { wallet, twitter, discord, clan, passNum, timestamp: Date.now() };
       let allWl = JSON.parse(localStorage.getItem('blockbit_wl') || '[]');
       allWl.push(entry);
@@ -444,60 +438,62 @@
       const w = canvas.width;
       const h = canvas.height;
 
-      // Card Background Gradient
+      // Card Background
       const grad = ctx.createLinearGradient(0, 0, w, h);
       grad.addColorStop(0, '#ffffff');
       grad.addColorStop(1, '#f8f7ff');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 
-      // Glowing Cyber Border
+      // Cyber Glowing Border
       ctx.strokeStyle = '#7c3aed';
       ctx.lineWidth = 4;
-      ctx.strokeRect(10, 10, w - 20, h - 20);
+      ctx.strokeRect(12, 12, w - 24, h - 24);
 
       // Header Brand
-      ctx.fillStyle = '#0284c7';
-      ctx.font = 'bold 22px Silkscreen, monospace';
-      ctx.fillText('BLOCKBIT', 30, 48);
+      ctx.fillStyle = '#0ea5e9';
+      ctx.font = 'bold 24px Outfit, sans-serif';
+      ctx.fillText('BLOCKBIT', 35, 52);
       ctx.fillStyle = '#7c3aed';
-      ctx.fillText('INK', 175, 48);
+      ctx.fillText('INK', 165, 52);
 
       // VIP Badge
       ctx.fillStyle = '#7c3aed';
-      ctx.fillRect(w - 180, 25, 150, 32);
+      ctx.beginPath();
+      ctx.roundRect(w - 185, 26, 150, 36, 18);
+      ctx.fill();
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 12px "Press Start 2P", monospace';
-      ctx.fillText('VIP PASS', w - 165, 46);
+      ctx.font = 'bold 12px "Space Grotesk", sans-serif';
+      ctx.fillText('VIP MINT PASS', w - 168, 50);
 
       // Pass Title
       ctx.fillStyle = '#0f172a';
-      ctx.font = 'bold 16px "Space Grotesk", sans-serif';
-      ctx.fillText('GENESIS WHITELIST MINT PASS #' + passNum, 30, 100);
+      ctx.font = 'bold 17px Outfit, sans-serif';
+      ctx.fillText('GENESIS WHITELIST PASS #' + passNum, 35, 105);
 
       // Wallet Box
       ctx.fillStyle = '#f1f5f9';
-      ctx.fillRect(30, 120, w - 60, 45);
+      ctx.fillRect(35, 125, w - 70, 48);
       ctx.strokeStyle = '#cbd5e1';
       ctx.lineWidth = 1;
-      ctx.strokeRect(30, 120, w - 60, 45);
+      ctx.strokeRect(35, 125, w - 70, 48);
 
-      ctx.fillStyle = '#475569';
-      ctx.font = '14px monospace';
-      ctx.fillText('Authorized: ' + wallet, 45, 148);
+      ctx.fillStyle = '#334155';
+      ctx.font = '15px monospace';
+      ctx.fillText('Authorized: ' + wallet, 50, 155);
 
-      // Clan & Chain details
+      // Clan & Details
       ctx.fillStyle = '#7c3aed';
-      ctx.font = 'bold 16px "Space Grotesk", sans-serif';
-      ctx.fillText('Clan: ' + clan, 30, 210);
+      ctx.font = 'bold 17px Outfit, sans-serif';
+      ctx.fillText('Clan Allegiance: ' + clan, 35, 220);
 
       ctx.fillStyle = '#059669';
-      ctx.font = 'bold 14px "Space Grotesk", sans-serif';
-      ctx.fillText('✓ Status: Confirmed Tier 1 Allocation', 30, 240);
+      ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('✓ Status: Confirmed Tier 1 Allocation', 35, 255);
 
       ctx.fillStyle = '#64748b';
-      ctx.font = '12px "Space Grotesk", sans-serif';
-      ctx.fillText('Network: Ink Blockchain (Superchain L2) by Kraken', 30, 275);
+      ctx.font = '13px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('Network: Ink Blockchain (Superchain Layer 2) by Kraken', 35, 292);
     }
 
     function downloadPass() {
@@ -520,7 +516,7 @@
       if (found) {
         res.innerHTML = '<span style=\"color:#059669;\">✓ Whitelist Confirmed for Clan ' + found.clan + ' (Pass #' + found.passNum + ')!</span>';
       } else {
-        res.innerHTML = '<span style=\"color:#0284c7;\">Application submitted — Queued for Ink Chain batch approval.</span>';
+        res.innerHTML = '<span style=\"color:#0284c7;\">Application submitted — Queued for Ink Superchain batch approval.</span>';
       }
     }
   </script>
