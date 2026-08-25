@@ -302,14 +302,14 @@ window.randomizeForgeWarrior = randomizeForgeWarrior;
 /* ── TOP BANNER WHITELIST SYNC (0ms Instant Display + Background Refresh) ── */
 const DEFAULT_WL_SETTINGS = {
   whitelistOpen: 'On',
-  timerStart: '2026-08-26 00:00',
-  timerDuration: '48',
-  postUrl: 'https://x.com/BlockbitInk/status/2091943576175624421'
+  timerStart: '2026-08-26 05:40',
+  timerDuration: '12',
+  postUrl: 'https://x.com/maruf_ix/status/2091943576175624421'
 };
 
 function getLocalWlSettings() {
   try {
-    const raw = sessionStorage.getItem('bbi_wl_settings') || localStorage.getItem('bbi_wl_settings');
+    const raw = localStorage.getItem('bbi_wl_settings') || sessionStorage.getItem('bbi_wl_settings');
     if (raw) {
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed === 'object') return parsed;
@@ -321,6 +321,7 @@ function getLocalWlSettings() {
 let bannerInterval = null;
 
 function initTopBanner() {
+  const bannerEl = document.getElementById('topBanner');
   const labelEl = document.getElementById('top-banner-label');
   const countEl = document.getElementById('top-countdown');
   const pulseEl = document.getElementById('bannerPulse');
@@ -342,6 +343,7 @@ function initTopBanner() {
         pulseEl.style.backgroundColor = '#F59E0B';
         pulseEl.style.boxShadow = '0 0 0 rgba(245, 158, 11, 0.7)';
       }
+      if (bannerEl) bannerEl.classList.add('is-ready');
       return;
     }
 
@@ -361,8 +363,8 @@ function initTopBanner() {
       const mm = parseInt(timeParts[1]) || 0;
       startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
     }
-    const durationHours = parseInt(settings.timerDuration || '48', 10);
-    const durationMs = (isNaN(durationHours) ? 48 : durationHours) * 60 * 60 * 1000;
+    const durationHours = parseInt(settings.timerDuration || '12', 10);
+    const durationMs = (isNaN(durationHours) ? 12 : durationHours) * 60 * 60 * 1000;
     const endTime = startMs + durationMs;
 
     if (pulseEl) {
@@ -400,6 +402,7 @@ function initTopBanner() {
 
     if (bannerInterval) clearInterval(bannerInterval);
     updateBannerTimer();
+    if (bannerEl) bannerEl.classList.add('is-ready');
     bannerInterval = setInterval(updateBannerTimer, 1000);
   }
 

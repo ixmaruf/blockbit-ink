@@ -105,7 +105,13 @@ body {
   letter-spacing: 0.5px;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out, background 0.2s ease;
+}
+.top-banner.is-ready {
+  opacity: 1;
+  pointer-events: auto;
 }
 .top-banner:hover {
   background: var(--violet-deep);

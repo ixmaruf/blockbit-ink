@@ -92,14 +92,14 @@
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const DEFAULT_WL_SETTINGS = {
     whitelistOpen: 'On',
-    timerStart: '2026-08-26 00:00',
-    timerDuration: '48',
-    postUrl: 'https://x.com/BlockbitInk/status/2091943576175624421'
+    timerStart: '2026-08-26 05:40',
+    timerDuration: '12',
+    postUrl: 'https://x.com/maruf_ix/status/2091943576175624421'
   };
 
   function getLocalWlSettings() {
     try {
-      const raw = sessionStorage.getItem('bbi_wl_settings') || localStorage.getItem('bbi_wl_settings');
+      const raw = localStorage.getItem('bbi_wl_settings') || sessionStorage.getItem('bbi_wl_settings');
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') return parsed;
@@ -140,8 +140,6 @@
     var comingSoonEl = document.getElementById('wlComingSoon');
     var containerEl = document.querySelector('.wl-container');
     
-    if (timerEl) timerEl.classList.add('loaded');
-    
     if (timerInterval) {
       clearInterval(timerInterval);
       timerInterval = null;
@@ -168,7 +166,7 @@
       // Convert from Bangladesh (UTC+6) to UTC
       startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
     }
-    var durationMs = parseInt(settings.timerDuration || '48') * 60 * 60 * 1000;
+    var durationMs = parseInt(settings.timerDuration || '12') * 60 * 60 * 1000;
     var endTime = startMs + durationMs;
 
     function updateTimer() {
@@ -206,6 +204,7 @@
     }
 
     updateTimer();
+    if (timerEl) timerEl.classList.add('loaded');
     if (isOpen) {
       timerInterval = setInterval(updateTimer, 1000);
     }
