@@ -172,13 +172,20 @@ async function main() {
     stats.errors.forEach(e => console.log(`   #${e.tokenId}: ${e.error}`));
   }
   
-  // Save collection manifest
+// Save collection manifest
   const manifest = {
     name: "Blockbit Ink",
-    description: "1,999 unique generative anime/pixel NFTs",
+    description: "1,999 unique generative anime/pixel NFTs forged on Ink Superchain by Kraken.",
+    website: "https://blockbitink.xyz",
     totalSupply: TOTAL_SUPPLY,
     generatedAt: new Date().toISOString(),
-    statistics: stats,
+    statistics: {
+      common: stats.common,
+      rare: stats.rare,
+      epic: stats.epic,
+      legendary: stats.legendary,
+      errors: stats.errors.length
+    },
     rarityDistribution: {
       common: stats.common,
       rare: stats.rare,

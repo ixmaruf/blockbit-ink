@@ -6,11 +6,12 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "generate": "node generate.js"
+    "generate": "node generate.js",
+    "cleanup": "node cleanup-output.js"
   },
   "keywords": [
     "nft",
-    "threejs",
+    "html5-canvas",
     "web3",
     "ink-blockchain",
     "whitelist",
@@ -20,7 +21,6 @@
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
-    "canvas": "^3.2.3",
     "playwright": "^1.62.1"
   }
 }

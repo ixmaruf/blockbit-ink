@@ -1,3 +1,5 @@
+const path = require('path');
+const os = require('os');
 const { chromium } = require('playwright');
 
 const TOKENS = {
@@ -6,6 +8,9 @@ const TOKENS = {
   EPIC: [10, 1003],
   LEGENDARY: [124, 1093]
 };
+
+const PAGE_URL = process.env.PAGE_URL || 'http://localhost:3456/render-preview.html';
+const OUT_DIR = process.env.OUT_DIR || path.join(os.tmpdir(), 'blockbit-samples');
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
@@ -17,7 +22,7 @@ const TOKENS = {
   for (const [tier, ids] of Object.entries(TOKENS)) {
     for (const tokenId of ids) {
       const page = await context.newPage();
-      const url = `http://localhost:3456/render-preview.html?id=${tokenId}&t=${Date.now()}`;
+      const url = `${PAGE_URL}?id=${tokenId}&t=${Date.now()}`;
       console.log(`Rendering ${tier} #${tokenId}...`);
       await page.goto(url, { waitUntil: 'networkidle' });
       await page.waitForFunction(() => {
@@ -28,7 +33,7 @@ const TOKENS = {
         return d[3] > 0;
       }, { timeout: 15000 });
 
-      const outPath = `C:\\Users\\maruf\\AppData\\Local\\Temp\\opencode\\nft-${tier.toLowerCase()}-${tokenId}.png`;
+      const outPath = path.join(OUT_DIR, `nft-${tier.toLowerCase()}-${tokenId}.png`);
       const canvas = page.locator('#nft-canvas');
       await canvas.screenshot({ path: outPath });
       console.log(`  Saved: ${outPath}`);

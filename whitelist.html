@@ -5,191 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VIP Mint Pass &mdash; BLOCKBIT INK</title>
   <meta name="description" content="Complete the 4-step initiation quest to earn your guaranteed VIP Mint Pass for the Blockbit Ink genesis drop.">
-  <!-- Fonts loaded via style.css -->
+  <meta name="theme-color" content="#7c3aed">
+  <link rel="icon" type="image/webp" href="ink-logo.webp">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .wl-wrap {
-      min-height: 100vh;
-      padding: 7rem 1.5rem 4rem;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .wl-container {
-      max-width: 700px;
-      width: 100%;
-      position: relative;
-      z-index: 10;
-    }
-    .wl-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .wl-header h1 {
-      font-family: var(--serif);
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-    .wl-header p {
-      color: var(--slate);
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-
-    /* Progress Bar */
-    .progress-bar {
-      display: flex;
-      margin-bottom: 3rem;
-      position: relative;
-    }
-    .progress-bar::before {
-      content: '';
-      position: absolute;
-      top: 18px; left: 36px; right: 36px;
-      height: 2px;
-      background: var(--border);
-      z-index: 0;
-    }
-    .progress-step {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      position: relative;
-      z-index: 1;
-    }
-    .progress-dot {
-      width: 36px; height: 36px;
-      border-radius: var(--r-full);
-      background: #fff;
-      border: 2px solid var(--border);
-      display: grid;
-      place-items: center;
-      font-family: var(--serif);
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--muted);
-      transition: all 0.3s;
-    }
-    .progress-step.active .progress-dot {
-      background: var(--violet);
-      border-color: var(--violet);
-      color: #fff;
-      box-shadow: 0 0 16px var(--violet-glow);
-    }
-    .progress-step.done .progress-dot {
-      background: #10B981;
-      border-color: #10B981;
-      color: #fff;
-    }
-    .progress-label {
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-align: center;
-    }
-    .progress-step.active .progress-label { color: var(--violet); }
-    .progress-step.done .progress-label { color: #10B981; }
-
-    /* Form Panels */
-    .form-panel {
-      display: none;
-      animation: formIn 0.5s ease;
-    }
-    .form-panel.active { display: block; }
-    @keyframes formIn {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .form-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      padding: 2.5rem;
-    }
-    .form-card h2 {
-      font-family: var(--serif);
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .form-card .desc {
-      font-size: 0.9rem;
-      color: var(--slate);
-      margin-bottom: 2rem;
-    }
-
-    .field { margin-bottom: 1.5rem; }
-    .field label {
-      display: block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--slate);
-      margin-bottom: 6px;
-    }
-    .field input, .field select, .field textarea {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      font-family: var(--sans);
-      font-size: 0.92rem;
-      color: var(--ink);
-      transition: border-color 0.2s;
-      outline: none;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: var(--violet);
-      box-shadow: 0 0 0 3px var(--violet-soft);
-    }
-    .field textarea { resize: vertical; min-height: 100px; }
-    .form-nav {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 2rem;
-      gap: 1rem;
-    }
-
-    /* Success Panel */
-    .success-box {
-      text-align: center;
-      padding: 4rem 2rem;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid var(--border);
-    }
-    .success-box .checkmark {
-      width: 64px; height: 64px;
-      border-radius: var(--r-full);
-      background: #10B981;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 1.5rem;
-    }
-    .success-box h2 {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-    .success-box p {
-      color: var(--slate);
-      margin-bottom: 2rem;
-    }
-
-    @media (max-width: 768px) {
-      .wl-wrap { padding: 5.5rem 1rem 3rem; }
-      .form-card { padding: 1.5rem; }
-      .progress-label { font-size: 0.5rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="whitelist.css">
 </head>
 <body>
   <!-- Ambient Animations -->
@@ -209,7 +28,7 @@
           </div>
         </a>
         <div class="nav-actions">
-          <a href="index.html" class="btn-outline" style="padding:0.45rem 1rem;font-size:0.6rem;">Back Home</a>
+          <a href="index.html" class="btn-outline nav-back-btn">Back Home</a>
           <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
@@ -228,7 +47,7 @@
       <div class="wl-container">
         <div class="wl-header">
           <p class="sec-kicker"><span class="line"></span>Initiation Quest</p>
-          <h1>Forge Your <span class="accent" style="color: var(--violet)">VIP Mint Pass</span></h1>
+          <h1>Forge Your <span class="accent">VIP Mint Pass</span></h1>
           <p>Complete all four seals to earn your guaranteed whitelist allocation for the genesis mint.</p>
         </div>
 
@@ -242,39 +61,124 @@
             <div class="progress-dot">2</div>
             <div class="progress-label">Wallet</div>
           </div>
+          <div class="progress-step" data-step="3">
+            <div class="progress-dot">3</div>
+            <div class="progress-label">Clan</div>
+          </div>
+          <div class="progress-step" data-step="4">
+            <div class="progress-dot">4</div>
+            <div class="progress-label">Pass</div>
+          </div>
         </div>
 
-        <!-- Step 1 -->
+        <!-- Step 1: Social -->
         <div class="form-panel active" data-panel="1">
           <div class="form-card">
             <h2>Step I &mdash; Social</h2>
             <p class="desc">Provide your Twitter / X username to verify community alignment.</p>
             <div class="field">
               <label for="twitterHandle">Twitter Username</label>
-              <input type="text" id="twitterHandle" placeholder="@yourhandle" required>
+              <input type="text" id="twitterHandle" placeholder="@yourhandle" autocomplete="off" spellcheck="false" required>
+              <p class="field-error" id="twitterError"></p>
             </div>
             <div class="form-nav">
               <span></span>
-              <button type="button" class="btn-primary" onclick="nextStep(2)">Next Step
+              <button type="button" class="btn-primary" data-next="2">
+                <span>Next Step</span>
                 <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Step 2 -->
+        <!-- Step 2: Wallet -->
         <div class="form-panel" data-panel="2">
           <div class="form-card">
             <h2>Step II &mdash; Wallet</h2>
-            <p class="desc">Provide your wallet address on the Ink network for whitelist eligibility.</p>
+            <p class="desc">Provide your wallet address on the Ink (EVM) network for whitelist eligibility.</p>
             <div class="field">
-              <label for="walletAddr">Wallet Address (0x...)</label>
-              <input type="text" id="walletAddr" placeholder="0x..." required>
+              <label for="walletAddr">Wallet Address (0x&hellip;)</label>
+              <input type="text" id="walletAddr" placeholder="0x..." autocomplete="off" spellcheck="false" required>
+              <p class="field-error" id="walletError"></p>
             </div>
             <div class="form-nav">
-              <button type="button" class="btn-outline" onclick="nextStep(1)">Previous</button>
-              <button type="button" class="btn-primary" onclick="submitQuest()">Submit
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <button type="button" class="btn-outline" data-prev="1">Previous</button>
+              <button type="button" class="btn-primary" data-next="3">
+                <span>Next Step</span>
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Clan -->
+        <div class="form-panel" data-panel="3">
+          <div class="form-card">
+            <h2>Step III &mdash; Choose Your Clan</h2>
+            <p class="desc">Each clan bestows a permanent visual aura and a faction bonus in the post-mint world.</p>
+            <div class="clan-grid">
+              <label class="clan-option">
+                <input type="radio" name="clan" value="Kaze" required>
+                <span class="clan-sigil">&#x1F343;</span>
+                <span class="clan-name">Kaze (Wind)</span>
+                <span class="clan-desc">Aerial vanguards &mdash; tempest blasters.</span>
+              </label>
+              <label class="clan-option">
+                <input type="radio" name="clan" value="Honoo" required>
+                <span class="clan-sigil">&#x1F525;</span>
+                <span class="clan-name">Honoo (Flame)</span>
+                <span class="clan-desc">Berserkers of molten plasma.</span>
+              </label>
+              <label class="clan-option">
+                <input type="radio" name="clan" value="Mizu" required>
+                <span class="clan-sigil">&#x1F4A7;</span>
+                <span class="clan-name">Mizu (Water)</span>
+                <span class="clan-desc">Tacticians of liquid shields.</span>
+              </label>
+              <label class="clan-option">
+                <input type="radio" name="clan" value="Tsuchi" required>
+                <span class="clan-sigil">&#x1F30D;</span>
+                <span class="clan-name">Tsuchi (Earth)</span>
+                <span class="clan-desc">Seismic guardians in heavy armor.</span>
+              </label>
+              <label class="clan-option">
+                <input type="radio" name="clan" value="Hikari" required>
+                <span class="clan-sigil">&#x2728;</span>
+                <span class="clan-name">Hikari (Light)</span>
+                <span class="clan-desc">Photonic scholars of lore.</span>
+              </label>
+              <label class="clan-option">
+                <input type="radio" name="clan" value="Kage" required>
+                <span class="clan-sigil">&#x1F311;</span>
+                <span class="clan-name">Kage (Shadow)</span>
+                <span class="clan-desc">Phantom infiltrators of the substrate.</span>
+              </label>
+            </div>
+            <p class="field-error" id="clanError"></p>
+            <div class="form-nav">
+              <button type="button" class="btn-outline" data-prev="2">Previous</button>
+              <button type="button" class="btn-primary" data-next="4">
+                <span>Generate Pass</span>
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Mint Pass -->
+        <div class="form-panel" data-panel="4">
+          <div class="form-card">
+            <h2>Step IV &mdash; Your VIP Mint Pass</h2>
+            <p class="desc">Save this holographic pass. Screenshot or download as PNG &mdash; you will need the serial number at mint time.</p>
+            <div class="pass-wrapper">
+              <canvas id="mintPass" width="900" height="500"></canvas>
+            </div>
+            <div class="pass-meta" id="passMeta"></div>
+            <div class="form-nav">
+              <button type="button" class="btn-outline" data-prev="3">Previous</button>
+              <button type="button" class="btn-primary" id="downloadPass">
+                <span>Download PNG</span>
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M10 3v12m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
           </div>
@@ -287,8 +191,10 @@
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
             </div>
             <h2>Quest Complete</h2>
-            <p>Your VIP Mint Pass application has been received. Check your email for confirmation and next steps.</p>
-            <a href="index.html" class="btn-primary">Return to Portal</a>
+            <p>Your VIP Mint Pass has been generated. Keep your serial number safe &mdash; you will need it to claim your mint slot.</p>
+            <div class="success-actions">
+              <a href="index.html" class="btn-primary">Return to Portal</a>
+            </div>
           </div>
         </div>
       </div>
@@ -296,35 +202,6 @@
   </div>
 
   <script src="app.js"></script>
-  <script>
-    let currentStep = 1;
-
-    function nextStep(n) {
-      document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-      document.querySelector(`[data-panel="${n}"]`).classList.add('active');
-
-      document.querySelectorAll('.progress-step').forEach(s => {
-        const sn = parseInt(s.dataset.step);
-        s.classList.remove('active', 'done');
-        if (sn < n) s.classList.add('done');
-        if (sn === n) s.classList.add('active');
-      });
-      currentStep = n;
-    }
-
-    function submitQuest() {
-      // Basic validation
-      const twitter = document.getElementById('twitterHandle').value;
-      const wallet = document.getElementById('walletAddr').value;
-      if (!twitter || !wallet) {
-        alert("Please fill in both your Twitter Username and Wallet Address.");
-        return;
-      }
-
-      document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-      document.querySelector('[data-panel="success"]').classList.add('active');
-      document.querySelectorAll('.progress-step').forEach(s => s.classList.add('done'));
-    }
-  </script>
+  <script src="whitelist.js"></script>
 </body>
 </html>

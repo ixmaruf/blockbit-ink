@@ -11,6 +11,9 @@ const COLLECTION = {
   symbol: "DINK",
   website: "https://blockbitink.xyz",
   image: "https://blockbitink.xyz/collection.png",
+  // Set BLOCKBIT_CREATOR_ADDRESS in env before running generate.js to override.
+  creatorAddress: (typeof process !== "undefined" && process.env && process.env.BLOCKBIT_CREATOR_ADDRESS)
+    || "0x0000000000000000000000000000000000000000",
 };
 
 // Rarity tiers
@@ -723,11 +726,11 @@ function generateMetadata(tokenId, nftData) {
     image: `images/${tokenId}.png`,
     external_url: COLLECTION.website,
     attributes,
-    properties: {
+properties: {
       category: "image",
       creators: [
         {
-          address: "0x0000000000000000000000000000000000000000",
+          address: COLLECTION.creatorAddress,
           share: 100,
         },
       ],

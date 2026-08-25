@@ -1,0 +1,328 @@
+/* Blockbit Ink — Whitelist styles */
+
+.wl-wrap {
+  min-height: 100vh;
+  padding: 7rem 1.5rem 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.wl-container {
+  max-width: 760px;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.wl-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.wl-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.wl-header p {
+  color: var(--slate);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.wl-header .accent { color: var(--violet); }
+
+.wl-back-btn {
+  padding: 0.45rem 1rem;
+  font-size: 0.6rem;
+}
+
+/* Progress Bar */
+.progress-bar {
+  display: flex;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 36px;
+  right: 36px;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.progress-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  background: #fff;
+  border: 2px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  transition: all 0.3s;
+}
+
+.progress-step.active .progress-dot {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: #fff;
+  box-shadow: 0 0 16px var(--g-shadow);
+}
+
+.progress-step.done .progress-dot {
+  background: #10B981;
+  border-color: #10B981;
+  color: #fff;
+}
+
+.progress-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+
+.progress-step.active .progress-label { color: var(--violet); }
+.progress-step.done .progress-label { color: #10B981; }
+
+/* Form Panels */
+.form-panel {
+  display: none;
+  animation: formIn 0.5s ease;
+}
+
+.form-panel.active { display: block; }
+
+@keyframes formIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-card {
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  padding: 2.5rem;
+}
+
+.form-card h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.form-card .desc {
+  font-size: 0.9rem;
+  color: var(--slate);
+  margin-bottom: 2rem;
+}
+
+.field { margin-bottom: 1.5rem; }
+
+.field label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 6px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px var(--violet-soft);
+}
+
+.field input.invalid,
+.field select.invalid,
+.field textarea.invalid {
+  border-color: #DC2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.field textarea { resize: vertical; min-height: 100px; }
+
+.field-error {
+  display: none;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #DC2626;
+}
+
+.field-error.show { display: block; }
+
+.form-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+/* Clan grid */
+.clan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.clan-option {
+  position: relative;
+  padding: 1.25rem 0.75rem;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.clan-option:hover {
+  border-color: var(--violet);
+  transform: translateY(-2px);
+}
+
+.clan-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.clan-option input[type="radio"]:checked ~ .clan-name,
+.clan-option.selected {
+  border-color: var(--violet);
+  background: rgba(124, 58, 237, 0.06);
+  box-shadow: 0 0 0 3px var(--violet-soft);
+}
+
+.clan-sigil { font-size: 1.6rem; line-height: 1; }
+.clan-name {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.clan-desc {
+  font-size: 0.72rem;
+  color: var(--slate);
+  line-height: 1.4;
+}
+
+/* Pass */
+.pass-wrapper {
+  background: linear-gradient(135deg, #0B0A12 0%, #1E1B2E 100%);
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+#mintPass {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.pass-meta {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--slate);
+  line-height: 1.7;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border);
+}
+
+/* Success */
+.success-box {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--border);
+}
+
+.success-box .checkmark {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-full);
+  background: #10B981;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 1.5rem;
+}
+
+.success-box h2 {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.success-box p {
+  color: var(--slate);
+  margin-bottom: 2rem;
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .wl-wrap { padding: 5.5rem 1rem 3rem; }
+  .form-card { padding: 1.5rem; }
+  .progress-label { font-size: 0.5rem; }
+  .clan-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .clan-grid { grid-template-columns: 1fr; }
+}
