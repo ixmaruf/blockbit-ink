@@ -495,7 +495,7 @@
             'I just secured my spot on the Blockbit Ink Whitelist.\n\n' +
             '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
             'Official Initiation Quest completed.\n\n' +
-            '@BlockbitInk #BlockbitInk #NFT #InkBlockchain '
+            '@BlockbitInk #BlockbitInk #NFT #InkBlockchain -'
           );
           const postUrl = encodeURIComponent(currentPostUrl || 'https://x.com/BlockbitInk');
           url = 'https://x.com/intent/tweet?text=' + shareText + '&url=' + postUrl;
@@ -549,7 +549,7 @@
         'I just secured my spot on the Blockbit Ink Whitelist.\n\n' +
         'Mint Pass Serial: ' + serial + '\n\n' +
         '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
-        '@BlockbitInk #BlockbitInk #NFT #InkBlockchain '
+        '@BlockbitInk #BlockbitInk #NFT #InkBlockchain -'
       );
       var shareUrl = encodeURIComponent('https://blockbitink.xyz/whitelist.html');
       window.open('https://x.com/intent/tweet?text=' + shareText + '&url=' + shareUrl, '_blank', 'noopener,noreferrer');
