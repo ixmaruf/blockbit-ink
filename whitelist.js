@@ -398,16 +398,12 @@
     continueBtn.disabled = !allDone;
   }
 
-  /* ─── Init: restore from localStorage ─── */
-  if (localStorage.getItem('blockbit-whitelisted') === '1') {
-    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-    document.querySelector('[data-panel="success"]').classList.add('active');
-    const savedSerial = localStorage.getItem('blockbit-serial') || '';
-    document.getElementById('successMessage').textContent =
-      'You have already submitted your whitelist application. Your serial is ' + savedSerial + '.';
-    serial = savedSerial;
-    return;
-  }
+  /* ─── Clear any old legacy cache on device ─── */
+  try {
+    localStorage.removeItem('blockbit_wl_settings');
+    localStorage.removeItem('blockbit-whitelisted');
+    localStorage.removeItem('blockbit-serial');
+  } catch (e) {}
 
   /* ─── Navigation buttons ─── */
   document.querySelectorAll('[data-next]').forEach(btn => {
@@ -538,27 +534,12 @@
     else clearErr(walletErr);
   });
 
-  /* ─── Init: instant cache + background fetch settings ─── */
+  /* ─── Init: Always Fresh Live Settings from Google Apps Script ─── */
   (function initApp() {
-    // 1. Instant load from local cache if present
-    try {
-      const cached = localStorage.getItem('blockbit_wl_settings');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        appSettings = parsed;
-        currentPostUrl = parsed.postUrl || 'https://x.com/BlockbitInk';
-        initTimer(parsed);
-      }
-    } catch (e) {}
-
-    // 2. Fetch fresh settings in background from Google Apps Script
     fetchSettings().then(function (fresh) {
       if (fresh) {
         appSettings = fresh;
         currentPostUrl = fresh.postUrl || 'https://x.com/BlockbitInk';
-        try {
-          localStorage.setItem('blockbit_wl_settings', JSON.stringify(fresh));
-        } catch (e) {}
         initTimer(fresh);
       }
     });

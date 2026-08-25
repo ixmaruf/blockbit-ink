@@ -385,23 +385,17 @@ function initTopBanner() {
     bannerInterval = setInterval(updateBannerTimer, 1000);
   }
 
-  // 1. Instant load from local cache if present
+  // Clear old localStorage cache
   try {
-    const cached = localStorage.getItem('blockbit_wl_settings');
-    if (cached) {
-      applySettings(JSON.parse(cached));
-    }
+    localStorage.removeItem('blockbit_wl_settings');
   } catch (e) {}
 
-  // 2. Fetch fresh settings in background from Google Apps Script
+  // Fetch live settings directly from Google Apps Script
   if (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint) {
     fetch(BLOCKBIT_CONFIG.sheetEndpoint + '?action=settings&_nocache=' + Date.now(), { cache: 'no-store' })
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (data && data.ok && data.settings) {
-          try {
-            localStorage.setItem('blockbit_wl_settings', JSON.stringify(data.settings));
-          } catch (e) {}
           applySettings(data.settings);
         }
       })
