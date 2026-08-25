@@ -1,18 +1,15 @@
-/* Blockbit Ink - Village Scene Engine */
+/* ==========================================================================
+   Blockbit Ink — Ambient 2D Canvas Scene Engine (Light Theme & Particles)
+   ========================================================================== */
 
 class VillageScene {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-    this.characters = [];
     this.clouds = [];
-    this.trees = [];
-    this.fish = [];
     this.particles = [];
-    this.lastTime = 0;
+    this.lastTime = performance.now();
     this.time = 0;
-    this.scrollX = 0;
-    this.scrollSpeed = 0.3;
     this.init();
   }
 
@@ -20,156 +17,59 @@ class VillageScene {
     this.resize();
     window.addEventListener('resize', () => this.resize());
 
-    // Create clouds
-    for (let i = 0; i < 8; i++) {
+    // Ambient floating clouds / mist
+    for (let i = 0; i < 6; i++) {
       this.clouds.push({
-        x: Math.random() * this.canvas.width * 2,
-        y: 30 + Math.random() * 80,
-        w: 60 + Math.random() * 80,
-        h: 25 + Math.random() * 20,
-        speed: 0.2 + Math.random() * 0.3,
-        opacity: 0.6 + Math.random() * 0.3
-      });
-    }
-
-    // Create trees at different depths
-    for (let i = 0; i < 15; i++) {
-      this.trees.push({
-        x: i * 180 + Math.random() * 60,
-        type: Math.floor(Math.random() * 3),
-        size: 60 + Math.random() * 40,
-        depth: Math.random() < 0.4 ? 'back' : (Math.random() < 0.5 ? 'mid' : 'front'),
-        swayOffset: Math.random() * Math.PI * 2
-      });
-    }
-
-    // Create fish
-    for (let i = 0; i < 5; i++) {
-      this.fish.push({
         x: Math.random() * this.canvas.width,
-        y: this.canvas.height * 0.7 + Math.random() * 30,
-        size: 6 + Math.random() * 4,
-        speed: 0.5 + Math.random() * 0.5,
-        direction: Math.random() > 0.5 ? 1 : -1,
-        bobOffset: Math.random() * Math.PI * 2
+        y: 20 + Math.random() * (this.canvas.height * 0.4),
+        w: 120 + Math.random() * 180,
+        h: 40 + Math.random() * 50,
+        speed: 0.15 + Math.random() * 0.25,
+        opacity: 0.15 + Math.random() * 0.2
       });
     }
 
-    // Create particles (fireflies/embers)
-    for (let i = 0; i < 30; i++) {
+    // Glowing energy motes (Electric Blue & Royal Purple)
+    for (let i = 0; i < 40; i++) {
       this.particles.push({
         x: Math.random() * this.canvas.width,
-        y: Math.random() * this.canvas.height * 0.8,
-        r: 1 + Math.random() * 2,
-        speed: 0.3 + Math.random() * 0.5,
+        y: Math.random() * this.canvas.height,
+        r: 1.5 + Math.random() * 2.5,
+        speedY: 0.2 + Math.random() * 0.5,
+        speedX: (Math.random() - 0.5) * 0.3,
         phase: Math.random() * Math.PI * 2,
-        alpha: 0.4 + Math.random() * 0.4
+        color: Math.random() > 0.5 ? 'rgba(124, 58, 237, ' : 'rgba(2, 132, 199, '
       });
     }
 
-    // Create walking characters
-    this.createCharacters();
-  }
-
-  createCharacters() {
-    if (typeof generateTraits === 'undefined') return;
-
-    // Pre-render NFT character sprites
-    const positions = [
-      { x: 200, groundY: 0.85, speed: 0.4, token: 1 },
-      { x: 450, groundY: 0.85, speed: -0.3, token: 42 },
-      { x: 700, groundY: 0.87, speed: 0.5, token: 100 },
-      { x: 950, groundY: 0.85, speed: -0.4, token: 200 },
-      { x: 1200, groundY: 0.86, speed: 0.35, token: 300 },
-      { x: 1450, groundY: 0.85, speed: -0.45, token: 500 },
-    ];
-
-    positions.forEach((pos) => {
-      try {
-        const seed = pos.token * 7919 + 31337;
-        const nftData = generateTraits(seed);
-
-        // Render to offscreen canvas
-        const offCanvas = document.createElement('canvas');
-        offCanvas.width = 80;
-        offCanvas.height = 80;
-        if (typeof _renderer !== 'undefined') {
-          _renderer.render(nftData);
-          const offCtx = offCanvas.getContext('2d');
-          offCtx.drawImage(_hiddenCanvas, 0, 0, 80, 80);
-        }
-
-        this.characters.push({
-          sprite: offCanvas,
-          x: pos.x,
-          y: this.canvas.height * pos.groundY,
-          baseY: this.canvas.height * pos.groundY,
-          speed: pos.speed,
-          size: 90,
-          frame: 0,
-          frameTime: 0,
-          direction: pos.speed > 0 ? 1 : -1,
-          bobPhase: Math.random() * Math.PI * 2,
-          tokenId: pos.token
-        });
-      } catch (e) {}
-    });
+    this.animate();
   }
 
   resize() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    if (this.trees) {
-      this.trees.forEach(t => { /* trees use relative positions */ });
-    }
   }
 
   update(dt) {
     this.time += dt;
-    this.scrollX += this.scrollSpeed * dt * 60;
 
-    // Update clouds
-    this.clouds.forEach(cloud => {
-      cloud.x -= cloud.speed * dt * 60;
-      if (cloud.x + cloud.w < -200) cloud.x = this.canvas.width + 200;
-      if (cloud.x > this.canvas.width + 200) cloud.x = -cloud.w - 200;
+    // Move clouds
+    this.clouds.forEach(c => {
+      c.x += c.speed * dt * 60;
+      if (c.x > this.canvas.width + 250) {
+        c.x = -250;
+        c.y = 20 + Math.random() * (this.canvas.height * 0.4);
+      }
     });
 
-    // Update fish
-    this.fish.forEach(fish => {
-      fish.x += fish.speed * fish.direction * dt * 60;
-      if (fish.x > this.canvas.width + 50) fish.x = -50;
-      if (fish.x < -50) fish.x = this.canvas.width + 50;
-    });
-
-    // Update particles (floating embers)
+    // Move floating motes
     this.particles.forEach(p => {
-      p.y -= p.speed * dt * 60;
-      p.x += Math.sin(p.phase + this.time * 2) * 0.5;
-      if (p.y < 0) {
-        p.y = this.canvas.height * 0.8;
+      p.y -= p.speedY * dt * 60;
+      p.x += Math.sin(p.phase + this.time * 1.5) * 0.5;
+      if (p.y < -20) {
+        p.y = this.canvas.height + 20;
         p.x = Math.random() * this.canvas.width;
       }
-    });
-
-    // Update characters - walking animation
-    this.characters.forEach(char => {
-      char.x += char.speed * dt * 60;
-      char.bobPhase += dt * 4;
-
-      // Walking bounce
-      char.y = char.baseY + Math.sin(char.bobPhase) * 4;
-
-      // Frame animation (walk cycle)
-      char.frameTime += dt;
-      if (char.frameTime > 0.15) {
-        char.frame = (char.frame + 1) % 4;
-        char.frameTime = 0;
-      }
-
-      // Wrap around
-      if (char.speed > 0 && char.x > this.canvas.width + 100) char.x = -100;
-      if (char.speed < 0 && char.x < -100) char.x = this.canvas.width + 100;
     });
   }
 
@@ -178,103 +78,48 @@ class VillageScene {
     const w = this.canvas.width;
     const h = this.canvas.height;
 
-    // Sky gradient
-    const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
-    skyGrad.addColorStop(0, '#1a0a3e');
-    skyGrad.addColorStop(0.3, '#3d1b6e');
-    skyGrad.addColorStop(0.5, '#6b2d8e');
-    skyGrad.addColorStop(0.7, '#9a4d8e');
-    skyGrad.addColorStop(1, '#d96b7e');
-    ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, w, h);
+    // Clear with transparency
+    ctx.clearRect(0, 0, w, h);
 
-    // Stars
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    for (let i = 0; i < 50; i++) {
-      const sx = (i * 137) % w;
-      const sy = (i * 53) % (h * 0.3);
-      const sr = 0.5 + Math.sin(this.time * 2 + i) * 0.5;
+    // Draw soft luminous clouds
+    this.clouds.forEach(c => {
+      const grad = ctx.createRadialGradient(c.x + c.w/2, c.y + c.h/2, 10, c.x + c.w/2, c.y + c.h/2, c.w/2);
+      grad.addColorStop(0, `rgba(124, 58, 237, ${c.opacity})`);
+      grad.addColorStop(0.6, `rgba(2, 132, 199, ${c.opacity * 0.5})`);
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      
+      ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+      ctx.ellipse(c.x + c.w/2, c.y + c.h/2, c.w/2, c.h/2, 0, 0, Math.PI * 2);
       ctx.fill();
-    }
-
-    // Sun
-    const sunX = w * 0.7;
-    const sunY = h * 0.25;
-    const sunGrad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 100);
-    sunGrad.addColorStop(0, 'rgba(255,220,100,1)');
-    sunGrad.addColorStop(0.3, 'rgba(255,180,80,0.8)');
-    sunGrad.addColorStop(0.7, 'rgba(255,120,100,0.3)');
-    sunGrad.addColorStop(1, 'rgba(255,100,100,0)');
-    ctx.fillStyle = sunGrad;
-    ctx.beginPath();
-    ctx.arc(sunX, sunY, 100, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Sun core
-    ctx.fillStyle = '#ffeb8a';
-    ctx.beginPath();
-    ctx.arc(sunX, sunY, 30, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Clouds
-    this.clouds.forEach(cloud => {
-      this.drawCloud(cloud.x, cloud.y, cloud.w, cloud.h, cloud.opacity);
     });
 
-    // Distant mountains
-    this.drawMountains(w, h);
-
-    // Mid trees
-    this.drawTreeLayer(w, h, 'mid');
-
-    // River/water
-    this.drawWater(w, h);
-
-    // Front trees
-    this.drawTreeLayer(w, h, 'front');
-
-    // Characters walking
-    this.characters.forEach(char => {
-      this.drawCharacter(char);
-    });
-
-    // Foreground grass
-    this.drawGrass(w, h);
-
-    // Particles
+    // Draw glowing particles
     this.particles.forEach(p => {
-      const alpha = p.alpha * (0.5 + 0.5 * Math.sin(this.time * 2 + p.phase));
-      ctx.fillStyle = `rgba(255,200,100,${alpha})`;
+      const alpha = 0.3 + Math.sin(p.phase + this.time * 2) * 0.25;
+      ctx.fillStyle = p.color + Math.max(0.1, alpha) + ')';
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fill();
     });
   }
 
-  drawCloud(x, y, w, h, opacity) {
-    const ctx = this.ctx;
-    ctx.fillStyle = `rgba(220,200,240,${opacity * 0.4})`;
-    ctx.beginPath();
-    ctx.arc(x, y, h * 1.5, 0, Math.PI * 2);
-    ctx.arc(x + w * 0.3, y - h * 0.3, h * 1.2, 0, Math.PI * 2);
-    ctx.arc(x + w * 0.6, y, h * 1.4, 0, Math.PI * 2);
-    ctx.arc(x + w * 0.9, y - h * 0.2, h * 1.1, 0, Math.PI * 2);
-    ctx.fill();
+  animate() {
+    const now = performance.now();
+    const dt = Math.min((now - this.lastTime) / 1000, 0.1);
+    this.lastTime = now;
+
+    this.update(dt);
+    this.draw();
+
+    requestAnimationFrame(() => this.animate());
   }
+}
 
-  drawMountains(w, h) {
-    const ctx = this.ctx;
-    const offset = (this.scrollX * 0.2) % 400;
-
-    // Far mountains
-    ctx.fillStyle = '#4a2870';
-    for (let i = -1; i < 6; i++) {
-      const mx = i * 300 - offset;
-      const mh = 100 + (i % 3) * 30;
-      ctx.beginPath();
-      ctx.moveTo(mx, h * 0.5);
-      ctx.lineTo(mx + 150, h * 0.5 - mh);
-      ctx.lineTo(mx + 300, h * 0.5);
-      ctx.closePath();
+// Auto-initialize
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('village-canvas') || document.getElementById('ambient-canvas');
+  if (canvas) {
+    new VillageScene(canvas);
+  }
+});
