@@ -1,213 +1,332 @@
 /* ==========================================================================
-   BLOCKBIT INK — MASTER INTERACTIVE APP ENGINE
-   Ambient Particles, Live Procedural DNA Forge, 3D Card Tilts, FAQ Drawer
+   BLOCKBIT INK — APP.JS
+   Animations, Ambient Canvas, Petals Canvas, DNA Forge, FAQ, Scroll-reveal
    ========================================================================== */
 
-// === AMBIENT PARTICLES (Electric Azure & Royal Violet) ===
-class AmbientScene {
-  constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
-    this.particles = [];
-    this.lastTime = performance.now();
-    this.time = 0;
-    this.init();
+document.addEventListener('DOMContentLoaded', () => {
+  // ── NAV SCROLL ──
+  const nav = document.getElementById('nav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    }, { passive: true });
   }
 
-  init() {
-    this.resize();
-    window.addEventListener('resize', () => this.resize());
 
-    for (let i = 0; i < 45; i++) {
-      this.particles.push({
-        x: Math.random() * this.canvas.width,
-        y: Math.random() * this.canvas.height,
-        r: 1.5 + Math.random() * 2.5,
-        speedY: 0.2 + Math.random() * 0.45,
-        speedX: (Math.random() - 0.5) * 0.25,
-        phase: Math.random() * Math.PI * 2,
-        color: Math.random() > 0.5 ? 'rgba(124, 58, 237, ' : 'rgba(14, 165, 233, '
+  
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+      const isOpen = mobileMenu.classList.contains('open');
+      
+      // Change icon
+      mobileMenuBtn.innerHTML = isOpen 
+        ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>`
+        : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`;
+    });
+    
+    // Close menu when a link is clicked
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        mobileMenuBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`;
       });
-    }
-
-    this.animate();
+    });
   }
 
-  resize() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-  }
+  // ── STAT COUNTER ──
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      let current = 0;
+      const step = Math.ceil(target / 60);
+      const tick = () => {
+        current = Math.min(current + step, target);
+        el.textContent = current.toLocaleString();
+        if (current < target) requestAnimationFrame(tick);
+      };
+      tick();
+    }, { threshold: 0.5 });
+    io.observe(el);
+  });
 
-  update(dt) {
-    this.time += dt;
+  // ── FAQ ACCORDION ──
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item.active').forEach(i => i.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
+    });
+  });
 
-    this.particles.forEach(p => {
-      p.y -= p.speedY * dt * 60;
-      p.x += Math.sin(p.phase + this.time * 1.5) * 0.4;
-      if (p.y < -20) {
-        p.y = this.canvas.height + 20;
-        p.x = Math.random() * this.canvas.width;
+  // ── SCROLL-REVEAL ──
+  const revealEls = document.querySelectorAll('.reveal-el');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
       }
     });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  revealEls.forEach(el => {
+    revealObs.observe(el);
+  });
+
+  // ── AMBIENT CANVAS (Particles & Lines) ──
+  const ac = document.getElementById('ambient-canvas');
+  if (ac) {
+    const ctx = ac.getContext('2d');
+    let w, h;
+    const particles = [];
+    const PARTICLE_COUNT = 60;
+
+    function resizeAc() {
+      w = ac.width = window.innerWidth;
+      h = ac.height = window.innerHeight;
+    }
+    resizeAc();
+    window.addEventListener('resize', resizeAc);
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.r = Math.random() * 1.5 + 0.5;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.alpha = Math.random() * 0.25 + 0.05;
+        this.color = `rgba(124,58,237,${this.alpha})`;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+    function animateAc() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(p => { p.update(); p.draw(); });
+      // draw subtle connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = dx * dx + dy * dy;
+          if (d < 18000) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(124,58,237,${0.03 * (1 - d / 18000)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateAc);
+    }
+    animateAc();
   }
 
-  draw() {
-    const ctx = this.ctx;
-    const w = this.canvas.width;
-    const h = this.canvas.height;
+  // ── PETALS CANVAS (Falling Leaves/Petals) ──
+  const pc = document.getElementById('petals-canvas');
+  if (pc) {
+    const ctx2 = pc.getContext('2d');
+    let pw, ph;
+    const petals = [];
+    const PETAL_COUNT = 30; // Not too dense to keep it elegant
 
-    ctx.clearRect(0, 0, w, h);
+    function resizePc() {
+      pw = pc.width = window.innerWidth;
+      ph = pc.height = window.innerHeight;
+    }
+    resizePc();
+    window.addEventListener('resize', resizePc);
 
-    this.particles.forEach(p => {
-      const alpha = 0.35 + Math.sin(p.phase + this.time * 2) * 0.25;
-      ctx.fillStyle = p.color + Math.max(0.1, alpha) + ')';
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
+    class Petal {
+      constructor() { this.reset(true); }
+      reset(randomY = false) {
+        this.x = Math.random() * pw;
+        this.y = randomY ? Math.random() * ph : -20;
+        this.z = Math.random() * 0.8 + 0.2; // depth scale
+        this.width = (Math.random() * 8 + 4) * this.z;
+        this.height = (Math.random() * 12 + 6) * this.z;
+        this.vx = (Math.random() - 0.5) * 1.5;
+        this.vy = (Math.random() * 1.5 + 1) * this.z;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rs = (Math.random() - 0.5) * 0.05; // rotation speed
+        this.oscillationSpeed = Math.random() * 0.02 + 0.01;
+        this.oscillationOffset = Math.random() * Math.PI * 2;
+        
+        // Deep purple to soft purple
+        const r = 124, g = 58, b = 237;
+        const opacity = Math.random() * 0.4 + 0.2;
+        this.color = `rgba(${r},${g},${b},${opacity})`;
+      }
+      update() {
+        this.rotation += this.rs;
+        this.x += this.vx + Math.sin(Date.now() * this.oscillationSpeed + this.oscillationOffset) * 0.5;
+        this.y += this.vy;
+        
+        if (this.y > ph + 20 || this.x > pw + 20 || this.x < -20) {
+          this.reset();
+        }
+      }
+      draw() {
+        ctx2.save();
+        ctx2.translate(this.x, this.y);
+        ctx2.rotate(this.rotation);
+        
+        // Draw petal shape
+        ctx2.beginPath();
+        ctx2.moveTo(0, -this.height/2);
+        ctx2.bezierCurveTo(this.width/2, -this.height/4, this.width/2, this.height/4, 0, this.height/2);
+        ctx2.bezierCurveTo(-this.width/2, this.height/4, -this.width/2, -this.height/4, 0, -this.height/2);
+        
+        ctx2.fillStyle = this.color;
+        ctx2.fill();
+        ctx2.restore();
+      }
+    }
+    
+    for (let i = 0; i < PETAL_COUNT; i++) petals.push(new Petal());
+    
+    function animatePc() {
+      ctx2.clearRect(0, 0, pw, ph);
+      petals.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animatePc);
+    }
+    animatePc();
+  }
+
+  // ── DNA FORGE ──
+  initForge();
+
+  // ── SMOOTH ANCHOR SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
-  }
+  });
+});
 
-  animate() {
-    const now = performance.now();
-    const dt = Math.min((now - this.lastTime) / 1000, 0.1);
-    this.lastTime = now;
-
-    this.update(dt);
-    this.draw();
-
-    requestAnimationFrame(() => this.animate());
-  }
-}
-
-// === LIVE WARRIOR DNA FORGE RENDERER ===
-let _forgeRenderer = null;
+/* ── DNA FORGE RENDERER ── */
+let forgeRenderer;
 
 function initForge() {
   const canvas = document.getElementById('forgeCanvas');
   if (!canvas) return;
-  try {
-    if (typeof NFTRenderer !== 'undefined') {
-      _forgeRenderer = new NFTRenderer(canvas);
-      randomizeForgeWarrior();
-    }
-  } catch (e) {
-    console.log('Renderer note:', e);
+  
+  // Set to internal rendering size (2000x2000) for high quality
+  canvas.width = 2000;
+  canvas.height = 2000;
+  
+  // Create renderer instance from generator.js
+  if (typeof NFTRenderer !== 'undefined') {
+    forgeRenderer = new NFTRenderer(canvas);
+    randomizeForgeWarrior();
   }
 }
 
 function randomizeForgeWarrior() {
-  const canvas = document.getElementById('forgeCanvas');
-  if (!canvas) return;
-
-  const randomId = Math.floor(1 + Math.random() * 1999);
-  const seed = randomId * 7919 + 31337;
-
-  let traits = null;
-  if (typeof generateTraits === 'function') {
-    traits = generateTraits(seed);
-  }
-
-  if (traits) {
-    if (_forgeRenderer) {
-      _forgeRenderer.render(traits);
-    }
+  if (!forgeRenderer || typeof generateNFT === 'undefined') return;
+  
+  // Generate a random seed
+  const seed = Math.floor(Math.random() * 1999) + 1;
+  
+  try {
+    // Generate traits from traits.js
+    const nftData = generateNFT(seed);
+    
+    // Render the pixel art character onto the canvas
+    forgeRenderer.render(nftData);
+    
+    // Update UI Elements
     const nameEl = document.getElementById('forgeName');
     const rankEl = document.getElementById('forgeRank');
-    const clanEl = document.getElementById('traitClan');
-    const weaponEl = document.getElementById('traitWeapon');
-    const auraEl = document.getElementById('traitAura');
-    const outfitEl = document.getElementById('traitOutfit');
-
-    if (nameEl) nameEl.textContent = 'Warrior #' + String(randomId).padStart(4, '0');
-    if (rankEl) rankEl.textContent = (traits.Rank || 'Epic') + ' Rank';
-    if (clanEl) clanEl.textContent = traits.Clan || 'Honoo (Flame)';
-    if (weaponEl) weaponEl.textContent = traits.Weapon || 'Katana of Ink';
-    if (auraEl) auraEl.textContent = traits.Aura || 'Cyber Plasma';
-    if (outfitEl) outfitEl.textContent = traits.Outfit || 'Cyber Kimono';
-  } else {
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.src = 'nft-preview/' + [1, 42, 100, 200, 300, 500, 700, 1000][Math.floor(Math.random() * 8)] + '.png';
-    img.onload = () => {
-      ctx.clearRect(0, 0, 400, 400);
-      ctx.drawImage(img, 0, 0, 400, 400);
-    };
-  }
-}
-
-// === DOM READY ===
-document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('ambient-canvas');
-  if (canvas) {
-    new AmbientScene(canvas);
-  }
-
-  initNav();
-  initFAQ();
-  initCountUp();
-  initTiltCards();
-  initForge();
-});
-
-// === Navigation Scroll Effect ===
-function initNav() {
-  const nav = document.getElementById('nav');
-  if (!nav) return;
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  });
-}
-
-// === FAQ Accordion ===
-function initFAQ() {
-  document.querySelectorAll('.faq-accordion-card').forEach(item => {
-    const trigger = item.querySelector('.faq-toggle-trigger');
-    if (!trigger) return;
-    trigger.addEventListener('click', () => {
-      const wasActive = item.classList.contains('active');
-      document.querySelectorAll('.faq-accordion-card').forEach(i => i.classList.remove('active'));
-      if (!wasActive) item.classList.add('active');
-    });
-  });
-}
-
-// === Number Counters ===
-function initCountUp() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseInt(el.dataset.count);
-        let current = 0;
-        const increment = target / 40;
-        const timer = setInterval(() => {
-          current += increment;
-          if (current >= target) { 
-            current = target; 
-            clearInterval(timer); 
-          }
-          el.textContent = Math.floor(current).toLocaleString();
-        }, 30);
-        observer.unobserve(el);
+    const traitsGrid = document.getElementById('forgeTraitsGrid');
+    
+    if (nameEl) nameEl.textContent = `Blockbit #${String(seed).padStart(4, '0')}`;
+    
+    if (rankEl && nftData.rarity) {
+      rankEl.textContent = nftData.rarity.name || nftData.rarity.tier || 'Common';
+      rankEl.style.color = nftData.rarity.color || 'var(--violet)';
+      rankEl.style.borderColor = nftData.rarity.color || 'var(--violet)';
+    }
+    
+    if (traitsGrid && nftData.traits) {
+      // Pick up to 4 interesting traits to display
+      const traitsToShow = ['Outfit', 'Hair Style', 'Eyes', 'Accessory'];
+      traitsGrid.innerHTML = '';
+      
+      for (const tName of traitsToShow) {
+        if (nftData.traits[tName]) {
+          const tVal = nftData.traits[tName].name;
+          traitsGrid.innerHTML += `
+            <div class="trait-cell">
+              <div class="trait-key">${tName}</div>
+              <div class="trait-val">${tVal}</div>
+            </div>
+          `;
+        }
       }
-    });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
+    }
+  } catch (e) {
+    console.error("Error generating Forge NFT:", e);
+  }
+}
+window.randomizeForgeWarrior = randomizeForgeWarrior;
+
+/* ── TOP BANNER COUNTDOWN ── */
+function initCountdown() {
+  const countdownEl = document.getElementById('top-countdown');
+  if (!countdownEl) return;
+  
+  // Set target date to 7 days from now for demo purposes
+  const targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() + 7);
+  
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate.getTime() - now;
+    
+    if (distance < 0) {
+      countdownEl.innerHTML = "MINT IS LIVE";
+      return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    countdownEl.innerHTML = `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+  }
+  
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 }
 
-// === 3D Perspective Tilt on Hover ===
-function initTiltCards() {
-  document.querySelectorAll('.roster-card, .elemental-clan-card, .architecture-card, .roadmap-phase-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      const tiltX = (y - 0.5) * 8;
-      const tiltY = (x - 0.5) * -8;
-      card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-6px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
-}
+document.addEventListener('DOMContentLoaded', initCountdown);

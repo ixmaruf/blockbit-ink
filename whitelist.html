@@ -3,546 +3,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VIP Whitelist Quest — BLOCKBIT INK</title>
-  <meta name="description" content="Apply for the Blockbit Ink VIP Whitelist. 1,999 unique generative anime/pixel NFTs on Ink Superchain.">
-  <meta name="theme-color" content="#7c3aed">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <title>VIP Mint Pass &mdash; BLOCKBIT INK</title>
+  <meta name="description" content="Complete the 4-step initiation quest to earn your guaranteed VIP Mint Pass for the Blockbit Ink genesis drop.">
+  <!-- Fonts loaded via style.css -->
   <link rel="stylesheet" href="style.css">
   <style>
-    .whitelist-hero-wrapper {
-      max-width: 900px;
-      margin: 8.5rem auto 5.5rem;
-      padding: 0 1.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .whitelist-card-panel {
-      background: #ffffff;
-      border-radius: var(--radius-xl);
-      border: 1.5px solid var(--border-subtle);
-      box-shadow: var(--shadow-lg);
-      padding: 4.5rem 3.5rem;
-      position: relative;
-    }
-
-    .whitelist-header-group {
-      text-align: center;
-      margin-bottom: 3.5rem;
-    }
-
-    .quest-timeline-bar {
+    .wl-wrap {
+      min-height: 100vh;
+      padding: 7rem 1.5rem 4rem;
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 3.5rem;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .wl-container {
+      max-width: 700px;
+      width: 100%;
       position: relative;
+      z-index: 10;
+    }
+    .wl-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .wl-header h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .wl-header p {
+      color: var(--slate);
+      font-size: 0.95rem;
+      line-height: 1.7;
     }
 
-    .quest-timeline-bar::before {
+    /* Progress Bar */
+    .progress-bar {
+      display: flex;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .progress-bar::before {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 12%;
-      right: 12%;
-      height: 3px;
-      background: #E2E8F0;
-      transform: translateY(-50%);
+      top: 18px; left: 36px; right: 36px;
+      height: 2px;
+      background: var(--border);
       z-index: 0;
     }
-
-    .quest-timeline-progress {
-      position: absolute;
-      top: 50%;
-      left: 12%;
-      height: 3px;
-      background: linear-gradient(90deg, var(--ink-azure-dark), var(--ink-violet));
-      transform: translateY(-50%);
-      z-index: 0;
-      transition: width 0.4s ease;
-      width: 0%;
-    }
-
-    .quest-step-marker {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-full);
-      background: #ffffff;
-      border: 2px solid var(--border-subtle);
+    .progress-step {
+      flex: 1;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--ink-muted);
+      gap: 8px;
       position: relative;
       z-index: 1;
-      transition: all 0.3s ease;
     }
-
-    .quest-step-marker.active {
-      border-color: var(--ink-violet);
-      color: var(--ink-violet);
-      box-shadow: 0 0 24px var(--ink-violet-glow);
+    .progress-dot {
+      width: 36px; height: 36px;
+      border-radius: var(--r-full);
+      background: #fff;
+      border: 2px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-family: var(--serif);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      transition: all 0.3s;
     }
-
-    .quest-step-marker.completed {
-      background: linear-gradient(135deg, var(--ink-azure-dark), var(--ink-violet));
-      border-color: transparent;
-      color: #ffffff;
+    .progress-step.active .progress-dot {
+      background: var(--violet);
+      border-color: var(--violet);
+      color: #fff;
+      box-shadow: 0 0 16px var(--violet-glow);
     }
+    .progress-step.done .progress-dot {
+      background: #10B981;
+      border-color: #10B981;
+      color: #fff;
+    }
+    .progress-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+    .progress-step.active .progress-label { color: var(--violet); }
+    .progress-step.done .progress-label { color: #10B981; }
 
-    .quest-view-panel {
+    /* Form Panels */
+    .form-panel {
       display: none;
+      animation: formIn 0.5s ease;
     }
-
-    .quest-view-panel.active {
-      display: block;
-      animation: stepFade 0.4s ease;
-    }
-
-    @keyframes stepFade {
-      from { opacity: 0; transform: translateY(12px); }
+    .form-panel.active { display: block; }
+    @keyframes formIn {
+      from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .form-input-container {
-      margin-bottom: 2.25rem;
+    .form-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
     }
-
-    .form-input-container label {
-      display: block;
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--ink-obsidian);
-      margin-bottom: 0.85rem;
+    .form-card h2 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
-
-    .form-text-input {
-      width: 100%;
-      padding: 1.2rem 1.5rem;
-      background: var(--bg-card-subtle);
-      border: 1.5px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      font-family: var(--font-body);
-      font-size: 1.05rem;
-      color: var(--ink-obsidian);
-      outline: none;
-      transition: all 0.25s ease;
-    }
-
-    .form-text-input:focus {
-      background: #ffffff;
-      border-color: var(--ink-violet);
-      box-shadow: 0 0 0 4px var(--ink-violet-soft);
-    }
-
-    .clans-selection-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .clan-selection-card {
-      background: var(--bg-card-subtle);
-      border: 2px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 2rem 1.25rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .clan-selection-card:hover {
-      background: #ffffff;
-      border-color: var(--ink-azure);
-      transform: translateY(-4px);
-    }
-
-    .clan-selection-card.selected {
-      background: #ffffff;
-      border-color: var(--ink-violet);
-      box-shadow: 0 0 25px var(--ink-violet-glow);
-    }
-
-    .clan-vector-icon-wrap {
-      width: 52px;
-      height: 52px;
-      margin: 0 auto 1rem;
-      border-radius: var(--radius-full);
-      background: var(--ink-violet-soft);
-      display: grid;
-      place-items: center;
-      color: var(--ink-violet);
-    }
-
-    .clan-selection-card.selected .clan-vector-icon-wrap {
-      background: var(--ink-violet);
-      color: #ffffff;
-    }
-
-    .clan-selection-title {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--ink-obsidian);
-    }
-
-    .quest-btn-row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 3rem;
-    }
-
-    /* VIP Mint Pass Canvas */
-    .mint-pass-render-box {
-      text-align: center;
-      margin: 1.5rem 0;
-    }
-
-    #passCanvas {
-      max-width: 100%;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      border: 2.5px solid var(--ink-violet);
+    .form-card .desc {
+      font-size: 0.9rem;
+      color: var(--slate);
       margin-bottom: 2rem;
     }
 
-    /* Whitelist Status Checker */
-    .verification-card-box {
-      margin-top: 4rem;
-      background: #ffffff;
-      border-radius: var(--radius-xl);
-      border: 1.5px solid var(--border-subtle);
-      box-shadow: var(--shadow-md);
-      padding: 3.5rem 3rem;
+    .field { margin-bottom: 1.5rem; }
+    .field label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 6px;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      color: var(--ink);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--violet);
+      box-shadow: 0 0 0 3px var(--violet-soft);
+    }
+    .field textarea { resize: vertical; min-height: 100px; }
+    .form-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+
+    /* Success Panel */
+    .success-box {
       text-align: center;
+      padding: 4rem 2rem;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+    }
+    .success-box .checkmark {
+      width: 64px; height: 64px;
+      border-radius: var(--r-full);
+      background: #10B981;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 1.5rem;
+    }
+    .success-box h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .success-box p {
+      color: var(--slate);
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .wl-wrap { padding: 5.5rem 1rem 3rem; }
+      .form-card { padding: 1.5rem; }
+      .progress-label { font-size: 0.5rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Ambient Luminous Particle Canvas -->
+  <!-- Ambient Animations -->
   <canvas id="ambient-canvas"></canvas>
+  <canvas id="petals-canvas"></canvas>
+  <div class="grain-overlay"></div>
 
-  <div class="site-wrapper">
-    <!-- NAVIGATION -->
-    <nav class="nav">
-      <div class="nav-container">
+  <div class="site-wrap">
+    <!-- NAV -->
+    <nav class="nav" id="nav">
+      <div class="nav-inner">
         <a href="index.html" class="nav-brand">
-          <div class="brand-icon-wrap">
-            <img src="logo-purple.jpg" alt="Blockbit Ink" class="brand-icon-img">
-          </div>
-          <div class="brand-title-group">
-            <span class="brand-name">BLOCKBIT INK</span>
-            <span class="brand-network-tag">Superchain Layer 2</span>
+          <img src="logo-purple.jpg" alt="Blockbit" class="nav-logo">
+          <div class="nav-brand-text">
+            <span class="nav-brand-name">BLOCKBIT</span>
+            <span class="nav-brand-sub">Built on Ink</span>
           </div>
         </a>
-
-        <div class="nav-links-menu">
-          <a href="index.html" class="nav-link">Genesis</a>
-          <a href="index.html#forge" class="nav-link">DNA Forge</a>
-          <a href="index.html#orders" class="nav-link">Six Orders</a>
-          <a href="index.html#roster" class="nav-link">Showcase</a>
-          <a href="index.html#roadmap" class="nav-link">Roadmap</a>
-          <a href="index.html#faq" class="nav-link">Knowledge</a>
+        <div class="nav-actions">
+          <a href="index.html" class="btn-outline" style="padding:0.45rem 1rem;font-size:0.6rem;">Back Home</a>
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
         </div>
       </div>
     </nav>
 
-    <!-- WHITELIST APPLICATION FORM CONTAINER -->
-    <div class="whitelist-hero-wrapper">
-      <div class="whitelist-card-panel">
-        <div class="whitelist-header-group">
-          <span class="section-kicker">Genesis Initiation</span>
-          <h1 class="section-main-title" style="font-size: 3rem; margin-bottom: 1rem;">VIP Whitelist <span class="gradient-text-azure-violet">Quest</span></h1>
-          <p class="section-lead-text" style="max-width: 650px; margin: 0 auto;">Complete the cryptographic initiation to synthesize your official VIP Mint Pass on Ink Superchain.</p>
-        </div>
-
-        <!-- Step Progress Bar -->
-        <div class="quest-timeline-bar">
-          <div class="quest-timeline-progress" id="wlProgressBar"></div>
-          <div class="quest-step-marker active" id="node1">1</div>
-          <div class="quest-step-marker" id="node2">2</div>
-          <div class="quest-step-marker" id="node3">3</div>
-          <div class="quest-step-marker" id="node4">4</div>
-        </div>
-
-        <form id="wlForm" onsubmit="return false;">
-          <!-- Step 1: Wallet Address -->
-          <div class="quest-view-panel active" id="step1">
-            <div class="form-input-container">
-              <label for="walletInput">EVM / Ink Superchain Wallet Address (0x...)</label>
-              <input type="text" id="walletInput" class="form-text-input" placeholder="0x71C...3924" required>
-              <small style="color: var(--ink-muted); font-size: 0.88rem; margin-top: 8px; display: block;">
-                Enter your authorized EVM wallet address to be added to the Genesis whitelist contract.
-              </small>
-            </div>
-            <div class="quest-btn-row" style="justify-content: flex-end;">
-              <button type="button" class="btn btn-primary" onclick="nextStep(1)">Next Step →</button>
-            </div>
-          </div>
-
-          <!-- Step 2: Social Quest -->
-          <div class="quest-view-panel" id="step2">
-            <div class="form-input-container">
-              <label for="twitterInput">Twitter / X Handle</label>
-              <input type="text" id="twitterInput" class="form-text-input" placeholder="@username" required>
-            </div>
-            <div class="form-input-container">
-              <label for="discordInput">Discord Username</label>
-              <input type="text" id="discordInput" class="form-text-input" placeholder="username#0000">
-            </div>
-            <div class="quest-btn-row">
-              <button type="button" class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
-              <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next Step →</button>
-            </div>
-          </div>
-
-          <!-- Step 3: Clan Order Selection (No Emojis - Pure SVGs) -->
-          <div class="quest-view-panel" id="step3">
-            <label style="display: block; font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--ink-obsidian); margin-bottom: 1.5rem;">
-              Choose Your Elemental Order
-            </label>
-            <div class="clans-selection-grid">
-              <div class="clan-selection-card selected" onclick="selectClan(this, 'Kaze (Wind)')">
-                <div class="clan-vector-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.41 18.2c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l.59-.59C8.03 20.26 9.93 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7 0 1.74-.63 3.34-1.69 4.58l-1.46-1.46C16.54 14.34 17 13.23 17 12c0-2.76-2.24-5-5-5-1.23 0-2.34.46-3.12 1.15L7.42 6.69C8.66 5.63 10.26 5 12 5z"/></svg>
-                </div>
-                <div class="clan-selection-title">Kaze (Wind)</div>
-              </div>
-              <div class="clan-selection-card" onclick="selectClan(this, 'Honoo (Flame)')">
-                <div class="clan-vector-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5s-4.5 4.5-4.5 8.5c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5c0-4-4.5-8.5-4.5-8.5zm0 18.5c-4.4 0-8-3.6-8-8 0-3.5 2.5-6.8 4.7-9.1.4-.4 1.1-.1 1.1.5v1.2c0 2.2 1.8 4 4 4s4-1.8 4-4v-1.2c0-.6.7-.9 1.1-.5C20.5 6.2 23 9.5 23 13c0 4.4-3.6 8-8 8h-3z"/></svg>
-                </div>
-                <div class="clan-selection-title">Honoo (Flame)</div>
-              </div>
-              <div class="clan-selection-card" onclick="selectClan(this, 'Mizu (Water)')">
-                <div class="clan-vector-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                </div>
-                <div class="clan-selection-title">Mizu (Water)</div>
-              </div>
-              <div class="clan-selection-card" onclick="selectClan(this, 'Tsuchi (Earth)')">
-                <div class="clan-vector-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2zm0 4.8l6.2 12.4H5.8L12 6.8z"/></svg>
-                </div>
-                <div class="clan-selection-title">Tsuchi (Earth)</div>
-              </div>
-              <div class="clan-selection-card" onclick="selectClan(this, 'Hikari (Light)')">
-                <div class="clan-vector-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.5 7.5L22 11l-7.5 2.5L12 21l-2.5-7.5L2 11l7.5-2.5z"/></svg>
-                </div>
-                <div class="clan-selection-title">Hikari (Light)</div>
-              </div>
-              <div class="clan-selection-card" onclick="selectClan(this, 'Kage (Shadow)')">
-                <div class="clan-vector-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1 0-16 8 8 0 0 1 0 16z"/><path d="M12 4a8 8 0 0 0 0 16V4z"/></svg>
-                </div>
-                <div class="clan-selection-title">Kage (Shadow)</div>
-              </div>
-            </div>
-            <input type="hidden" id="clanInput" value="Kaze (Wind)">
-            <div class="quest-btn-row">
-              <button type="button" class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
-              <button type="button" class="btn btn-primary" onclick="submitApplication()">Synthesize VIP Pass</button>
-            </div>
-          </div>
-
-          <!-- Step 4: Success Pass Generator -->
-          <div class="quest-view-panel" id="step4">
-            <div class="mint-pass-render-box">
-              <span class="section-kicker" style="background:#ecfdf5;color:#059669;border-color:#10b981;">ALLOCATION CONFIRMED</span>
-              <h2 class="section-main-title" style="font-size: 2.4rem; margin: 0.5rem 0 1.75rem;">Your VIP Mint Pass</h2>
-              
-              <canvas id="passCanvas" width="660" height="350"></canvas>
-              
-              <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
-                <button type="button" class="btn btn-primary" onclick="downloadPass()">Download VIP Pass (PNG)</button>
-                <a href="index.html" class="btn btn-secondary">Return to Realm</a>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <!-- Whitelist Status Checker -->
-      <div class="verification-card-box">
-        <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--ink-obsidian); margin-bottom: 0.6rem;">Check Whitelist Status</h3>
-        <p style="color: var(--ink-slate); font-size: 1.05rem; margin-bottom: 1.75rem;">Enter your EVM wallet address to verify your allocation status on Ink Blockchain.</p>
-        <div style="display: flex; gap: 1rem; max-width: 560px; margin: 0 auto;">
-          <input type="text" id="checkAddressInput" class="form-text-input" placeholder="0x...">
-          <button type="button" class="btn btn-primary" style="padding: 0 2.25rem; white-space: nowrap;" onclick="checkStatus()">Verify</button>
-        </div>
-        <div id="checkResult" style="margin-top: 1.75rem; font-weight: 800; font-size: 1.1rem;"></div>
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+      <div class="mobile-menu-links">
+        <a href="index.html">Back Home</a>
       </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="footer-wrap">
-      <div class="footer-content-box">
-        <div class="brand-name" style="font-size:1.4rem;">BLOCKBIT <span style="color:var(--ink-violet);">INK</span></div>
-        <div class="footer-legal-copy">&copy; 2026 Blockbit Ink. Built on Ink Superchain by Kraken.</div>
+    <div class="wl-wrap">
+      <div class="wl-container">
+        <div class="wl-header">
+          <p class="sec-kicker"><span class="line"></span>Initiation Quest</p>
+          <h1>Forge Your <span class="accent" style="color: var(--violet)">VIP Mint Pass</span></h1>
+          <p>Complete all four seals to earn your guaranteed whitelist allocation for the genesis mint.</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-step active" data-step="1">
+            <div class="progress-dot">1</div>
+            <div class="progress-label">Social</div>
+          </div>
+          <div class="progress-step" data-step="2">
+            <div class="progress-dot">2</div>
+            <div class="progress-label">Wallet</div>
+          </div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="form-panel active" data-panel="1">
+          <div class="form-card">
+            <h2>Step I &mdash; Social</h2>
+            <p class="desc">Provide your Twitter / X username to verify community alignment.</p>
+            <div class="field">
+              <label for="twitterHandle">Twitter Username</label>
+              <input type="text" id="twitterHandle" placeholder="@yourhandle" required>
+            </div>
+            <div class="form-nav">
+              <span></span>
+              <button type="button" class="btn-primary" onclick="nextStep(2)">Next Step
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="form-panel" data-panel="2">
+          <div class="form-card">
+            <h2>Step II &mdash; Wallet</h2>
+            <p class="desc">Provide your wallet address on the Ink network for whitelist eligibility.</p>
+            <div class="field">
+              <label for="walletAddr">Wallet Address (0x...)</label>
+              <input type="text" id="walletAddr" placeholder="0x..." required>
+            </div>
+            <div class="form-nav">
+              <button type="button" class="btn-outline" onclick="nextStep(1)">Previous</button>
+              <button type="button" class="btn-primary" onclick="submitQuest()">Submit
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success -->
+        <div class="form-panel" data-panel="success">
+          <div class="success-box">
+            <div class="checkmark">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <h2>Quest Complete</h2>
+            <p>Your VIP Mint Pass application has been received. Check your email for confirmation and next steps.</p>
+            <a href="index.html" class="btn-primary">Return to Portal</a>
+          </div>
+        </div>
       </div>
-    </footer>
+    </div>
   </div>
 
   <script src="app.js"></script>
   <script>
     let currentStep = 1;
-    let selectedClanName = 'Kaze (Wind)';
 
-    function updateProgress(step) {
-      currentStep = step;
-      document.querySelectorAll('.quest-view-panel').forEach(s => s.classList.remove('active'));
-      document.getElementById('step' + step).classList.add('active');
+    function nextStep(n) {
+      document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`[data-panel="${n}"]`).classList.add('active');
 
-      const percent = ((step - 1) / 3) * 76;
-      document.getElementById('wlProgressBar').style.width = percent + '%';
-
-      for (let i = 1; i <= 4; i++) {
-        const node = document.getElementById('node' + i);
-        node.classList.remove('active', 'completed');
-        if (i < step) node.classList.add('completed');
-        else if (i === step) node.classList.add('active');
-      }
+      document.querySelectorAll('.progress-step').forEach(s => {
+        const sn = parseInt(s.dataset.step);
+        s.classList.remove('active', 'done');
+        if (sn < n) s.classList.add('done');
+        if (sn === n) s.classList.add('active');
+      });
+      currentStep = n;
     }
 
-    function nextStep(fromStep) {
-      if (fromStep === 1) {
-        const wallet = document.getElementById('walletInput').value.trim();
-        if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
-          alert('Please enter a valid 42-character EVM wallet address (0x...)');
-          return;
-        }
-      }
-      if (fromStep === 2) {
-        const twitter = document.getElementById('twitterInput').value.trim();
-        if (!twitter) {
-          alert('Please enter your Twitter / X handle.');
-          return;
-        }
-      }
-      updateProgress(fromStep + 1);
-    }
-
-    function prevStep(fromStep) {
-      updateProgress(fromStep - 1);
-    }
-
-    function selectClan(el, name) {
-      document.querySelectorAll('.clan-selection-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedClanName = name;
-      document.getElementById('clanInput').value = name;
-    }
-
-    function submitApplication() {
-      const wallet = document.getElementById('walletInput').value.trim();
-      const twitter = document.getElementById('twitterInput').value.trim();
-      const discord = document.getElementById('discordInput').value.trim();
-      const clan = selectedClanName;
-      const passNum = Math.floor(1000 + Math.random() * 9000);
-
-      const entry = { wallet, twitter, discord, clan, passNum, timestamp: Date.now() };
-      let allWl = JSON.parse(localStorage.getItem('blockbit_wl') || '[]');
-      allWl.push(entry);
-      localStorage.setItem('blockbit_wl', JSON.stringify(allWl));
-
-      updateProgress(4);
-      drawPassCanvas(wallet, clan, passNum);
-    }
-
-    function drawPassCanvas(wallet, clan, passNum) {
-      const canvas = document.getElementById('passCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width;
-      const h = canvas.height;
-
-      // Surface Gradient
-      const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, '#FFFFFF');
-      grad.addColorStop(1, '#F8F7FF');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
-
-      // Cyber Glowing Hairline Border
-      ctx.strokeStyle = '#7C3AED';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(12, 12, w - 24, h - 24);
-
-      // Header Brand
-      ctx.fillStyle = '#0EA5E9';
-      ctx.font = 'bold 24px Outfit, sans-serif';
-      ctx.fillText('BLOCKBIT', 35, 52);
-      ctx.fillStyle = '#7C3AED';
-      ctx.fillText('INK', 165, 52);
-
-      // VIP Pill Badge
-      ctx.fillStyle = '#7C3AED';
-      ctx.beginPath();
-      ctx.roundRect(w - 190, 26, 155, 36, 18);
-      ctx.fill();
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 12px "Space Grotesk", sans-serif';
-      ctx.fillText('VIP MINT PASS', w - 172, 50);
-
-      // Pass Title
-      ctx.fillStyle = '#090614';
-      ctx.font = 'bold 17px Outfit, sans-serif';
-      ctx.fillText('GENESIS WHITELIST PASS #' + passNum, 35, 105);
-
-      // Wallet Address Box
-      ctx.fillStyle = '#F1F5F9';
-      ctx.fillRect(35, 125, w - 70, 50);
-      ctx.strokeStyle = '#CBD5E1';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(35, 125, w - 70, 50);
-
-      ctx.fillStyle = '#334155';
-      ctx.font = '15px monospace';
-      ctx.fillText('Authorized: ' + wallet, 50, 156);
-
-      // Clan & Allocation Data
-      ctx.fillStyle = '#7C3AED';
-      ctx.font = 'bold 17px Outfit, sans-serif';
-      ctx.fillText('Elemental Order: ' + clan, 35, 222);
-
-      ctx.fillStyle = '#059669';
-      ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('Status: Confirmed Tier 1 Allocation', 35, 258);
-
-      ctx.fillStyle = '#64748B';
-      ctx.font = '13px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('Network: Ink Blockchain (Superchain Layer 2) by Kraken', 35, 296);
-    }
-
-    function downloadPass() {
-      const canvas = document.getElementById('passCanvas');
-      const link = document.createElement('a');
-      link.download = 'Blockbit_Ink_VIP_Pass.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }
-
-    function checkStatus() {
-      const addr = document.getElementById('checkAddressInput').value.trim().toLowerCase();
-      const res = document.getElementById('checkResult');
-      if (!addr) {
-        res.innerHTML = '<span style=\"color:#ef4444;\">Please enter a wallet address.</span>';
+    function submitQuest() {
+      // Basic validation
+      const twitter = document.getElementById('twitterHandle').value;
+      const wallet = document.getElementById('walletAddr').value;
+      if (!twitter || !wallet) {
+        alert("Please fill in both your Twitter Username and Wallet Address.");
         return;
       }
-      const allWl = JSON.parse(localStorage.getItem('blockbit_wl') || '[]');
-      const found = allWl.find(item => item.wallet.toLowerCase() === addr);
-      if (found) {
-        res.innerHTML = '<span style=\"color:#059669;\">Whitelist Confirmed for ' + found.clan + ' (Pass #' + found.passNum + ')</span>';
-      } else {
-        res.innerHTML = '<span style=\"color:#0284c7;\">Application registered — Queued for Ink Superchain batch allocation.</span>';
-      }
+
+      document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('[data-panel="success"]').classList.add('active');
+      document.querySelectorAll('.progress-step').forEach(s => s.classList.add('done'));
     }
   </script>
 </body>
