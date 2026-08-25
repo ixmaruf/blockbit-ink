@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blockbit Ink - Enter the Realm</title>
-  <meta name="description" content="Blockbit Ink: 1,999 unique generative anime/pixel NFTs. Built on Ink Blockchain by Kraken.">
+  <title>Blockbit Ink — 1,999 Warriors on Ink Blockchain</title>
+  <meta name="description" content="Blockbit Ink: 1,999 unique generative anime/pixel NFTs on Ink Blockchain by Kraken.">
   <meta name="theme-color" content="#7c3aed">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,9 +25,10 @@
           <span class="logo-text">Blockbit<span class="logo-accent">Ink</span></span>
         </a>
         <div class="nav-links">
-          <a href="#about">About</a>
+          <a href="#forge">Warrior Forge</a>
           <a href="#collection">Collection</a>
-          <a href="#features">Features</a>
+          <a href="#clans">Clans</a>
+          <a href="#about">Lore</a>
           <a href="#roadmap">Roadmap</a>
           <a href="#faq">FAQ</a>
           <a href="whitelist.html" class="nav-cta">Enter the Realm</a>
@@ -40,22 +41,21 @@
       <div class="hero-content fade-in">
         <div class="hero-badge">
           <img src="ink-logo.webp" alt="Ink" class="ink-logo">
-          Built on Ink Chain
+          Built on Ink Blockchain by Kraken
         </div>
         <h1 class="hero-title">
-          <span class="title-line">Blockbit</span>
-          <span class="title-line">Ink</span>
+          <span class="title-blue">BLOCKBIT</span>
+          <span class="title-purple">INK REALM</span>
         </h1>
         <p class="hero-subtitle">
-          Step into a realm of 1,999 unique warriors, each one a digital legend on Ink Blockchain.
-          Where pixels meet purpose, and every block tells a story.
+          Step into a realm of 1,999 legendary pixel warriors, each hand-crafted with distinct aura, clan ancestry, and on-chain permanence on Ink Blockchain.
         </p>
         <div class="hero-actions">
           <a href="whitelist.html" class="btn btn-primary btn-lg">
-            <span>Enter the Realm</span>
+            <span>Apply For Whitelist</span>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#collection" class="btn btn-secondary btn-lg">View Collection</a>
+          <a href="#forge" class="btn btn-secondary btn-lg">Forge Warrior</a>
         </div>
         <div class="hero-stats">
           <div class="stat-plank">
@@ -63,12 +63,12 @@
             <span class="stat-label">Warriors</span>
           </div>
           <div class="stat-plank">
-            <span class="stat-value" data-count="12">0</span>
-            <span class="stat-label">Tribes</span>
+            <span class="stat-value" data-count="6">0</span>
+            <span class="stat-label">Clans</span>
           </div>
           <div class="stat-plank">
             <span class="stat-value" data-count="100">0</span>
-            <span class="stat-label">Artifacts</span>
+            <span class="stat-label">Traits</span>
           </div>
           <div class="stat-plank">
             <span class="stat-value" data-count="4">0</span>
@@ -79,21 +79,105 @@
       <div class="scroll-hint">↓ Scroll to explore the realm ↓</div>
     </section>
 
-    <!-- COLLECTION SECTION -->
+    <!-- LIVE WARRIOR FORGE (RANDOMIZER) -->
+    <section class="section" id="forge">
+      <div class="parchment fade-in">
+        <div class="section-badge">Live DNA Generator</div>
+        <h2 class="section-title">The <span class="text-gradient">Warrior Forge</span></h2>
+        <p class="section-desc">Experience our procedural DNA engine live. Randomize traits to generate custom warriors directly on the canvas.</p>
+        
+        <div class="forge-container">
+          <div class="forge-canvas-wrap">
+            <canvas id="forgeCanvas" width="400" height="400"></canvas>
+          </div>
+          <div class="forge-info">
+            <h3 id="forgeName" style="font-family: var(--font-display); font-size: 1.5rem; color: var(--purple-primary); margin-bottom: 0.5rem;">Warrior #0042</h3>
+            <div id="forgeRank" style="display: inline-block; padding: 0.3rem 0.8rem; background: var(--purple-soft); color: var(--purple-primary); border-radius: var(--radius-pill); font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; margin-bottom: 1rem;">Legendary Rank</div>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Algorithmically assembled across 12 distinct visual trait layers.</p>
+            
+            <div class="forge-traits-grid">
+              <div class="trait-chip">
+                <div class="trait-chip-label">Clan</div>
+                <div class="trait-chip-val" id="traitClan">Honoo (Fire)</div>
+              </div>
+              <div class="trait-chip">
+                <div class="trait-chip-label">Weapon</div>
+                <div class="trait-chip-val" id="traitWeapon">Katana of Ink</div>
+              </div>
+              <div class="trait-chip">
+                <div class="trait-chip-label">Aura</div>
+                <div class="trait-chip-val" id="traitAura">Cyber Plasma</div>
+              </div>
+              <div class="trait-chip">
+                <div class="trait-chip-label">Outfit</div>
+                <div class="trait-chip-val" id="traitOutfit">Cyber Kimono</div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="btnRandomize" onclick="randomizeForgeWarrior()">
+              <span>🎲 Randomize Warrior</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLECTION SHOWCASE GALLERY -->
     <section class="section" id="collection">
       <div class="parchment fade-in">
-        <div class="section-badge">The Collection</div>
-        <h2 class="section-title">Choose Your <span class="text-gradient">Warrior</span></h2>
-        <p class="section-desc">1,999 unique characters, each forged with distinct personality and style. Pick your champion from the realm.</p>
+        <div class="section-badge">The Roster</div>
+        <h2 class="section-title">Champion <span class="text-gradient">Showcase</span></h2>
+        <p class="section-desc">Sample characters forged in the ink stream. Click any warrior card to inspect traits.</p>
         <div class="gallery-grid stagger">
-          <div class="gallery-card"><img src="nft-preview/1.png" alt="#1"></div>
-          <div class="gallery-card"><img src="nft-preview/42.png" alt="#42"></div>
-          <div class="gallery-card"><img src="nft-preview/100.png" alt="#100"></div>
-          <div class="gallery-card"><img src="nft-preview/200.png" alt="#200"></div>
-          <div class="gallery-card"><img src="nft-preview/300.png" alt="#300"></div>
-          <div class="gallery-card"><img src="nft-preview/500.png" alt="#500"></div>
-          <div class="gallery-card"><img src="nft-preview/700.png" alt="#700"></div>
-          <div class="gallery-card"><img src="nft-preview/1000.png" alt="#1000"></div>
+          <div class="gallery-card" onclick="alert('Warrior #1 — Clan Kaze (Wind), Legendary Tier')"><img src="nft-preview/1.png" alt="#1"></div>
+          <div class="gallery-card" onclick="alert('Warrior #42 — Clan Honoo (Fire), Epic Tier')"><img src="nft-preview/42.png" alt="#42"></div>
+          <div class="gallery-card" onclick="alert('Warrior #100 — Clan Mizu (Water), Rare Tier')"><img src="nft-preview/100.png" alt="#100"></div>
+          <div class="gallery-card" onclick="alert('Warrior #200 — Clan Tsuchi (Earth), Epic Tier')"><img src="nft-preview/200.png" alt="#200"></div>
+          <div class="gallery-card" onclick="alert('Warrior #300 — Clan Hikari (Light), Legendary Tier')"><img src="nft-preview/300.png" alt="#300"></div>
+          <div class="gallery-card" onclick="alert('Warrior #500 — Clan Kage (Shadow), Epic Tier')"><img src="nft-preview/500.png" alt="#500"></div>
+          <div class="gallery-card" onclick="alert('Warrior #700 — Clan Honoo (Fire), Rare Tier')"><img src="nft-preview/700.png" alt="#700"></div>
+          <div class="gallery-card" onclick="alert('Warrior #1000 — Clan Kaze (Wind), Legendary Tier')"><img src="nft-preview/1000.png" alt="#1000"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE 6 GREAT CLANS -->
+    <section class="section" id="clans">
+      <div class="parchment fade-in">
+        <div class="section-badge">Tribes of the Realm</div>
+        <h2 class="section-title">The 6 Great <span class="text-gradient">Clans</span></h2>
+        <p class="section-desc">Every warrior is bound to an elemental lineage that shapes their prowess, destiny, and visual aura.</p>
+        <div class="clans-grid stagger">
+          <div class="clan-item">
+            <div class="clan-item-icon">🌪️</div>
+            <h3 class="clan-item-title">Kaze (Wind)</h3>
+            <p class="clan-item-desc">Swift aerial wanderers armed with tempest blasters and swift wind blades.</p>
+          </div>
+          <div class="clan-item">
+            <div class="clan-item-icon">🔥</div>
+            <h3 class="clan-item-title">Honoo (Fire)</h3>
+            <p class="clan-item-desc">Passionate front-line champions who channel molten plasma through their weapons.</p>
+          </div>
+          <div class="clan-item">
+            <div class="clan-item-icon">🌊</div>
+            <h3 class="clan-item-title">Mizu (Water)</h3>
+            <p class="clan-item-desc">Adaptive strategists wielding fluid kinetic shields and frozen crystalline darts.</p>
+          </div>
+          <div class="clan-item">
+            <div class="clan-item-icon">⛰️</div>
+            <h3 class="clan-item-title">Tsuchi (Earth)</h3>
+            <p class="clan-item-desc">Indomitable guardians encased in seismic heavy cyber armor and titan hammers.</p>
+          </div>
+          <div class="clan-item">
+            <div class="clan-item-icon">✨</div>
+            <h3 class="clan-item-title">Hikari (Light)</h3>
+            <p class="clan-item-desc">Enlightened scholars whose radiant light bends the laws of on-chain reality.</p>
+          </div>
+          <div class="clan-item">
+            <div class="clan-item-icon">🌑</div>
+            <h3 class="clan-item-title">Kage (Shadow)</h3>
+            <p class="clan-item-desc">Silent infiltrators who operate unseen within the cryptographic substrate.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -101,38 +185,16 @@
     <!-- ABOUT / LORE SECTION -->
     <section class="section" id="about">
       <div class="parchment fade-in">
-        <div class="section-badge">The Lore</div>
+        <div class="section-badge">The Origin</div>
         <h2 class="section-title">What is <span class="text-gradient">Blockbit Ink</span>?</h2>
         <p class="section-desc">
-          In a world where ink meets blockchain, 1,999 warriors were born from the last drop of digital paint.
-          Each Blockbit Ink is a unique character — hand-crafted, algorithmically assembled, and forever etched on Ink Blockchain.
+          In a world where digital ink meets cryptographic consensus, 1,999 warriors were forged from the genesis block of the Superchain.
+          Each warrior is algorithmically compiled from 12 distinct hand-crafted layers and forever secured on Ink Blockchain.
         </p>
-        <p class="section-desc">
-          Built on Ink — Kraken's Superchain L2 — these pixel warriors carry their own traits, their own stories, and their own legacy.
-          No two are alike.
-        </p>
-        <div class="hero-stats" style="margin-top: 40px;">
-          <div class="stat-plank"><span class="stat-value" style="font-size: 2rem;">1,999</span><span class="stat-label">Warriors</span></div>
-          <div class="stat-plank"><span class="stat-value" style="font-size: 2rem;">12</span><span class="stat-label">Tribes</span></div>
-          <div class="stat-plank"><span class="stat-value" style="font-size: 2rem;">100+</span><span class="stat-label">Artifacts</span></div>
-          <div class="stat-plank"><span class="stat-value" style="font-size: 2rem;">4</span><span class="stat-label">Ranks</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURES SECTION -->
-    <section class="section" id="features">
-      <div class="parchment fade-in">
-        <div class="section-badge">Features</div>
-        <h2 class="section-title">Why <span class="text-gradient">Blockbit Ink</span>?</h2>
-        <p class="section-desc">More than pixels — these are living digital identities on the blockchain.</p>
-        <div class="features-grid stagger">
-          <div class="feature-card"><div class="feature-number">01</div><h3>Generative</h3><p>12 trait categories, 100+ unique options.</p></div>
-          <div class="feature-card"><div class="feature-number">02</div><h3>Rarity</h3><p>4 tiers: Common, Rare, Epic, Legendary.</p></div>
-          <div class="feature-card"><div class="feature-number">03</div><h3>Ink Chain</h3><p>Built on Kraken's Superchain L2.</p></div>
-          <div class="feature-card"><div class="feature-number">04</div><h3>Marketplace</h3><p>OpenSea and major NFT platforms.</p></div>
-          <div class="feature-card"><div class="feature-number">05</div><h3>On-Chain</h3><p>Permanently recorded on blockchain.</p></div>
-          <div class="feature-card"><div class="feature-number">06</div><h3>Community</h3><p>Holder benefits and exclusive events.</p></div>
+        <div class="features-grid stagger" style="margin-top: 2rem;">
+          <div class="feature-card"><div class="feature-number">01</div><h3>Generative DNA</h3><p>12 trait categories, over 100+ unique visual options.</p></div>
+          <div class="feature-card"><div class="feature-number">02</div><h3>Rarity Matrix</h3><p>4 distinct tiers: Common, Rare, Epic, and Legendary.</p></div>
+          <div class="feature-card"><div class="feature-number">03</div><h3>Ink Superchain</h3><p>Built on Kraken's Layer 2 for ultra-fast, low-gas transactions.</p></div>
         </div>
       </div>
     </section>
@@ -140,14 +202,14 @@
     <!-- ROADMAP SECTION -->
     <section class="section" id="roadmap">
       <div class="parchment fade-in">
-        <div class="section-badge">The Journey</div>
+        <div class="section-badge">Master Plan</div>
         <h2 class="section-title">The <span class="text-gradient">Roadmap</span></h2>
-        <p class="section-desc">From the first drop to the final reveal — here's our path.</p>
+        <p class="section-desc">From initial whitelist genesis to decentralized expansion across the Superchain ecosystem.</p>
         <div class="roadmap stagger">
-          <div class="roadmap-item"><div class="roadmap-phase">Phase 1</div><h3>Launch</h3><ul><li>Website live</li><li>Whitelist opens</li><li>Community build</li></ul></div>
-          <div class="roadmap-item"><div class="roadmap-phase">Phase 2</div><h3>Mint</h3><ul><li>WL mint</li><li>Public mint</li><li>Reveal</li></ul></div>
-          <div class="roadmap-item"><div class="roadmap-phase">Phase 3</div><h3>Community</h3><ul><li>Holder perks</li><li>Merch</li><li>Events</li></ul></div>
-          <div class="roadmap-item"><div class="roadmap-phase">Phase 4</div><h3>Expand</h3><ul><li>Season 2</li><li>Cross-chain</li><li>DAO</li></ul></div>
+          <div class="roadmap-item"><div class="roadmap-phase">Phase 1</div><h3>Launch Genesis</h3><ul><li>Interactive Portal Live</li><li>Whitelist Registration</li><li>Community Alliances</li></ul></div>
+          <div class="roadmap-item"><div class="roadmap-phase">Phase 2</div><h3>The Minting</h3><ul><li>VIP Whitelist Mint</li><li>Public Mint Phase</li><li>On-Chain Metadata Reveal</li></ul></div>
+          <div class="roadmap-item"><div class="roadmap-phase">Phase 3</div><h3>Ecosystem Perks</h3><ul><li>Exclusive Holder Hub</li><li>Clan Reward Raffles</li><li>Physical Merch Drops</li></ul></div>
+          <div class="roadmap-item"><div class="roadmap-phase">Phase 4</div><h3>Realm Expansion</h3><ul><li>Season 2 Lore</li><li>Cross-Chain Bridges</li><li>Clan DAO Governance</li></ul></div>
         </div>
       </div>
     </section>
@@ -155,36 +217,36 @@
     <!-- FAQ SECTION -->
     <section class="section" id="faq">
       <div class="parchment fade-in">
-        <div class="section-badge">Questions</div>
-        <h2 class="section-title">The <span class="text-gradient">Scroll</span> of Knowledge</h2>
+        <div class="section-badge">Scroll of Knowledge</div>
+        <h2 class="section-title">Frequently Asked <span class="text-gradient">Questions</span></h2>
         <div class="faq-list stagger">
           <div class="faq-item">
             <button class="faq-question">
               <span>What is Blockbit Ink?</span>
               <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-answer"><p>1,999 unique generative NFTs. Each is algorithmically assembled from 12 trait categories.</p></div>
+            <div class="faq-answer"><p>1,999 unique generative anime/pixel NFTs, each procedurally created from 12 distinct hand-crafted trait layers on Ink Blockchain.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>What blockchain is this on?</span>
+              <span>What blockchain is this deployed on?</span>
               <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-answer"><p>Ink Blockchain — Kraken's Layer 2 built on the Superchain.</p></div>
+            <div class="faq-answer"><p>Ink Blockchain — Kraken's official Layer 2 built on the Optimism Superchain ecosystem for ultra-low gas fees and lightning transaction speeds.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>How do I get whitelisted?</span>
+              <span>How do I secure a Whitelist spot?</span>
               <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-answer"><p>Apply through the whitelist page. Approved wallets get early access.</p></div>
+            <div class="faq-answer"><p>Click 'Enter the Realm' to complete our 4-step application. Whitelisted wallets receive guaranteed priority minting access and special VIP perks.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>What is the mint price?</span>
+              <span>What is the total supply and mint price?</span>
               <svg class="faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="faq-answer"><p>0.05 ETH on Ink Chain. Whitelist members get priority access.</p></div>
+            <div class="faq-answer"><p>The collection consists of exactly 1,999 NFTs. Mint pricing will be 0.05 ETH on Ink Chain, with discounted rates for Whitelist pass holders.</p></div>
           </div>
         </div>
       </div>
@@ -194,13 +256,13 @@
     <section class="section" id="whitelist-cta">
       <div class="cta-banner scale-in">
         <div class="cta-banner-content">
-          <div class="section-badge">Limited Realm</div>
-          <h2 class="section-title">Enter the <span class="text-gradient">Realm</span></h2>
+          <div class="section-badge">Limited Genesis Access</div>
+          <h2 class="section-title">Claim Your <span class="text-gradient">Mint Pass</span></h2>
           <p class="section-desc" style="margin-left:auto;margin-right:auto;">
-            Whitelist spots are limited. Secure your place in the realm.
+            Whitelist allocations are strictly limited. Complete the quest to generate your on-chain VIP pass.
           </p>
           <a href="whitelist.html" class="btn btn-primary btn-lg">
-            <span>Begin the Ritual</span>
+            <span>Begin Whitelist Quest</span>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
@@ -211,7 +273,7 @@
     <footer class="footer">
       <img src="logo-purple.jpg" alt="Blockbit Ink" class="footer-logo">
       <div class="footer-text">Blockbit<span class="logo-accent">Ink</span></div>
-      <div class="footer-brand">1,999 unique warriors. Built on Ink Chain.</div>
+      <div class="footer-brand">1,999 unique warriors. Built on Ink Superchain.</div>
       <div class="footer-links">
         <a href="whitelist.html">Whitelist</a>
         <a href="#">OpenSea</a>
@@ -219,7 +281,7 @@
         <a href="#">Twitter</a>
       </div>
       <div class="footer-chain">
-        <img src="ink-logo.webp" alt="Ink" style="width:20px;height:20px;border-radius:4px;">
+        <img src="ink-logo.webp" alt="Ink" style="width:22px;height:22px;border-radius:4px;">
         <span>Ink Blockchain by Kraken</span>
       </div>
       <div class="footer-copy">&copy; 2026 Blockbit Ink. All rights reserved.</div>
