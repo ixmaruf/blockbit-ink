@@ -6,9 +6,11 @@
   const totalSteps = 4;
   let serial = '';
   let submitted = false;
-  const tasksCompleted = { follow: false, like: false };
+  const tasksCompleted = { follow: false, like: false, repost: false, quote: false };
   let savedWallet = '';
   let savedTwitter = '';
+  let currentPostUrl = '';
+  let appSettings = {};
 
   /* ─── DOM refs ─── */
   const twitterInput = document.getElementById('twitterHandle');
@@ -42,6 +44,102 @@
       h = Math.imul(h, 0x01000193);
     }
     return h >>> 0;
+  }
+
+  /* ─── Extract tweet ID from URL ─── */
+  function extractTweetId(url) {
+    if (!url) return null;
+    const match = url.match(/status(?:es)?\/(\d+)/i) || url.match(/\/(\d{15,25})/);
+    return match ? match[1] : null;
+  }
+
+  /* ─── Fetch settings from Apps Script ─── */
+  async function fetchSettings() {
+    try {
+      const resp = await fetch(BLOCKBIT_CONFIG.sheetEndpoint + '?action=settings');
+      const data = await resp.json();
+      if (data.ok && data.settings) return data.settings;
+    } catch (err) {
+      console.warn('Settings fetch failed, using defaults:', err);
+    }
+    return {
+      postUrl: 'https://x.com/BlockbitInk',
+      timerStart: new Date().toISOString(),
+      timerDuration: '48',
+      whitelistOpen: 'true'
+    };
+  }
+
+  /* ─── Initialize countdown timer ─── */
+  function initTimer(settings) {
+    var timerEl = document.getElementById('wlTimer');
+    var comingSoonEl = document.getElementById('wlComingSoon');
+    var containerEl = document.querySelector('.wl-container');
+    
+    if (timerEl) timerEl.classList.add('loaded');
+    
+    // Check if explicitly closed
+    var isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off';
+    
+    // Parse Bangladesh time format (YYYY-MM-DD HH:mm) as UTC+6
+    var startStr = settings.timerStart || '';
+    var startMs;
+    if (startStr.indexOf('T') > -1) {
+      startMs = new Date(startStr).getTime();
+    } else {
+      // Bangladesh time (UTC+6): "2026-08-26 01:50" → treat as UTC+6
+      var parts = startStr.split(' ');
+      var dateParts = (parts[0] || '').split('-');
+      var timeParts = (parts[1] || '').split(':');
+      var y = parseInt(dateParts[0]) || 2026;
+      var m = parseInt(dateParts[1]) || 1;
+      var d = parseInt(dateParts[2]) || 1;
+      var hh = parseInt(timeParts[0]) || 0;
+      var mm = parseInt(timeParts[1]) || 0;
+      // Convert from Bangladesh (UTC+6) to UTC
+      startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
+    }
+    var durationMs = parseInt(settings.timerDuration || '48') * 60 * 60 * 1000;
+    var endTime = startMs + durationMs;
+
+    function updateTimer() {
+      var now = Date.now();
+      var remaining = endTime - now;
+
+      if (!isOpen || remaining <= 0) {
+        if (timerEl) timerEl.style.display = 'none';
+        if (containerEl) containerEl.style.display = 'none';
+        if (comingSoonEl) {
+          comingSoonEl.classList.add('active');
+          if (!isOpen) {
+            comingSoonEl.querySelector('h2').textContent = 'Whitelist Closed';
+            document.getElementById('comingSoonDate').parentElement.textContent = 'The whitelist is currently paused or closed.';
+          } else {
+            var openDate = new Date(endTime);
+            document.getElementById('comingSoonDate').textContent =
+              openDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+          }
+        }
+        return;
+      }
+
+      var hours = Math.floor(remaining / (1000 * 60 * 60));
+      var mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+      var secs = Math.floor((remaining % (1000 * 60)) / 1000);
+
+      var hrEl = document.getElementById('timerHours');
+      var minEl = document.getElementById('timerMins');
+      var secEl = document.getElementById('timerSecs');
+
+      if (hrEl) hrEl.textContent = hours.toString().padStart(2, '0');
+      if (minEl) minEl.textContent = mins.toString().padStart(2, '0');
+      if (secEl) secEl.textContent = secs.toString().padStart(2, '0');
+    }
+
+    updateTimer();
+    if (isOpen) {
+      setInterval(updateTimer, 1000);
+    }
   }
 
   /* ─── Serial (no clan) ─── */
@@ -88,73 +186,85 @@
     drawMintPass(wa, tw, serial);
   }
 
-  /* ─── Draw mint pass ─── */
+  /* ─── Draw mint pass (light theme) ─── */
   function drawMintPass(wallet, twitter, serialNum) {
     const canvas = document.getElementById('mintPass');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
 
-    ctx.fillStyle = '#0b0b0f';
+    // Light background
+    ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, W, H);
 
-    // Border glow
-    ctx.strokeStyle = 'rgba(200, 170, 255, 0.4)';
+    // Subtle grid pattern
+    ctx.strokeStyle = 'rgba(14, 165, 233, 0.08)';
+    ctx.lineWidth = 0.5;
+    for (let x = 0; x < W; x += 20) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let y = 0; y < H; y += 20) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+
+    // Border
+    ctx.strokeStyle = 'rgba(124, 58, 237, 0.2)';
     ctx.lineWidth = 2;
     ctx.strokeRect(10, 10, W - 20, H - 20);
 
     // Corner accents
-    ctx.fillStyle = 'rgba(168, 130, 255, 0.6)';
+    ctx.fillStyle = 'rgba(124, 58, 237, 0.5)';
     [[12,12,30,3],[12,12,3,30],[W-42,12,30,3],[W-15,12,3,30],
      [12,H-15,30,3],[12,H-42,3,30],[W-42,H-15,30,3],[W-15,H-42,3,30]
     ].forEach(([x,y,w,h]) => ctx.fillRect(x,y,w,h));
 
     // Title
-    ctx.fillStyle = '#e0d5ff';
-    ctx.font = 'bold 36px "Silkscreen", monospace';
+    ctx.fillStyle = '#0B0A12';
+    ctx.font = 'bold 36px "Cormorant Garamond", Georgia, serif';
     ctx.textAlign = 'center';
     ctx.fillText('BLOCKBIT INK', W/2, 70);
-    ctx.fillStyle = '#8a7abb';
-    ctx.font = '16px "Silkscreen", monospace';
-    ctx.fillText('WHITELIST PASS — GENESIS COLLECTION', W/2, 100);
+    ctx.fillStyle = '#475569';
+    ctx.font = '600 13px "DM Sans", system-ui, sans-serif';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('WHITELIST PASS  ·  GENESIS COLLECTION', W/2, 100);
 
     // Divider
-    ctx.strokeStyle = 'rgba(168, 130, 255, 0.3)';
+    ctx.strokeStyle = 'rgba(124, 58, 237, 0.25)';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(80,120); ctx.lineTo(W-80,120); ctx.stroke();
 
     // Serial
-    ctx.fillStyle = '#bba8ff';
-    ctx.font = 'bold 42px "Silkscreen", monospace';
+    ctx.fillStyle = '#7C3AED';
+    ctx.font = 'bold 42px "Cormorant Garamond", Georgia, serif';
     ctx.fillText(serialNum, W/2, 180);
 
     // Twitter
-    ctx.fillStyle = '#8a7abb';
-    ctx.font = '14px "Silkscreen", monospace';
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '600 11px "DM Sans", system-ui, sans-serif';
     ctx.fillText('TWITTER', W/2, 230);
-    ctx.fillStyle = '#e0d5ff';
-    ctx.font = '18px "Silkscreen", monospace';
+    ctx.fillStyle = '#0B0A12';
+    ctx.font = '600 18px "DM Sans", system-ui, sans-serif';
     ctx.fillText('@' + twitter, W/2, 255);
 
     // Wallet
-    ctx.fillStyle = '#8a7abb';
-    ctx.font = '14px "Silkscreen", monospace';
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '600 11px "DM Sans", system-ui, sans-serif';
     ctx.fillText('WALLET', W/2, 300);
-    ctx.fillStyle = '#e0d5ff';
-    ctx.font = '16px "Silkscreen", monospace';
+    ctx.fillStyle = '#0B0A12';
+    ctx.font = '500 16px "DM Sans", system-ui, sans-serif';
     ctx.fillText(wallet.slice(0,6) + '...' + wallet.slice(-4), W/2, 325);
 
     // Network
-    ctx.fillStyle = '#8a7abb';
-    ctx.font = '14px "Silkscreen", monospace';
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '600 11px "DM Sans", system-ui, sans-serif';
     ctx.fillText('NETWORK', W/2, 370);
-    ctx.fillStyle = '#e0d5ff';
-    ctx.font = '18px "Silkscreen", monospace';
+    ctx.fillStyle = '#0B0A12';
+    ctx.font = '600 18px "DM Sans", system-ui, sans-serif';
     ctx.fillText('INK (EVM)', W/2, 395);
 
     // Footer
-    ctx.fillStyle = '#5a4f7a';
-    ctx.font = '11px "Silkscreen", monospace';
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '11px "DM Sans", system-ui, sans-serif';
     ctx.fillText('This pass guarantees an allocation slot for the Blockbit Ink genesis mint.', W/2, H-40);
   }
 
@@ -244,7 +354,8 @@
       btn.classList.add('completed');
       btn.querySelector('.action-status').textContent = 'Done';
     }
-    continueBtn.disabled = !(tasksCompleted.follow && tasksCompleted.like);
+    const allDone = tasksCompleted.follow && tasksCompleted.like && tasksCompleted.repost && tasksCompleted.quote;
+    continueBtn.disabled = !allDone;
   }
 
   /* ─── Init: restore from localStorage ─── */
@@ -271,28 +382,74 @@
     });
   });
 
-  /* ─── Social task buttons: open X tab + mark done ─── */
+  /* ─── Social task buttons: open X intent + mark done ─── */
   document.querySelectorAll('.action-btn').forEach(btn => {
     btn.addEventListener('click', function () {
       const taskKey = this.dataset.task;
-      if (tasksCompleted[taskKey]) return; // already done
+      if (tasksCompleted[taskKey]) return;
 
-      // Open X in new tab
-      if (taskKey === 'follow') {
-        window.open('https://x.com/BlockbitInk', '_blank', 'noopener,noreferrer');
-      } else if (taskKey === 'like') {
-        window.open('https://x.com/BlockbitInk', '_blank', 'noopener,noreferrer');
+      let url;
+      switch (taskKey) {
+        case 'follow':
+          url = 'https://x.com/intent/follow?screen_name=BlockbitInk';
+          break;
+        case 'like': {
+          const tid = extractTweetId(currentPostUrl);
+          if (tid) url = 'https://x.com/intent/like?tweet_id=' + tid;
+          else url = currentPostUrl || 'https://x.com/BlockbitInk';
+          break;
+        }
+        case 'repost': {
+          const tid = extractTweetId(currentPostUrl);
+          if (tid) url = 'https://x.com/intent/retweet?tweet_id=' + tid;
+          else url = currentPostUrl || 'https://x.com/BlockbitInk';
+          break;
+        }
+        case 'quote': {
+          const shareText = encodeURIComponent('Just joined the Blockbit Ink whitelist. 1,999 anime pixel warriors forged on Ink Blockchain by Kraken. #BlockbitInk #NFT');
+          const postUrl = encodeURIComponent(currentPostUrl || 'https://x.com/BlockbitInk');
+          url = 'https://x.com/intent/tweet?text=' + shareText + '&url=' + postUrl;
+          break;
+        }
       }
 
-      // Mark done client-side (like minibroker pattern)
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+
       markTaskDone(taskKey);
     });
   });
+
+  /* ─── Share on X ─── */
+  function shareOnX() {
+    var canvas = document.getElementById('mintPass');
+    if (!canvas) return;
+
+    // First download the mint pass image
+    var link = document.createElement('a');
+    link.download = 'blockbit-ink-pass-' + serial + '.png';
+    link.href = canvas.toDataURL('image/png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Then open Twitter intent after a short delay
+    setTimeout(function () {
+      var shareText = encodeURIComponent(
+        'I just secured my spot on the Blockbit Ink whitelist.\n\n' +
+        '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
+        '@BlockbitInk #BlockbitInk #NFT #InkBlockchain'
+      );
+      window.open('https://twitter.com/intent/tweet?text=' + shareText, '_blank', 'noopener,noreferrer,width=600,height=500');
+    }, 800);
+  }
 
   /* ─── Confirm step buttons ─── */
   document.getElementById('downloadPass').addEventListener('click', downloadPass);
   document.getElementById('downloadSuccess').addEventListener('click', downloadPass);
   document.getElementById('submitFinal').addEventListener('click', submitApplication);
+  document.getElementById('shareOnX').addEventListener('click', shareOnX);
 
   /* ─── Input validation on blur ─── */
   twitterInput.addEventListener('blur', function () {
@@ -305,4 +462,11 @@
     if (w && !isValidWallet(w)) showErr(walletErr, 'Invalid address — must be 0x followed by 40 hex characters.');
     else clearErr(walletErr);
   });
+
+  /* ─── Init: fetch settings, set up timer ─── */
+  (async function initApp() {
+    appSettings = await fetchSettings();
+    currentPostUrl = appSettings.postUrl || 'https://x.com/BlockbitInk';
+    initTimer(appSettings);
+  })();
 })();

@@ -24,6 +24,17 @@
 /** Sheet name inside the bound spreadsheet. */
 const SHEET_NAME = 'Submissions';
 
+/** Settings sheet name for dynamic config (post link, timer, whitelist state). */
+const SETTINGS_SHEET = 'Settings';
+
+/** Default settings used when Settings sheet is missing or incomplete. */
+const DEFAULT_SETTINGS = {
+  postUrl: 'https://x.com/BlockbitInk',
+  timerStart: Utilities.formatDate(new Date(), 'Asia/Dhaka', 'yyyy-MM-dd HH:mm'),
+  timerDuration: '48',
+  whitelistOpen: 'true'
+};
+
 /** Header row written by setupSheet(). Order MUST match the column order in appendRow(). */
 const HEADERS = [
   'Timestamp',
@@ -58,14 +69,121 @@ function isValidSerial(serial) {
   return typeof serial === 'string' && /^BBI-\d{4}-[0-9A-F]{6}$/.test(serial);
 }
 
-/** Simple health check — confirms the web app is live. */
-function doGet() {
+/** Health check or settings endpoint. Usage: ?action=settings */
+function doGet(e) {
+  if (e && e.parameter && e.parameter.action === 'settings') {
+    const settings = getSettings_();
+    return jsonResponse_({
+      ok: true,
+      settings: settings
+    });
+  }
   return jsonResponse_({
     ok: true,
     service: 'Blockbit Ink Whitelist API',
-    version: 2,
+    version: 3,
     timestamp: new Date().toISOString()
   });
+}
+
+/** Read settings from the Settings sheet. */
+function getSettings_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SETTINGS_SHEET);
+  if (!sheet) {
+    setupSettingsSheet();
+    sheet = ss.getSheetByName(SETTINGS_SHEET);
+  }
+  const last = sheet.getLastRow();
+  if (last < 2) return DEFAULT_SETTINGS;
+  const settings = {};
+  const values = sheet.getRange(2, 1, last - 1, 2).getValues();
+  for (const row of values) {
+    if (row[0]) {
+      // If it's a date object, format it to YYYY-MM-DD
+      if (row[0] === 'timerStartDate' && row[1] instanceof Date) {
+        settings[row[0]] = Utilities.formatDate(row[1], 'Asia/Dhaka', 'yyyy-MM-dd');
+      } else {
+        settings[row[0]] = String(row[1]);
+      }
+    }
+  }
+
+  const finalSettings = Object.assign({}, DEFAULT_SETTINGS, settings);
+  
+  // Assemble timerStart if separated fields exist
+  if (finalSettings.timerStartDate && finalSettings.timerStartHour && finalSettings.timerStartMinute && finalSettings.timerStartAMPM) {
+    let hh = parseInt(finalSettings.timerStartHour, 10);
+    if (finalSettings.timerStartAMPM === 'PM' && hh < 12) hh += 12;
+    if (finalSettings.timerStartAMPM === 'AM' && hh === 12) hh = 0;
+    
+    let hhStr = hh < 10 ? '0' + hh : String(hh);
+    let mmStr = finalSettings.timerStartMinute;
+    
+    finalSettings.timerStart = finalSettings.timerStartDate + ' ' + hhStr + ':' + mmStr;
+  }
+  
+  return finalSettings;
+}
+
+/** Run once to create Settings sheet with default values and Data Validations. */
+function setupSettingsSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SETTINGS_SHEET);
+  if (!sheet) {
+    sheet = ss.insertSheet(SETTINGS_SHEET);
+  } else {
+    // Clear everything to apply the new format
+    sheet.clear();
+  }
+  
+  // Header row
+  sheet.appendRow(['Key', 'Value', 'Instructions']);
+  sheet.getRange(1, 1, 1, 3).setFontWeight('bold').setBackground('#7C3AED').setFontColor('#FFFFFF');
+  
+  // Helper for Data Validation
+  const addDropdown = (row, options) => {
+    const rule = SpreadsheetApp.newDataValidation().requireValueInList(options, true).build();
+    sheet.getRange(row, 2).setDataValidation(rule);
+  };
+  const addDateValidation = (row) => {
+    const rule = SpreadsheetApp.newDataValidation().requireDate().build();
+    sheet.getRange(row, 2).setDataValidation(rule);
+    sheet.getRange(row, 2).setNumberFormat('yyyy-MM-dd');
+  };
+
+  // Settings rows
+  const now = new Date();
+  
+  // row 2
+  sheet.appendRow(['postUrl', 'https://x.com/BlockbitInk', 'Tweet URL for Like/Repost/Quote']);
+  // row 3
+  sheet.appendRow(['whitelistOpen', 'On', 'Status of Whitelist (On or Off)']);
+  addDropdown(3, ['On', 'Off']);
+  // row 4
+  sheet.appendRow(['timerStartDate', now, 'Double-click to open Date Picker calendar']);
+  addDateValidation(4);
+  // row 5
+  sheet.appendRow(['timerStartHour', '12', 'Hour (1 to 12)']);
+  addDropdown(5, ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+  // row 6
+  sheet.appendRow(['timerStartMinute', '00', 'Minute']);
+  addDropdown(6, ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']);
+  // row 7
+  sheet.appendRow(['timerStartAMPM', 'AM', 'AM or PM']);
+  addDropdown(7, ['AM', 'PM']);
+  // row 8
+  sheet.appendRow(['timerDuration', '48', 'Duration in hours (e.g. 24, 35, 48, 72)']);
+  addDropdown(8, ['12', '24', '35', '48', '72', '96', '120', '144', '168']);
+
+  sheet.setColumnWidth(1, 140);
+  sheet.setColumnWidth(2, 300);
+  sheet.setColumnWidth(3, 420);
+  
+  // Style instruction column
+  sheet.getRange(2, 3, 7, 1).setFontColor('#666666').setFontStyle('italic');
+  
+  return 'Settings sheet ready with Dropdowns. Edit the Value column to control whitelist.';
 }
 
 /** Run once after pasting this code to create the header row automatically. */
