@@ -299,34 +299,116 @@ function randomizeForgeWarrior() {
 }
 window.randomizeForgeWarrior = randomizeForgeWarrior;
 
-/* ── TOP BANNER COUNTDOWN ── */
-function initCountdown() {
-  const countdownEl = document.getElementById('top-countdown');
-  if (!countdownEl) return;
-  
-  // Set target date to 7 days from now for demo purposes
-  const targetDate = new Date();
-  targetDate.setDate(targetDate.getDate() + 7);
-  
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = targetDate.getTime() - now;
-    
-    if (distance < 0) {
-      countdownEl.innerHTML = "MINT IS LIVE";
+/* ── TOP BANNER WHITELIST SYNC ── */
+function initTopBanner() {
+  const labelEl = document.getElementById('top-banner-label');
+  const countEl = document.getElementById('top-countdown');
+  const pulseEl = document.getElementById('bannerPulse');
+  if (!labelEl || !countEl) return;
+
+  let bannerInterval = null;
+
+  function applySettings(settings) {
+    if (!settings) return;
+
+    const isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off';
+
+    if (!isOpen) {
+      if (bannerInterval) {
+        clearInterval(bannerInterval);
+        bannerInterval = null;
+      }
+      labelEl.textContent = 'WHITELIST OPENS SOON';
+      countEl.textContent = 'Stay tuned for Genesis Initiation';
+      if (pulseEl) {
+        pulseEl.style.backgroundColor = '#F59E0B';
+        pulseEl.style.boxShadow = '0 0 0 rgba(245, 158, 11, 0.7)';
+      }
       return;
     }
-    
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-    countdownEl.innerHTML = `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+
+    // When Open: Parse Bangladesh time (UTC+6)
+    const startStr = settings.timerStart || '';
+    let startMs;
+    if (startStr.indexOf('T') > -1) {
+      startMs = new Date(startStr).getTime();
+    } else {
+      const parts = startStr.split(' ');
+      const dateParts = (parts[0] || '').split('-');
+      const timeParts = (parts[1] || '').split(':');
+      const y = parseInt(dateParts[0]) || 2026;
+      const m = parseInt(dateParts[1]) || 1;
+      const d = parseInt(dateParts[2]) || 1;
+      const hh = parseInt(timeParts[0]) || 0;
+      const mm = parseInt(timeParts[1]) || 0;
+      startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
+    }
+    const durationHours = parseInt(settings.timerDuration || '48', 10);
+    const durationMs = (isNaN(durationHours) ? 48 : durationHours) * 60 * 60 * 1000;
+    const endTime = startMs + durationMs;
+
+    if (pulseEl) {
+      pulseEl.style.backgroundColor = '#10B981';
+      pulseEl.style.boxShadow = '0 0 0 rgba(16, 185, 129, 0.7)';
+    }
+
+    function updateBannerTimer() {
+      const now = Date.now();
+      const remaining = endTime - now;
+
+      if (remaining <= 0) {
+        labelEl.textContent = 'WHITELIST CLOSED';
+        countEl.textContent = 'Allocations Filled';
+        if (pulseEl) {
+          pulseEl.style.backgroundColor = '#94A3B8';
+          pulseEl.style.boxShadow = 'none';
+        }
+        if (bannerInterval) {
+          clearInterval(bannerInterval);
+          bannerInterval = null;
+        }
+        return;
+      }
+
+      const totalHours = Math.floor(remaining / (1000 * 60 * 60));
+      const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((remaining % (1000 * 60)) / 1000);
+
+      labelEl.textContent = 'WHITELIST ENDING IN:';
+      countEl.textContent = totalHours.toString().padStart(2, '0') + 'h ' +
+                            mins.toString().padStart(2, '0') + 'm ' +
+                            secs.toString().padStart(2, '0') + 's';
+    }
+
+    if (bannerInterval) clearInterval(bannerInterval);
+    updateBannerTimer();
+    bannerInterval = setInterval(updateBannerTimer, 1000);
   }
-  
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+
+  // 1. Instant load from local cache if present
+  try {
+    const cached = localStorage.getItem('blockbit_wl_settings');
+    if (cached) {
+      applySettings(JSON.parse(cached));
+    }
+  } catch (e) {}
+
+  // 2. Fetch fresh settings in background from Google Apps Script
+  if (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint) {
+    fetch(BLOCKBIT_CONFIG.sheetEndpoint + '?action=settings&_nocache=' + Date.now(), { cache: 'no-store' })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && data.ok && data.settings) {
+          try {
+            localStorage.setItem('blockbit_wl_settings', JSON.stringify(data.settings));
+          } catch (e) {}
+          applySettings(data.settings);
+        }
+      })
+      .catch(function (err) {
+        console.warn('Banner settings fetch failed:', err);
+      });
+  }
 }
 
-document.addEventListener('DOMContentLoaded', initCountdown);
+document.addEventListener('DOMContentLoaded', initTopBanner);

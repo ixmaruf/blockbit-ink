@@ -54,10 +54,11 @@
 
   <div class="site-wrap">
     <!-- TOP COUNTDOWN BANNER -->
-    <div class="top-banner">
-      <span class="banner-pulse"></span>
-      Minting begins in: <span id="top-countdown" style="font-variant-numeric: tabular-nums; font-weight: 700; margin-left: 0.5rem; letter-spacing: 1px;">00d 00h 00m 00s</span>
-    </div>
+    <a href="whitelist.html" class="top-banner" id="topBanner">
+      <span class="banner-pulse" id="bannerPulse"></span>
+      <span id="top-banner-label">WHITELIST ENDING IN:</span>
+      <span id="top-countdown" style="font-variant-numeric: tabular-nums; font-weight: 700; margin-left: 0.5rem; letter-spacing: 1px;">--h --m --s</span>
+    </a>
 
     <!-- NAV -->
     <nav class="nav" id="nav">
@@ -509,6 +510,7 @@
 
   <script src="traits.js"></script>
   <script src="generator.js"></script>
-  <script src="app.js"></script>
+  <script src="whitelist-config.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>
