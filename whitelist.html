@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#7c3aed">
   <link rel="icon" type="image/webp" href="ink-logo.webp">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="whitelist.css">
+  <link rel="stylesheet" href="whitelist.css?v=3">
 </head>
 <body>
   <!-- Ambient Animations -->
@@ -43,21 +43,6 @@
       </div>
     </div>
 
-    <!-- Countdown Timer -->
-    <div class="wl-timer" id="wlTimer">
-      <div class="timer-content">
-        <span class="timer-label">Whitelist Closes In</span>
-        <div class="timer-display">
-          <span class="timer-hours" id="timerHours">--</span>
-          <span class="timer-unit-text">h</span>
-          <span class="timer-mins" id="timerMins">--</span>
-          <span class="timer-unit-text">m</span>
-          <span class="timer-secs" id="timerSecs">--</span>
-          <span class="timer-unit-text">s</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Coming Soon (shown when timer expires) -->
     <div class="wl-coming-soon" id="wlComingSoon">
       <div class="coming-soon-content">
@@ -72,6 +57,21 @@
 
     <div class="wl-wrap">
       <div class="wl-container">
+        <!-- Countdown Timer -->
+        <div class="wl-timer" id="wlTimer">
+          <div class="timer-content">
+            <span class="timer-label">Whitelist Closes In</span>
+            <div class="timer-display">
+              <span class="timer-hours" id="timerHours">--</span>
+              <span class="timer-unit-text">h</span>
+              <span class="timer-mins" id="timerMins">--</span>
+              <span class="timer-unit-text">m</span>
+              <span class="timer-secs" id="timerSecs">--</span>
+              <span class="timer-unit-text">s</span>
+            </div>
+          </div>
+        </div>
+
         <div class="wl-header">
           <p class="sec-kicker"><span class="line"></span>Initiation Quest</p>
           <h1>Join the <span class="accent">Whitelist</span></h1>
@@ -260,6 +260,6 @@
 
   <script src="app.js"></script>
   <script src="whitelist-config.js"></script>
-  <script src="whitelist.js"></script>
+  <script src="whitelist.js?v=3"></script>
 </body>
 </html>

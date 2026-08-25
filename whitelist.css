@@ -40,13 +40,13 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 24px 60px;
+  padding: 95px 20px 40px;
 }
 
 /* ─── Whitelist Container ─── */
 .wl-container {
   width: 100%;
-  max-width: 560px;
+  max-width: 540px;
   position: relative;
   z-index: 3;
 }
@@ -54,20 +54,20 @@ a:hover { text-decoration: underline; }
 /* ─── Header ─── */
 .wl-header {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
 }
 .wl-header h1 {
   font-family: var(--serif);
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.3rem);
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 10px;
-  line-height: 1.1;
+  margin-bottom: 6px;
+  line-height: 1.15;
 }
 .wl-header p {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--slate);
-  line-height: 1.7;
+  line-height: 1.5;
 }
 
 /* ─── Progress Bar ─── */
@@ -76,7 +76,7 @@ a:hover { text-decoration: underline; }
   align-items: center;
   justify-content: center;
   gap: 0;
-  margin-bottom: 36px;
+  margin-bottom: 22px;
   position: relative;
 }
 .progress-step {
@@ -456,13 +456,33 @@ a:hover { text-decoration: underline; }
     flex-direction: column;
     align-items: center;
   }
+  .wl-timer {
+    margin-bottom: 14px;
+  }
+  .timer-content {
+    padding: 8px 18px;
+  }
+  .timer-hours,
+  .timer-mins,
+  .timer-secs {
+    font-size: 1.45rem;
+  }
+  .wl-header {
+    margin-bottom: 14px;
+  }
+  .wl-header h1 {
+    font-size: 1.6rem;
+  }
+  .progress-bar {
+    margin-bottom: 16px;
+  }
 }
 
 /* ─── Countdown Timer ─── */
 .wl-timer {
   text-align: center;
-  margin-top: 120px;
-  margin-bottom: 12px;
+  margin-top: 0;
+  margin-bottom: 18px;
   position: relative;
   z-index: 3;
   opacity: 0;
@@ -475,36 +495,36 @@ a:hover { text-decoration: underline; }
   background: var(--wl-surface);
   border: 1px solid var(--wl-border);
   border-radius: 12px;
-  padding: 18px 36px;
+  padding: 10px 24px;
   display: inline-block;
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
 .timer-label {
   display: block;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--slate);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 .timer-display {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
 }
 .timer-hours,
 .timer-mins,
 .timer-secs {
-  font-size: 2.2rem;
+  font-size: 1.75rem;
   font-weight: 700;
   font-family: var(--serif);
   color: var(--violet);
   line-height: 1;
 }
 .timer-unit-text {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--muted);
 }

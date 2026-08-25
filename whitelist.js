@@ -11,6 +11,7 @@
   let savedTwitter = '';
   let currentPostUrl = '';
   let appSettings = {};
+  let timerInterval = null;
 
   /* ─── DOM refs ─── */
   const twitterInput = document.getElementById('twitterHandle');
@@ -35,6 +36,30 @@
   function isValidWallet(v) { return /^0x[a-fA-F0-9]{40}$/.test(v); }
   function showErr(el, msg) { el.textContent = msg; }
   function clearErr(el) { el.textContent = ''; }
+
+  /* ─── Twitter Validation (Requires @) ─── */
+  function validateTwitterInput() {
+    const raw = getTwitterRaw();
+    if (!raw) {
+      showErr(twitterErr, "Please enter your X username with @ (e.g. @yourhandle)");
+      return false;
+    }
+    if (!raw.startsWith('@')) {
+      showErr(twitterErr, "Please include '@' at the beginning (e.g. @" + raw.replace(/^@+/, '') + ")");
+      return false;
+    }
+    const clean = raw.slice(1).trim();
+    if (!clean) {
+      showErr(twitterErr, "Please enter your username after '@' (e.g. @yourhandle)");
+      return false;
+    }
+    if (!isValidTwitter(clean)) {
+      showErr(twitterErr, 'Invalid username — 1-15 letters, numbers, underscores only.');
+      return false;
+    }
+    clearErr(twitterErr);
+    return true;
+  }
 
   /* ─── FNV-1a (32-bit) ─── */
   function fnv1a(str) {
@@ -77,6 +102,11 @@
     var containerEl = document.querySelector('.wl-container');
     
     if (timerEl) timerEl.classList.add('loaded');
+    
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
     
     // Check if explicitly closed
     var isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off';
@@ -138,7 +168,7 @@
 
     updateTimer();
     if (isOpen) {
-      setInterval(updateTimer, 1000);
+      timerInterval = setInterval(updateTimer, 1000);
     }
   }
 
@@ -332,10 +362,7 @@
   /* ─── Validation ─── */
   function validateAndNext(targetStep) {
     if (targetStep === 2) {
-      const v = getTwitterClean();
-      if (!v) { showErr(twitterErr, 'Please enter your X username.'); return false; }
-      if (!isValidTwitter(v)) { showErr(twitterErr, 'Invalid username — 1-15 letters, numbers, underscores only.'); return false; }
-      clearErr(twitterErr);
+      if (!validateTwitterInput()) return false;
     }
     if (targetStep === 3) {
       const w = getWallet();
@@ -451,11 +478,21 @@
   document.getElementById('submitFinal').addEventListener('click', submitApplication);
   document.getElementById('shareOnX').addEventListener('click', shareOnX);
 
-  /* ─── Input validation on blur ─── */
+  /* ─── Input validation on input & blur ─── */
+  twitterInput.addEventListener('input', function () {
+    if (twitterErr.textContent) {
+      const raw = getTwitterRaw();
+      if (raw.startsWith('@') && raw.length > 1) {
+        validateTwitterInput();
+      }
+    }
+  });
   twitterInput.addEventListener('blur', function () {
-    const v = getTwitterClean();
-    if (v && !isValidTwitter(v)) showErr(twitterErr, 'Invalid username — 1-15 letters, numbers, underscores only.');
-    else clearErr(twitterErr);
+    if (getTwitterRaw()) {
+      validateTwitterInput();
+    } else {
+      clearErr(twitterErr);
+    }
   });
   walletInput.addEventListener('blur', function () {
     const w = getWallet();
@@ -463,10 +500,29 @@
     else clearErr(walletErr);
   });
 
-  /* ─── Init: fetch settings, set up timer ─── */
-  (async function initApp() {
-    appSettings = await fetchSettings();
-    currentPostUrl = appSettings.postUrl || 'https://x.com/BlockbitInk';
-    initTimer(appSettings);
+  /* ─── Init: instant cache + background fetch settings ─── */
+  (function initApp() {
+    // 1. Instant load from local cache if present
+    try {
+      const cached = localStorage.getItem('blockbit_wl_settings');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        appSettings = parsed;
+        currentPostUrl = parsed.postUrl || 'https://x.com/BlockbitInk';
+        initTimer(parsed);
+      }
+    } catch (e) {}
+
+    // 2. Fetch fresh settings in background from Google Apps Script
+    fetchSettings().then(function (fresh) {
+      if (fresh) {
+        appSettings = fresh;
+        currentPostUrl = fresh.postUrl || 'https://x.com/BlockbitInk';
+        try {
+          localStorage.setItem('blockbit_wl_settings', JSON.stringify(fresh));
+        } catch (e) {}
+        initTimer(fresh);
+      }
+    });
   })();
 })();
