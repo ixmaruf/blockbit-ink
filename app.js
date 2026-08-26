@@ -304,7 +304,7 @@ const DEFAULT_WL_SETTINGS = {
   whitelistOpen: 'On',
   timerStart: '2026-08-26 05:40',
   timerDuration: '12',
-  postUrl: 'https://x.com/maruf_ix/status/2091943576175624421'
+  postUrl: 'https://x.com/BlockbitInk'
 };
 
 function getLocalWlSettings() {
