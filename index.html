@@ -8,6 +8,12 @@
   <meta name="theme-color" content="#7c3aed">
   <link rel="icon" type="image/webp" href="logo-purple.webp">
   <link rel="canonical" href="https://blockbit.ink/">
+  <script>
+    if (window.location.pathname.endsWith('index.html')) {
+      var clean = window.location.pathname.replace(/index\.html$/, '');
+      window.location.replace((clean || '/') + window.location.search + window.location.hash);
+    }
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
