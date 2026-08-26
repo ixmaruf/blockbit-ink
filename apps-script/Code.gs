@@ -275,13 +275,13 @@ function jsonResponse_(obj) {
 }
 
 /**
- * doPost — main endpoint hit by whitelist.js on step 3 submission.
- * Expected body: { twitter, wallet, serial }
+ * doPost — main ultra-fast endpoint hit by whitelist.js on submission.
+ * Optimized with batch reads and script caching for sub-2-second execution.
  */
 function doPost(e) {
   const lock = LockService.getScriptLock();
-  if (!lock.tryLock(15000)) {
-    return jsonResponse_({ ok: false, error: 'Server is busy, please retry in a few seconds.' });
+  if (!lock.tryLock(5000)) {
+    return jsonResponse_({ ok: false, error: 'Server is busy processing submissions, please retry in a moment.' });
   }
 
   try {
@@ -297,7 +297,7 @@ function doPost(e) {
     const serial = String(payload.serial || '').trim();
     const userAgent = String(payload.userAgent || e?.parameters?.userAgent || '').slice(0, 240);
 
-    // Format Validations
+    // 1. Instant regex validation in JS memory
     if (!isValidTwitterHandle(twitter)) {
       return jsonResponse_({ ok: false, error: 'Invalid Twitter handle.', field: 'twitter' });
     }
@@ -308,9 +308,12 @@ function doPost(e) {
       return jsonResponse_({ ok: false, error: 'Invalid serial.' });
     }
 
-    // 1. Check Duplicate Twitter Username
-    const existingTwitter = findByTwitter_(twitter);
-    if (existingTwitter) {
+    const twitterNorm = twitter.toLowerCase();
+    const walletNorm = wallet.toLowerCase();
+
+    // 2. Ultra-fast Cache Check (<5ms)
+    const cache = CacheService.getScriptCache();
+    if (cache.get('tw_' + twitterNorm)) {
       return jsonResponse_({
         ok: false,
         error: 'This X (Twitter) username (@' + twitter + ') is already registered on the whitelist.',
@@ -318,10 +321,7 @@ function doPost(e) {
         duplicate: true
       });
     }
-
-    // 2. Check Duplicate Wallet Address
-    const existingWallet = findByWallet_(wallet);
-    if (existingWallet) {
+    if (cache.get('wl_' + walletNorm)) {
       return jsonResponse_({
         ok: false,
         error: 'This wallet address (' + wallet.slice(0, 6) + '...' + wallet.slice(-4) + ') is already registered on the whitelist.',
@@ -330,18 +330,60 @@ function doPost(e) {
       });
     }
 
-    // Append the row
-    const sheet = getOrCreateSheet_();
+    // 3. Open Spreadsheet ONCE (single handle)
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      sheet = ss.insertSheet(SHEET_NAME);
+      sheet.appendRow(HEADERS);
+    }
+
+    const lastRow = sheet.getLastRow();
+
+    // 4. Single Batch Read (Reads both Twitter & Wallet columns in ONE call)
+    if (lastRow > 1) {
+      const data = sheet.getRange(2, 2, lastRow - 1, 2).getValues();
+      for (let i = 0; i < data.length; i++) {
+        const rowTw = String(data[i][0] || '').toLowerCase().replace(/^@/, '').trim();
+        const rowWl = String(data[i][1] || '').toLowerCase().trim();
+
+        if (rowTw === twitterNorm) {
+          cache.put('tw_' + twitterNorm, '1', 21600); // 6 hours cache
+          return jsonResponse_({
+            ok: false,
+            error: 'This X (Twitter) username (@' + twitter + ') is already registered on the whitelist.',
+            field: 'twitter',
+            duplicate: true
+          });
+        }
+
+        if (rowWl === walletNorm) {
+          cache.put('wl_' + walletNorm, '1', 21600);
+          return jsonResponse_({
+            ok: false,
+            error: 'This wallet address (' + wallet.slice(0, 6) + '...' + wallet.slice(-4) + ') is already registered on the whitelist.',
+            field: 'wallet',
+            duplicate: true
+          });
+        }
+      }
+    }
+
+    // 5. Append new row directly
     sheet.appendRow([
       new Date(),
       '@' + twitter,
       wallet,
       serial,
       userAgent,
-      // Apps Script cannot directly read the client IP from a Web App POST,
-      // so we just leave a hint placeholder. Real IPs require a proxy.
       payload.ipHint || ''
     ]);
+
+    // Update cache with new entries for instant future deduplication
+    try {
+      cache.put('tw_' + twitterNorm, '1', 21600);
+      cache.put('wl_' + walletNorm, '1', 21600);
+    } catch (_) {}
 
     return jsonResponse_({
       ok: true,
