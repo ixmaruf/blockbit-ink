@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  // Clean .html extension from URL bar
+  if (window.location.pathname.endsWith('.html')) {
+    var clean = window.location.pathname.replace(/(?:index)?\.html$/, '');
+    if (!clean || clean.endsWith('/')) clean = clean || '/';
+    window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+  }
+
   /* ─── State ─── */
   let currentStep = 1;
   const totalSteps = 4;
@@ -556,7 +563,7 @@
         '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
         '@BlockbitInk #BlockbitInk #NFT #InkBlockchain -'
       );
-      var shareUrl = encodeURIComponent('https://blockbitink.xyz/whitelist.html');
+      var shareUrl = encodeURIComponent('https://blockbit.ink/whitelist');
       window.open('https://x.com/intent/tweet?text=' + shareText + '&url=' + shareUrl, '_blank', 'noopener,noreferrer');
     }, 600);
   }

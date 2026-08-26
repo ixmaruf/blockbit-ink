@@ -3,6 +3,13 @@
    Animations, Ambient Canvas, Petals Canvas, DNA Forge, FAQ, Scroll-reveal
    ========================================================================== */
 
+// Clean .html extension from URL bar
+if (window.location.pathname.endsWith('.html')) {
+  var clean = window.location.pathname.replace(/(?:index)?\.html$/, '');
+  if (!clean || clean.endsWith('/')) clean = clean || '/';
+  window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // ── NAV SCROLL ──
   const nav = document.getElementById('nav');
