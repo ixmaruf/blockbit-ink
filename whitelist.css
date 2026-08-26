@@ -1,82 +1,130 @@
-/* ─── Blockbit Ink Whitelist — Light Editorial Theme ─── */
-/* Inherits variables from style.css (--bg, --ink, --violet, --sans, --serif, etc.) */
+/* ==========================================================================
+   DUDES CRAFT — ROBINHOOD NETWORK WHITELIST DESIGN SYSTEM v3
+   ========================================================================== */
 
-/* ── Override any dark leftovers from old whitelist.css ── */
 :root {
-  --wl-surface: var(--bg-card, #FFFFFF);
+  --lemon: #C6F221;
+  --lemon-bright: #D4FF00;
+  --lemon-deep: #9ECE0B;
+  --lemon-soft: rgba(198, 242, 33, 0.12);
+  --lemon-glow: rgba(198, 242, 33, 0.35);
+
+  --obsidian: #0A0B0D;
+  --obsidian-2: #121418;
+  --obsidian-card: #161920;
+  --slate: #5E6673;
+  --muted: #8E98A8;
+
+  --bg: #FAFAF7;
+  --bg-warm: #F4F5F0;
+  --bg-card: #FFFFFF;
+  --bg-alt: #EDF0E8;
+
+  --border: rgba(10, 11, 13, 0.08);
+  --border-lemon: rgba(198, 242, 33, 0.45);
+  --voxel-shadow: 4px 4px 0px #0A0B0D;
+  --voxel-shadow-lemon: 4px 4px 0px #C6F221;
+  --voxel-shadow-sm: 2px 2px 0px #0A0B0D;
+
+  --wl-surface: #FFFFFF;
   --wl-border: var(--border);
-  --wl-muted: var(--muted, #94A3B8);
-  --wl-slate: var(--slate, #475569);
-  --wl-success: #16A34A;
+  --wl-muted: var(--muted);
+  --wl-slate: var(--slate);
+  --wl-success: #00C805;
   --wl-error: #DC2626;
   --wl-yellow: #EAB308;
+
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+  --font-sans: 'DM Sans', -apple-system, sans-serif;
+
+  --r-sm: 4px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-full: 9999px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background-color: #FFFFFF;
-  background-image:
-    linear-gradient(rgba(14, 165, 233, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(14, 165, 233, 0.12) 1px, transparent 1px),
-    linear-gradient(rgba(124, 58, 237, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(124, 58, 237, 0.04) 1px, transparent 1px);
-  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
-  color: var(--ink);
-  font-family: var(--sans);
+  background-color: #FAFAF7;
+  background-image: 
+    linear-gradient(rgba(198, 242, 33, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(198, 242, 33, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(10, 11, 13, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 11, 13, 0.03) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  background-position: -1px -1px;
+  color: var(--obsidian);
+  font-family: var(--font-sans);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
 
-a { color: var(--violet); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--obsidian); text-decoration: none; }
 
-/* ─── Whitelist Wrap ─── */
+.nav {
+  top: 0;
+}
+
+/* ── Whitelist Wrap ── */
 .wl-wrap {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 95px 20px 40px;
+  padding: 120px 20px 60px;
 }
 
-/* ─── Whitelist Container ─── */
 .wl-container {
   width: 100%;
-  max-width: 540px;
+  max-width: 580px;
   position: relative;
   z-index: 3;
 }
 
-/* ─── Header ─── */
+/* ── Header ── */
 .wl-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+}
+.wl-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: #79A300;
+  background: var(--lemon-soft);
+  border: 1.5px solid var(--border-lemon);
+  padding: 4px 12px;
+  border-radius: var(--r-sm);
+  margin-bottom: 12px;
 }
 .wl-header h1 {
-  font-family: var(--serif);
-  font-size: clamp(1.8rem, 3.5vw, 2.3rem);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.6rem);
   font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 6px;
-  line-height: 1.15;
+  color: var(--obsidian);
+  margin-bottom: 8px;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 .wl-header p {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   color: var(--slate);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* ─── Progress Bar ─── */
+/* ── Progress Bar ── */
 .progress-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   position: relative;
 }
 .progress-step {
@@ -103,529 +151,332 @@ a:hover { text-decoration: underline; }
 .progress-dot {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  background: var(--bg-alt, #F0EDE8);
-  border: 2px solid var(--border);
-  color: var(--muted);
+  border-radius: var(--r-sm);
+  background: var(--bg-alt);
+  border: 2px solid var(--obsidian);
+  color: var(--slate);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 700;
-  font-family: var(--sans);
+  font-family: var(--font-display);
   position: relative;
   z-index: 1;
   transition: all 0.3s ease;
 }
 .progress-step.active .progress-dot {
-  background: var(--violet);
-  border-color: var(--violet);
-  color: #fff;
-  box-shadow: 0 0 0 4px var(--violet-soft);
+  background: var(--obsidian);
+  color: var(--lemon);
+  border-color: var(--obsidian);
+  box-shadow: 2px 2px 0px var(--lemon);
 }
 .progress-step.done .progress-dot {
   background: var(--wl-success);
-  border-color: var(--wl-success);
+  border-color: var(--obsidian);
   color: #fff;
 }
 .progress-label {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--slate);
+  margin-top: 6px;
   text-transform: uppercase;
-  color: var(--muted);
-  margin-top: 8px;
-  text-align: center;
+  letter-spacing: 0.04em;
 }
 .progress-step.active .progress-label {
-  color: var(--violet);
+  color: var(--obsidian);
 }
 .progress-step.done .progress-label {
   color: var(--wl-success);
 }
 
-/* ─── Panels ─── */
+/* ── Form Panels & Step Cards ── */
 .form-panel {
   display: none;
 }
 .form-panel.active {
   display: block;
-  animation: wlFadeIn 0.3s ease;
+  animation: stepFadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-@keyframes wlFadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+.step-card {
+  display: block;
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  border: 3px solid var(--obsidian);
+  box-shadow: var(--voxel-shadow);
+  padding: 32px;
+  position: relative;
+}
+@keyframes stepFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Form Card ─── */
-.form-card {
-  background: var(--wl-surface);
-  border: 1px solid var(--wl-border);
-  border-radius: 12px;
-  padding: 36px 32px;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+.step-card-header {
+  margin-bottom: 20px;
 }
-.form-card h2 {
-  font-family: var(--serif);
-  font-size: 1.5rem;
+.step-badge {
+  display: inline-block;
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  background: var(--obsidian);
+  color: var(--lemon);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.step-card-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--obsidian);
+}
+.step-card-header p {
+  font-size: 0.88rem;
+  color: var(--slate);
+  margin-top: 4px;
+}
+
+/* ── Quest Item Cards ── */
+.quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.quest-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-warm);
+  padding: 14px 18px;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--obsidian);
+  box-shadow: var(--voxel-shadow-sm);
+  transition: all 0.2s ease;
+}
+.quest-item:hover {
+  background: var(--lemon-soft);
+  transform: translate(-1px, -1px);
+}
+.quest-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.quest-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--r-sm);
+  background: var(--obsidian);
+  color: var(--lemon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.quest-text h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--obsidian);
+}
+.quest-text p {
+  font-size: 0.8rem;
+  color: var(--slate);
+}
+
+.quest-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--obsidian);
+  color: var(--lemon);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--lemon);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.quest-btn:hover {
+  background: var(--lemon);
+  color: var(--obsidian);
+}
+.quest-btn.verified {
+  background: var(--wl-success);
+  border-color: var(--obsidian);
+  color: #fff;
+}
+
+/* ── Forms & Inputs ── */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--obsidian);
   margin-bottom: 6px;
 }
-.form-card .desc {
-  font-size: 0.88rem;
-  color: var(--slate);
-  line-height: 1.65;
-  margin-bottom: 24px;
-}
-
-/* ─── Fields ─── */
-.field {
-  margin-bottom: 20px;
-}
-.field label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--slate);
-  margin-bottom: 8px;
-}
-.field input {
+.form-input {
   width: 100%;
-  padding: 14px 16px;
-  background: var(--bg, #FAFAF8);
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  color: var(--ink);
-  font-family: var(--sans);
+  padding: 12px 16px;
+  font-family: var(--font-sans);
   font-size: 0.95rem;
+  background: var(--bg-warm);
+  border: 2px solid var(--obsidian);
+  border-radius: var(--r-md);
+  color: var(--obsidian);
+  box-shadow: var(--voxel-shadow-sm);
+  transition: all 0.2s ease;
+}
+.form-input:focus {
   outline: none;
-  transition: border-color 0.25s, box-shadow 0.25s;
+  border-color: #79A300;
+  background: #FFFFFF;
 }
-.field input::placeholder {
-  color: var(--muted);
-}
-.field input:focus {
-  border-color: var(--violet);
-  box-shadow: 0 0 0 3px var(--violet-soft);
-}
-.field-error {
+.form-hint {
   font-size: 0.78rem;
-  color: var(--wl-error);
-  margin-top: 6px;
-  min-height: 18px;
+  color: var(--slate);
+  margin-top: 4px;
 }
 
-/* ─── Form Navigation ─── */
-.form-nav {
+/* ── Action Buttons ── */
+.step-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 28px;
+  margin-top: 24px;
 }
-.form-nav-actions {
-  display: flex;
-  gap: 12px;
-  flex: 1;
-  justify-content: flex-end;
-}
-
-/* ─── Social Tasks ─── */
-.social-tasks {
-  margin-bottom: 24px;
-}
-.action-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.step-btn-next {
   width: 100%;
-  padding: 16px 18px;
-  background: var(--violet);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-family: var(--sans);
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.2s;
-  margin-bottom: 12px;
-}
-.action-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px var(--violet-glow);
-}
-.action-btn:active {
-  transform: translateY(0);
-}
-.action-btn .action-icon {
-  width: 24px;
-  height: 24px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-}
-.action-btn .action-label {
-  flex: 1;
-}
-.action-btn .action-status {
-  font-size: 0.78rem;
+  gap: 8px;
+  background: var(--obsidian);
+  color: var(--lemon);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
   font-weight: 700;
-  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 20px;
+  border-radius: var(--r-sm);
+  border: 2px solid var(--lemon);
+  box-shadow: var(--voxel-shadow-lemon);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-.action-btn.completed {
-  background: var(--wl-success);
-  color: #fff;
-  cursor: default;
+.step-btn-next:hover:not(:disabled) {
+  background: var(--lemon);
+  color: var(--obsidian);
+  transform: translate(-2px, -2px);
 }
-.action-btn.completed:hover {
-  transform: none;
+.step-btn-next:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
   box-shadow: none;
 }
 
-/* ─── Continue button (disabled state) ─── */
-.btn-continue:not(:disabled) {
-  background: var(--violet);
-  color: #fff;
-  cursor: pointer;
+/* ── Mint Pass Container & Canvas ── */
+.pass-container {
+  text-align: center;
 }
-.btn-continue:not(:disabled):hover {
-  background: var(--violet-deep);
-  transform: translateY(-1px);
+.pass-canvas-wrap {
+  margin: 16px auto 24px;
+  max-width: 480px;
+  background: var(--obsidian);
+  border-radius: var(--r-lg);
+  border: 3px solid var(--lemon);
+  box-shadow: 6px 6px 0px var(--lemon);
+  overflow: hidden;
+  padding: 6px;
 }
-.btn-continue:disabled {
-  background: var(--bg-alt, #F0EDE8);
-  color: var(--muted);
-  cursor: not-allowed;
-  opacity: 0.7;
+.pass-canvas-wrap canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--r-md);
 }
 
-/* ─── Confirm Summary ─── */
-.confirm-summary {
-  background: var(--bg, #FAFAF8);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px 20px;
-  margin-bottom: 24px;
+.pass-meta {
+  background: var(--bg-warm);
+  border: 2px solid var(--obsidian);
+  border-radius: var(--r-md);
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: left;
 }
-.confirm-row {
+.pass-meta-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 6px 0;
+  font-size: 0.88rem;
+}
+.pass-meta-row:not(:last-child) {
   border-bottom: 1px solid var(--border);
 }
-.confirm-row:last-child {
-  border-bottom: none;
-}
-.confirm-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+.pass-meta-key {
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  color: var(--slate);
   text-transform: uppercase;
-  color: var(--slate);
 }
-.confirm-value {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--ink);
-}
-.confirm-serial .confirm-value {
-  color: var(--violet);
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 1rem;
-}
-
-/* ─── Mint Pass ─── */
-.pass-wrapper {
-  text-align: center;
-  margin-bottom: 12px;
-}
-.pass-wrapper canvas {
-  max-width: 100%;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-.pass-meta {
-  font-size: 0.78rem;
-  color: var(--muted);
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/* ─── Submit Status ─── */
-.submit-status {
-  font-size: 0.82rem;
-  text-align: center;
-  min-height: 20px;
-  margin-bottom: 8px;
-}
-.submit-status.error {
-  color: var(--wl-error);
-}
-
-/* ─── Success Panel ─── */
-.success-box {
-  text-align: center;
-  padding: 48px 32px;
-  background: var(--wl-surface);
-  border: 1px solid var(--wl-border);
-  border-radius: 12px;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.04);
-}
-.checkmark {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--wl-success);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-.success-box h2 {
-  font-family: var(--serif);
-  font-size: 1.8rem;
+.pass-meta-val {
+  font-family: var(--font-display);
   font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 12px;
+  color: var(--obsidian);
 }
-.success-box p {
-  font-size: 0.92rem;
-  color: var(--slate);
-  line-height: 1.65;
-  max-width: 420px;
-  margin: 0 auto 28px;
-}
-.success-actions {
+
+.pass-actions {
   display: flex;
   gap: 12px;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
-/* ─── Nav Back Button ─── */
-.nav-back-btn {
-  font-size: 0.65rem !important;
-  padding: 0.5rem 1.2rem !important;
-}
-
-/* ─── Disabled btn-primary override ─── */
-.btn-primary:disabled {
-  background: var(--bg-alt, #F0EDE8);
-  color: var(--muted);
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-/* ─── Responsive ─── */
-@media (max-width: 600px) {
-  .wl-wrap {
-    padding: 100px 16px 40px;
-  }
-  .form-card {
-    padding: 24px 20px;
-  }
-  .progress-label {
-    font-size: 0.6rem;
-  }
-  .progress-dot {
-    width: 28px;
-    height: 28px;
-    font-size: 0.7rem;
-  }
-  .form-nav {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .form-nav-actions {
-    flex-direction: column;
-    width: 100%;
-  }
-  .form-nav-actions .btn-primary,
-  .form-nav-actions .btn-outline {
-    width: 100%;
-    justify-content: center;
-  }
-  .success-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  .wl-timer {
-    margin: 8px auto 0;
-  }
-  .timer-content {
-    padding: 5px 14px;
-    gap: 8px;
-  }
-  .timer-hours,
-  .timer-mins,
-  .timer-secs {
-    font-size: 1.1rem;
-  }
-  .wl-header {
-    margin-bottom: 16px;
-  }
-  .wl-header h1 {
-    font-size: 1.8rem;
-  }
-  .progress-bar {
-    margin-bottom: 16px;
-  }
-}
-
-/* ─── Countdown Timer (Compact Pill Badge) ─── */
-.wl-timer {
-  text-align: center;
-  margin: 10px auto 0;
-  position: relative;
-  z-index: 3;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.wl-timer.loaded {
-  opacity: 1;
-}
-.timer-content {
-  background: var(--wl-surface);
-  border: 1px solid var(--wl-border);
-  border-radius: 30px;
-  padding: 6px 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-}
-.timer-label {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 0;
-}
-.timer-display {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 4px;
-}
-.timer-hours,
-.timer-mins,
-.timer-secs {
-  font-size: 1.2rem;
-  font-weight: 700;
-  font-family: var(--sans);
-  color: var(--violet);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.timer-unit-text {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-/* ─── Coming Soon ─── */
-.wl-coming-soon {
-  display: none;
-  text-align: center;
-  padding: 140px 24px 80px;
-  position: relative;
-  z-index: 3;
-}
-.wl-coming-soon.active {
-  display: block;
-}
-.coming-soon-content h2 {
-  font-family: var(--serif);
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 12px;
-}
-.coming-soon-content p {
-  font-size: 1rem;
-  color: var(--slate);
-  line-height: 1.7;
-}
-.coming-soon-icon {
-  color: var(--violet);
-  margin-bottom: 20px;
-}
-.coming-soon-sub {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-top: 8px;
-}
-
-/* ─── Share Section ─── */
-.share-section {
-  text-align: center;
-  margin: 20px 0 8px;
-}
-.btn-share {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 28px;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-family: var(--sans);
+/* ── Alerts & Status ── */
+.wl-alert {
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  border: 1.5px solid;
+  margin-bottom: 16px;
   font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  display: none;
 }
-.btn-share:hover {
-  background: #333;
-  transform: translateY(-1px);
+.wl-alert.show { display: block; }
+.wl-alert.error {
+  background: #FEE2E2;
+  border-color: #EF4444;
+  color: #991B1B;
 }
-.btn-share:active {
-  transform: translateY(0);
-}
-.btn-share svg {
-  flex-shrink: 0;
-}
-
-/* ─── @ Hint ─── */
-.field-hint {
-  font-size: 0.78rem;
-  color: var(--muted);
-  margin-top: 6px;
-  font-style: italic;
+.wl-alert.success {
+  background: #DCFCE7;
+  border-color: #22C55E;
+  color: #166534;
 }
 
-/* ─── Toast Notification ─── */
-.wl-toast {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: rgba(11, 10, 18, 0.95);
-  color: #fff;
-  border: 1px solid rgba(124, 58, 237, 0.4);
-  backdrop-filter: blur(12px);
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  text-align: center;
-  max-width: 90vw;
+/* ── Custom Loader Spinner ── */
+.wl-loader {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 2.5px solid rgba(198, 242, 33, 0.3);
+  border-top-color: var(--lemon);
+  border-radius: 50%;
+  animation: spinLoader 0.6s linear infinite;
+  margin-left: 8px;
 }
-.wl-toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+@keyframes spinLoader {
+  to { transform: rotate(360deg); }
 }

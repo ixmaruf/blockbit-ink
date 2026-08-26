@@ -41,8 +41,8 @@
   function getWallet() { return (walletInput.value || '').trim(); }
   function isValidTwitter(v) { return /^[A-Za-z0-9_]{1,15}$/.test(v); }
   function isValidWallet(v) { return /^0x[a-fA-F0-9]{40}$/.test(v); }
-  function showErr(el, msg) { el.textContent = msg; }
-  function clearErr(el) { el.textContent = ''; }
+  function showErr(el, msg) { if (el) el.textContent = msg; }
+  function clearErr(el) { if (el) el.textContent = ''; }
 
   /* ─── Twitter Validation (Requires @) ─── */
   function validateTwitterInput() {
@@ -95,13 +95,13 @@
     return h >>> 0;
   }
 
-  /* ─── Endpoint Config & Settings with built-in fallback ─── */
+  /* ─── Endpoint Config & Settings ─── */
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const DEFAULT_WL_SETTINGS = {
-    whitelistOpen: 'On',
+    whitelistOpen: 'true',
     timerStart: '2026-08-26 05:40',
-    timerDuration: '12',
-    postUrl: 'https://x.com/BlockbitInk'
+    timerDuration: '72',
+    postUrl: 'https://x.com/DudesCraft'
   };
 
   function getLocalWlSettings() {
@@ -151,17 +151,22 @@
       clearInterval(timerInterval);
       timerInterval = null;
     }
-    
-    // Check if explicitly closed
+
+    if (!settings) return;
+
     var isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off';
-    
-    // Parse Bangladesh time format (YYYY-MM-DD HH:mm) as UTC+6
+    if (!isOpen) {
+      if (timerEl) timerEl.style.display = 'none';
+      if (comingSoonEl) comingSoonEl.style.display = 'block';
+      if (containerEl) containerEl.style.display = 'none';
+      return;
+    }
+
     var startStr = settings.timerStart || '';
     var startMs;
     if (startStr.indexOf('T') > -1) {
       startMs = new Date(startStr).getTime();
     } else {
-      // Bangladesh time (UTC+6): "2026-08-26 01:50" → treat as UTC+6
       var parts = startStr.split(' ');
       var dateParts = (parts[0] || '').split('-');
       var timeParts = (parts[1] || '').split(':');
@@ -170,83 +175,94 @@
       var d = parseInt(dateParts[2]) || 1;
       var hh = parseInt(timeParts[0]) || 0;
       var mm = parseInt(timeParts[1]) || 0;
-      // Convert from Bangladesh (UTC+6) to UTC
       startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
     }
-    var durationMs = parseInt(settings.timerDuration || '12') * 60 * 60 * 1000;
-    var endTime = startMs + durationMs;
+    var durationHours = parseFloat(settings.timerDuration || '72') || 72;
+    var endTime = startMs + (durationHours * 3600 * 1000);
 
-    function updateTimer() {
+    function update() {
       var now = Date.now();
-      var remaining = endTime - now;
-
-      if (!isOpen || remaining <= 0) {
-        if (timerEl) timerEl.style.display = 'none';
-        if (containerEl) containerEl.style.display = 'none';
+      if (now < startMs) {
         if (comingSoonEl) {
-          comingSoonEl.classList.add('active');
-          const titleEl = document.getElementById('comingSoonTitle');
-          const msgEl = document.getElementById('comingSoonMsg');
-          if (!isOpen) {
-            if (titleEl) titleEl.textContent = 'Whitelist Closed';
-            if (msgEl) msgEl.textContent = 'The whitelist is currently paused or closed.';
-          } else {
-            if (titleEl) titleEl.textContent = 'Coming Soon';
-            const dateEl = document.getElementById('comingSoonDate');
-            if (dateEl) {
-              const openDate = new Date(endTime);
-              dateEl.textContent = openDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-            }
-          }
+          comingSoonEl.style.display = 'block';
+          var dateEl = document.getElementById('comingSoonDate');
+          if (dateEl) dateEl.textContent = new Date(startMs).toLocaleString();
         }
+        if (containerEl) containerEl.style.display = 'none';
         return;
       }
 
-      var hours = Math.floor(remaining / (1000 * 60 * 60));
-      var mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-      var secs = Math.floor((remaining % (1000 * 60)) / 1000);
+      if (now >= endTime) {
+        if (comingSoonEl) {
+          comingSoonEl.style.display = 'block';
+          var titleEl = document.getElementById('comingSoonTitle');
+          var msgEl = document.getElementById('comingSoonMsg');
+          if (titleEl) titleEl.textContent = 'Whitelist Closed';
+          if (msgEl) msgEl.textContent = 'The Dudes Craft whitelist round has ended.';
+        }
+        if (containerEl) containerEl.style.display = 'none';
+        clearInterval(timerInterval);
+        return;
+      }
 
-      var hrEl = document.getElementById('timerHours');
-      var minEl = document.getElementById('timerMins');
-      var secEl = document.getElementById('timerSecs');
+      if (comingSoonEl) comingSoonEl.style.display = 'none';
+      if (containerEl) containerEl.style.display = 'block';
+      if (timerEl) timerEl.style.display = 'inline-flex';
 
-      if (hrEl) hrEl.textContent = hours.toString().padStart(2, '0');
-      if (minEl) minEl.textContent = mins.toString().padStart(2, '0');
-      if (secEl) secEl.textContent = secs.toString().padStart(2, '0');
+      var remain = Math.max(0, endTime - now);
+      var hrs = Math.floor(remain / (1000 * 60 * 60));
+      var mins = Math.floor((remain % (1000 * 60 * 60)) / (1000 * 60));
+      var secs = Math.floor((remain % (1000 * 60)) / 1000);
+
+      var hEl = document.getElementById('timerHours');
+      var mEl = document.getElementById('timerMins');
+      var sEl = document.getElementById('timerSecs');
+      if (hEl) hEl.textContent = String(hrs).padStart(2, '0');
+      if (mEl) mEl.textContent = String(mins).padStart(2, '0');
+      if (sEl) sEl.textContent = String(secs).padStart(2, '0');
+
+      var topCountdown = document.getElementById('top-countdown');
+      var topBanner = document.getElementById('topBanner');
+      if (topCountdown && topBanner) {
+        topCountdown.textContent = String(hrs).padStart(2, '0') + 'h ' + String(mins).padStart(2, '0') + 'm ' + String(secs).padStart(2, '0') + 's';
+        topBanner.classList.add('is-ready');
+      }
     }
 
-    updateTimer();
-    if (timerEl) timerEl.classList.add('loaded');
-    if (isOpen) {
-      timerInterval = setInterval(updateTimer, 1000);
-    }
+    update();
+    timerInterval = setInterval(update, 1000);
   }
 
-  /* ─── Serial (no clan) ─── */
+  /* ─── Generate Serial Number: DC-XXXX-XXXX ─── */
   function generateSerial(twitter, wallet) {
-    const h = fnv1a(twitter + '|' + wallet + '|blockbit-ink-2026');
-    const block = (h % 1999) + 1;
-    const hex   = (h >>> 0).toString(16).slice(0, 6).toUpperCase().padStart(6, '0');
-    return 'BBI-' + String(block).padStart(4, '0') + '-' + hex;
+    const raw = (twitter || '').toLowerCase() + ':' + (wallet || '').toLowerCase();
+    const h = fnv1a(raw);
+    const p1 = (h & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+    const p2 = ((h >>> 16) & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+    return 'DC-' + p1 + '-' + p2;
   }
 
-  /* ─── Progress bar ─── */
-  function updateProgress() {
-    document.querySelectorAll('.progress-step').forEach(s => {
-      const step = parseInt(s.dataset.step);
-      s.classList.toggle('active', step === currentStep);
-      s.classList.toggle('done', step < currentStep);
-    });
-  }
-
-  /* ─── Step navigation ─── */
+  /* ─── Step Navigation ─── */
   function goToStep(n) {
     if (n < 1 || n > totalSteps) return;
     currentStep = n;
-    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-    const target = document.querySelector('[data-panel="' + n + '"]');
-    if (target) target.classList.add('active');
-    updateProgress();
+
+    // Update Progress Indicators
+    document.querySelectorAll('.progress-step').forEach((el) => {
+      const stepNum = parseInt(el.dataset.step);
+      el.classList.remove('active', 'done');
+      if (stepNum < n) el.classList.add('done');
+      else if (stepNum === n) el.classList.add('active');
+    });
+
+    // Update Form Panels
+    document.querySelectorAll('.form-panel').forEach((panel) => {
+      panel.classList.remove('active');
+      if (parseInt(panel.dataset.panel) === n) {
+        panel.classList.add('active');
+      }
+    });
+
     if (n === 4) renderSummary();
   }
 
@@ -258,109 +274,126 @@
     savedTwitter = tw;
     savedWallet = wa;
 
-    confirmTwitter.textContent = '@' + tw;
-    confirmWallet.textContent  = wa.slice(0, 6) + '...' + wa.slice(-4);
-    confirmSerial.textContent  = serial;
-    passMeta.textContent       = serial + ' — ' + tw;
+    if (confirmTwitter) confirmTwitter.textContent = '@' + tw;
+    if (confirmWallet) confirmWallet.textContent  = wa.slice(0, 6) + '...' + wa.slice(-4);
+    if (confirmSerial) confirmSerial.textContent  = serial;
+    if (passMeta) passMeta.textContent = serial + ' — @' + tw;
 
     drawMintPass(wa, tw, serial);
   }
 
-  /* ─── Draw mint pass (light theme) ─── */
+  /* ─── Draw Next-Gen Voxel Robinhood Mint Pass ─── */
   function drawMintPass(wallet, twitter, serialNum) {
     const canvas = document.getElementById('mintPass');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
 
-    // Light background
-    ctx.fillStyle = '#FFFFFF';
+    // Background: Deep Obsidian Luxury
+    ctx.fillStyle = '#0A0B0D';
     ctx.fillRect(0, 0, W, H);
 
-    // Subtle grid pattern
-    ctx.strokeStyle = 'rgba(14, 165, 233, 0.08)';
-    ctx.lineWidth = 0.5;
-    for (let x = 0; x < W; x += 20) {
+    // Subtle isometric neon voxel grid
+    ctx.strokeStyle = 'rgba(198, 242, 33, 0.08)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 30) {
       ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
     }
-    for (let y = 0; y < H; y += 20) {
+    for (let y = 0; y < H; y += 30) {
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
     }
 
-    // Border
-    ctx.strokeStyle = 'rgba(124, 58, 237, 0.2)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(10, 10, W - 20, H - 20);
+    // Outer Glow Border
+    ctx.strokeStyle = '#C6F221';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(16, 16, W - 32, H - 32);
 
-    // Corner accents
-    ctx.fillStyle = 'rgba(124, 58, 237, 0.5)';
-    [[12,12,30,3],[12,12,3,30],[W-42,12,30,3],[W-15,12,3,30],
-     [12,H-15,30,3],[12,H-42,3,30],[W-42,H-15,30,3],[W-15,H-42,3,30]
-    ].forEach(([x,y,w,h]) => ctx.fillRect(x,y,w,h));
-
-    // Title
-    ctx.fillStyle = '#0B0A12';
-    ctx.font = 'bold 36px "Cormorant Garamond", Georgia, serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('BLOCKBIT INK', W/2, 70);
-    ctx.fillStyle = '#475569';
-    ctx.font = '600 13px "DM Sans", system-ui, sans-serif';
-    ctx.letterSpacing = '3px';
-    ctx.fillText('WHITELIST PASS  ·  GENESIS COLLECTION', W/2, 100);
-
-    // Divider
-    ctx.strokeStyle = 'rgba(124, 58, 237, 0.25)';
+    // Inner Bevel Border
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
     ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(80,120); ctx.lineTo(W-80,120); ctx.stroke();
+    ctx.strokeRect(24, 24, W - 48, H - 48);
 
-    // Serial
-    ctx.fillStyle = '#7C3AED';
-    ctx.font = 'bold 42px "Cormorant Garamond", Georgia, serif';
-    ctx.fillText(serialNum, W/2, 180);
+    // 3D Voxel Corner Brackets
+    ctx.fillStyle = '#C6F221';
+    [[16, 16, 40, 6], [16, 16, 6, 40],
+     [W - 56, 16, 40, 6], [W - 22, 16, 6, 40],
+     [16, H - 22, 40, 6], [16, H - 56, 6, 40],
+     [W - 56, H - 22, 40, 6], [W - 22, H - 56, 6, 40]
+    ].forEach(([x, y, w, h]) => ctx.fillRect(x, y, w, h));
 
-    // Twitter
-    ctx.fillStyle = '#94A3B8';
-    ctx.font = '600 11px "DM Sans", system-ui, sans-serif';
-    ctx.fillText('TWITTER', W/2, 230);
-    ctx.fillStyle = '#0B0A12';
-    ctx.font = '600 18px "DM Sans", system-ui, sans-serif';
-    ctx.fillText('@' + twitter, W/2, 255);
+    // Brand Title: DUDES CRAFT
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '700 40px "Space Grotesk", -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('DUDES CRAFT', W / 2, 75);
 
-    // Wallet
-    ctx.fillStyle = '#94A3B8';
-    ctx.font = '600 11px "DM Sans", system-ui, sans-serif';
-    ctx.fillText('WALLET', W/2, 300);
-    ctx.fillStyle = '#0B0A12';
-    ctx.font = '500 16px "DM Sans", system-ui, sans-serif';
-    ctx.fillText(wallet.slice(0,6) + '...' + wallet.slice(-4), W/2, 325);
+    // Subtitle Badge: ROBINHOOD GENESIS VIP PASS
+    ctx.fillStyle = '#C6F221';
+    ctx.font = '700 13px "Space Grotesk", monospace';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('ROBINHOOD NETWORK  ·  GENESIS MINT PASS', W / 2, 105);
 
-    // Network
-    ctx.fillStyle = '#94A3B8';
-    ctx.font = '600 11px "DM Sans", system-ui, sans-serif';
-    ctx.fillText('NETWORK', W/2, 370);
-    ctx.fillStyle = '#0B0A12';
-    ctx.font = '600 18px "DM Sans", system-ui, sans-serif';
-    ctx.fillText('INK (EVM)', W/2, 395);
+    // Neon Accent Divider
+    ctx.strokeStyle = 'rgba(198, 242, 33, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(100, 125);
+    ctx.lineTo(W - 100, 125);
+    ctx.stroke();
 
-    // Footer
-    ctx.fillStyle = '#94A3B8';
-    ctx.font = '11px "DM Sans", system-ui, sans-serif';
-    ctx.fillText('This pass guarantees an allocation slot for the Blockbit Ink genesis mint.', W/2, H-40);
+    // Serial Code Box
+    ctx.fillStyle = '#14171E';
+    ctx.fillRect(W / 2 - 180, 150, 360, 64);
+    ctx.strokeStyle = '#C6F221';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(W / 2 - 180, 150, 360, 64);
+
+    ctx.fillStyle = '#C6F221';
+    ctx.font = '700 32px "Space Grotesk", monospace';
+    ctx.fillText(serialNum, W / 2, 194);
+
+    // Twitter Handle
+    ctx.fillStyle = '#8E98A8';
+    ctx.font = '700 11px "Space Grotesk", sans-serif';
+    ctx.fillText('CLAIMED BY (X / TWITTER)', W / 2, 250);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '700 20px "Space Grotesk", sans-serif';
+    ctx.fillText('@' + twitter, W / 2, 276);
+
+    // EVM Wallet
+    ctx.fillStyle = '#8E98A8';
+    ctx.font = '700 11px "Space Grotesk", sans-serif';
+    ctx.fillText('WHITELISTED WALLET (ROBINHOOD EVM)', W / 2, 320);
+    ctx.fillStyle = '#C6F221';
+    ctx.font = '600 17px "Space Grotesk", monospace';
+    ctx.fillText(wallet.slice(0, 8) + '...' + wallet.slice(-6), W / 2, 344);
+
+    // Protocol & Network
+    ctx.fillStyle = '#8E98A8';
+    ctx.font = '700 11px "Space Grotesk", sans-serif';
+    ctx.fillText('NETWORK ECOSYSTEM', W / 2, 390);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '700 16px "Space Grotesk", sans-serif';
+    ctx.fillText('ROBINHOOD NETWORK · WEB3 EVM', W / 2, 412);
+
+    // Footer Security Notice
+    ctx.fillStyle = '#5E6673';
+    ctx.font = '11px "DM Sans", sans-serif';
+    ctx.fillText('Cryptographically anchored to Robinhood Network. Guaranteed 1x Genesis Mint slot.', W / 2, H - 40);
   }
 
-  /* ─── Download ─── */
+  /* ─── Download Pass ─── */
   function downloadPass() {
     const canvas = document.getElementById('mintPass');
     if (!canvas) return;
-    const tw = savedTwitter || getTwitterClean();
-    const sn = serial || localStorage.getItem('blockbit-serial') || 'unknown';
+    const sn = serial || 'GENESIS';
     const link = document.createElement('a');
-    link.download = 'blockbit-ink-pass-' + sn + '.png';
+    link.download = 'dudes-craft-robinhood-pass-' + sn + '.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
   }
 
-  /* ─── Submit to Google Sheets (Directly on Step 3) ─── */
+  /* ─── Submit Application to Google Apps Script ─── */
   async function submitApplication() {
     if (submitted) return;
 
@@ -376,7 +409,7 @@
 
     const allDone = tasksCompleted.follow && tasksCompleted.like && tasksCompleted.repost && tasksCompleted.quote;
     if (!allDone) {
-      showErr(step3Err, 'Please complete all social tasks above first.');
+      showErr(step3Err, 'Please complete all community tasks above first.');
       return;
     }
 
@@ -393,7 +426,7 @@
       twitter: '@' + tw,
       wallet:  w,
       serial:  serial,
-      source:  'blockbit-ink-site',
+      source:  'dudes-craft-robinhood',
       ts:      new Date().toISOString()
     };
 
@@ -440,7 +473,6 @@
           showErr(walletErr, errMsg);
         }
       } else {
-        // Fallback: If network succeeded, confirm step 4
         submitted = true;
         goToStep(4);
         showToast('Whitelist spot confirmed & Pass generated!');
@@ -474,19 +506,13 @@
     const btn = document.querySelector('[data-task="' + taskKey + '"]');
     if (btn) {
       btn.classList.add('completed');
-      btn.querySelector('.action-status').textContent = 'Done';
+      const st = btn.querySelector('.action-status');
+      if (st) st.textContent = 'Done';
     }
     const allDone = tasksCompleted.follow && tasksCompleted.like && tasksCompleted.repost && tasksCompleted.quote;
     submitAndClaimBtn.disabled = !allDone;
     if (allDone) clearErr(step3Err);
   }
-
-  /* ─── Clear any old legacy cache on device ─── */
-  try {
-    localStorage.removeItem('blockbit_wl_settings');
-    localStorage.removeItem('blockbit-whitelisted');
-    localStorage.removeItem('blockbit-serial');
-  } catch (e) {}
 
   /* ─── Navigation buttons ─── */
   document.querySelectorAll('[data-next]').forEach(btn => {
@@ -510,28 +536,28 @@
       let url;
       switch (taskKey) {
         case 'follow':
-          url = 'https://x.com/intent/follow?screen_name=BlockbitInk';
+          url = 'https://x.com/intent/follow?screen_name=DudesCraft';
           break;
         case 'like': {
           const tid = extractTweetId(currentPostUrl);
           if (tid) url = 'https://x.com/intent/like?tweet_id=' + tid;
-          else url = currentPostUrl || 'https://x.com/BlockbitInk';
+          else url = currentPostUrl || 'https://x.com/DudesCraft';
           break;
         }
         case 'repost': {
           const tid = extractTweetId(currentPostUrl);
           if (tid) url = 'https://x.com/intent/retweet?tweet_id=' + tid;
-          else url = currentPostUrl || 'https://x.com/BlockbitInk';
+          else url = currentPostUrl || 'https://x.com/DudesCraft';
           break;
         }
         case 'quote': {
           const shareText = encodeURIComponent(
-            'I just secured my spot on the Blockbit Ink Whitelist.\n\n' +
-            '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
+            'I just secured my spot on the Dudes Craft Genesis Whitelist!\n\n' +
+            '1,999 unique 3D voxel warriors launching on Robinhood Network.\n\n' +
             'Official Initiation Quest completed.\n\n' +
-            '@BlockbitInk #BlockbitInk #NFT #InkBlockchain -'
+            '@DudesCraft #DudesCraft #NFT #Robinhood'
           );
-          const postUrl = encodeURIComponent(currentPostUrl || 'https://x.com/BlockbitInk');
+          const postUrl = encodeURIComponent(currentPostUrl || 'https://x.com/DudesCraft');
           url = 'https://x.com/intent/tweet?text=' + shareText + '&url=' + postUrl;
           break;
         }
@@ -545,20 +571,18 @@
     });
   });
 
-  /* ─── Share on X (Auto copy image + download + intent) ─── */
+  /* ─── Share on X ─── */
   function shareOnX() {
     var canvas = document.getElementById('mintPass');
     if (!canvas) return;
 
-    // 1. Download pass image
     var link = document.createElement('a');
-    link.download = 'blockbit-ink-pass-' + serial + '.png';
+    link.download = 'dudes-craft-robinhood-pass-' + serial + '.png';
     link.href = canvas.toDataURL('image/png');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    // 2. Attempt copying pass image directly to clipboard
     try {
       canvas.toBlob(function (blob) {
         if (blob && navigator.clipboard && window.ClipboardItem) {
@@ -577,13 +601,12 @@
       showToast('Pass image downloaded! Attach the downloaded pass to your post on X.');
     }
 
-    // 3. Open Twitter intent with URL parameter for automatic Large Card image preview
     setTimeout(function () {
       var shareText = encodeURIComponent(
-        'I just secured my spot on the Blockbit Ink Whitelist.\n\n' +
-        'Mint Pass Serial: ' + serial + '\n\n' +
-        '1,999 unique pixel warriors forged on Ink Blockchain by Kraken.\n\n' +
-        '@BlockbitInk #BlockbitInk #NFT #InkBlockchain -'
+        'I just secured my spot on the Dudes Craft Genesis Whitelist!\n\n' +
+        'VIP Mint Pass Serial: ' + serial + '\n\n' +
+        '1,999 unique 3D voxel warriors launching on Robinhood Network.\n\n' +
+        '@DudesCraft #DudesCraft #NFT #Robinhood'
       );
       var shareUrl = encodeURIComponent('https://blockbit.ink/whitelist');
       window.open('https://x.com/intent/tweet?text=' + shareText + '&url=' + shareUrl, '_blank', 'noopener,noreferrer');
@@ -598,39 +621,42 @@
   if (shareBtn) shareBtn.addEventListener('click', shareOnX);
 
   /* ─── Input validation on input & blur ─── */
-  twitterInput.addEventListener('input', function () {
-    if (twitterErr.textContent) {
-      const raw = getTwitterRaw();
-      if (raw.startsWith('@') && raw.length > 1) {
-        validateTwitterInput();
+  if (twitterInput) {
+    twitterInput.addEventListener('input', function () {
+      if (twitterErr.textContent) {
+        const raw = getTwitterRaw();
+        if (raw.startsWith('@') && raw.length > 1) {
+          validateTwitterInput();
+        }
       }
-    }
-  });
-  twitterInput.addEventListener('blur', function () {
-    if (getTwitterRaw()) {
-      validateTwitterInput();
-    } else {
-      clearErr(twitterErr);
-    }
-  });
-  walletInput.addEventListener('blur', function () {
-    const w = getWallet();
-    if (w && !isValidWallet(w)) showErr(walletErr, 'Invalid address — must be 0x followed by 40 hex characters.');
-    else clearErr(walletErr);
-  });
+    });
+    twitterInput.addEventListener('blur', function () {
+      if (getTwitterRaw()) {
+        validateTwitterInput();
+      } else {
+        clearErr(twitterErr);
+      }
+    });
+  }
+  if (walletInput) {
+    walletInput.addEventListener('blur', function () {
+      const w = getWallet();
+      if (w && !isValidWallet(w)) showErr(walletErr, 'Invalid address — must be 0x followed by 40 hex characters.');
+      else clearErr(walletErr);
+    });
+  }
 
-  /* ─── Init: 0ms Instant Render + Background Fresh Sync ─── */
+  /* ─── Init App ─── */
   function initApp() {
     const initial = getLocalWlSettings();
     appSettings = initial;
-    currentPostUrl = initial.postUrl || 'https://x.com/BlockbitInk';
+    currentPostUrl = initial.postUrl || 'https://x.com/DudesCraft';
     initTimer(initial);
 
-    // Background fetch from Google Apps Script (non-blocking)
     fetchSettings().then(function (fresh) {
       if (fresh) {
         appSettings = fresh;
-        currentPostUrl = fresh.postUrl || 'https://x.com/BlockbitInk';
+        currentPostUrl = fresh.postUrl || 'https://x.com/DudesCraft';
         try {
           sessionStorage.setItem('bbi_wl_settings', JSON.stringify(fresh));
           localStorage.setItem('bbi_wl_settings', JSON.stringify(fresh));

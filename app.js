@@ -1,6 +1,6 @@
 /* ==========================================================================
-   BLOCKBIT INK — APP.JS
-   Animations, Ambient Canvas, Petals Canvas, DNA Forge, FAQ, Scroll-reveal
+   DUDES CRAFT — APP.JS
+   Animations, Ambient Canvas, Voxel Shards, DNA Forge, FAQ, Scroll-reveal
    ========================================================================== */
 
 // Clean .html extension from URL bar
@@ -19,28 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 
-
-  
   // Mobile Menu Toggle
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   
   if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-      const isOpen = mobileMenu.classList.contains('open');
+      mobileMenu.classList.toggle('is-active');
+      const isOpen = mobileMenu.classList.contains('is-active');
       
-      // Change icon
       mobileMenuBtn.innerHTML = isOpen 
         ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>`
         : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`;
     });
     
-    // Close menu when a link is clicked
     const mobileLinks = mobileMenu.querySelectorAll('a');
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
+        mobileMenu.classList.remove('is-active');
         mobileMenuBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`;
       });
     });
@@ -83,19 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
         revealObs.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   revealEls.forEach(el => {
     revealObs.observe(el);
   });
 
-  // ── AMBIENT CANVAS (Particles & Lines) ──
+  // ── AMBIENT CANVAS (Cyber Lemon Particles & Voxel Lines) ──
   const ac = document.getElementById('ambient-canvas');
   if (ac) {
     const ctx = ac.getContext('2d');
     let w, h;
     const particles = [];
-    const PARTICLE_COUNT = 60;
+    const PARTICLE_COUNT = 45;
 
     function resizeAc() {
       w = ac.width = window.innerWidth;
@@ -109,11 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
       reset() {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        this.r = Math.random() * 1.5 + 0.5;
-        this.vx = (Math.random() - 0.5) * 0.3;
-        this.vy = (Math.random() - 0.5) * 0.3;
-        this.alpha = Math.random() * 0.25 + 0.05;
-        this.color = `rgba(124,58,237,${this.alpha})`;
+        this.r = Math.random() * 2 + 1;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.alpha = Math.random() * 0.35 + 0.1;
+        this.color = `rgba(198, 242, 33, ${this.alpha})`;
       }
       update() {
         this.x += this.vx;
@@ -121,10 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
       }
       draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
-        ctx.fill();
+        ctx.fillRect(this.x, this.y, this.r, this.r); // Square voxel particles
       }
     }
     for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
@@ -132,18 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function animateAc() {
       ctx.clearRect(0, 0, w, h);
       particles.forEach(p => { p.update(); p.draw(); });
-      // draw subtle connections
+      
+      // subtle connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const d = dx * dx + dy * dy;
-          if (d < 18000) {
+          if (d < 16000) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(124,58,237,${0.03 * (1 - d / 18000)})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(198, 242, 33, ${0.08 * (1 - d / 16000)})`;
+            ctx.lineWidth = 0.6;
             ctx.stroke();
           }
         }
@@ -153,13 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
     animateAc();
   }
 
-  // ── PETALS CANVAS (Falling Leaves/Petals) ──
+  // ── VOXEL SHARDS CANVAS ──
   const pc = document.getElementById('petals-canvas');
   if (pc) {
     const ctx2 = pc.getContext('2d');
     let pw, ph;
-    const petals = [];
-    const PETAL_COUNT = 30; // Not too dense to keep it elegant
+    const shards = [];
+    const SHARD_COUNT = 24;
 
     function resizePc() {
       pw = pc.width = window.innerWidth;
@@ -168,31 +163,23 @@ document.addEventListener('DOMContentLoaded', () => {
     resizePc();
     window.addEventListener('resize', resizePc);
 
-    class Petal {
+    class VoxelShard {
       constructor() { this.reset(true); }
       reset(randomY = false) {
         this.x = Math.random() * pw;
         this.y = randomY ? Math.random() * ph : -20;
-        this.z = Math.random() * 0.8 + 0.2; // depth scale
-        this.width = (Math.random() * 8 + 4) * this.z;
-        this.height = (Math.random() * 12 + 6) * this.z;
-        this.vx = (Math.random() - 0.5) * 1.5;
-        this.vy = (Math.random() * 1.5 + 1) * this.z;
+        this.size = Math.random() * 8 + 4;
+        this.vx = (Math.random() - 0.5) * 1.2;
+        this.vy = Math.random() * 1.2 + 0.6;
         this.rotation = Math.random() * Math.PI * 2;
-        this.rs = (Math.random() - 0.5) * 0.05; // rotation speed
-        this.oscillationSpeed = Math.random() * 0.02 + 0.01;
-        this.oscillationOffset = Math.random() * Math.PI * 2;
-        
-        // Deep purple to soft purple
-        const r = 124, g = 58, b = 237;
-        const opacity = Math.random() * 0.4 + 0.2;
-        this.color = `rgba(${r},${g},${b},${opacity})`;
+        this.rs = (Math.random() - 0.5) * 0.04;
+        this.alpha = Math.random() * 0.35 + 0.15;
+        this.color = Math.random() > 0.5 ? `rgba(198, 242, 33, ${this.alpha})` : `rgba(10, 11, 13, ${this.alpha * 0.5})`;
       }
       update() {
         this.rotation += this.rs;
-        this.x += this.vx + Math.sin(Date.now() * this.oscillationSpeed + this.oscillationOffset) * 0.5;
+        this.x += this.vx;
         this.y += this.vy;
-        
         if (this.y > ph + 20 || this.x > pw + 20 || this.x < -20) {
           this.reset();
         }
@@ -201,24 +188,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx2.save();
         ctx2.translate(this.x, this.y);
         ctx2.rotate(this.rotation);
-        
-        // Draw petal shape
-        ctx2.beginPath();
-        ctx2.moveTo(0, -this.height/2);
-        ctx2.bezierCurveTo(this.width/2, -this.height/4, this.width/2, this.height/4, 0, this.height/2);
-        ctx2.bezierCurveTo(-this.width/2, this.height/4, -this.width/2, -this.height/4, 0, -this.height/2);
-        
         ctx2.fillStyle = this.color;
-        ctx2.fill();
+        ctx2.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
         ctx2.restore();
       }
     }
     
-    for (let i = 0; i < PETAL_COUNT; i++) petals.push(new Petal());
+    for (let i = 0; i < SHARD_COUNT; i++) shards.push(new VoxelShard());
     
     function animatePc() {
       ctx2.clearRect(0, 0, pw, ph);
-      petals.forEach(p => { p.update(); p.draw(); });
+      shards.forEach(p => { p.update(); p.draw(); });
       requestAnimationFrame(animatePc);
     }
     animatePc();
@@ -255,11 +235,9 @@ function initForge() {
   const canvas = document.getElementById('forgeCanvas');
   if (!canvas) return;
   
-  // Set to internal rendering size (2000x2000) for high quality
   canvas.width = 2000;
   canvas.height = 2000;
   
-  // Create renderer instance from generator.js
   if (typeof NFTRenderer !== 'undefined') {
     forgeRenderer = new NFTRenderer(canvas);
     randomizeForgeWarrior();
@@ -269,31 +247,25 @@ function initForge() {
 function randomizeForgeWarrior() {
   if (!forgeRenderer || typeof generateNFT === 'undefined') return;
   
-  // Generate a random seed
   const seed = Math.floor(Math.random() * 1999) + 1;
   
   try {
-    // Generate traits from traits.js
     const nftData = generateNFT(seed);
-    
-    // Render the pixel art character onto the canvas
     forgeRenderer.render(nftData);
     
-    // Update UI Elements
     const nameEl = document.getElementById('forgeName');
     const rankEl = document.getElementById('forgeRank');
     const traitsGrid = document.getElementById('forgeTraitsGrid');
     
-    if (nameEl) nameEl.textContent = `Blockbit #${String(seed).padStart(4, '0')}`;
+    if (nameEl) nameEl.textContent = `Dude #${String(seed).padStart(4, '0')}`;
     
     if (rankEl && nftData.rarity) {
       rankEl.textContent = nftData.rarity.name || nftData.rarity.tier || 'Common';
-      rankEl.style.color = nftData.rarity.color || 'var(--violet)';
-      rankEl.style.borderColor = nftData.rarity.color || 'var(--violet)';
+      rankEl.style.color = '#0A0B0D';
+      rankEl.style.backgroundColor = '#C6F221';
     }
     
     if (traitsGrid && nftData.traits) {
-      // Pick up to 4 interesting traits to display
       const traitsToShow = ['Outfit', 'Hair Style', 'Eyes', 'Accessory'];
       traitsGrid.innerHTML = '';
       
@@ -301,26 +273,26 @@ function randomizeForgeWarrior() {
         if (nftData.traits[tName]) {
           const tVal = nftData.traits[tName].name;
           traitsGrid.innerHTML += `
-            <div class="trait-cell">
-              <div class="trait-key">${tName}</div>
-              <div class="trait-val">${tVal}</div>
+            <div class="trait-card">
+              <span class="trait-type">${tName}</span>
+              <span class="trait-val">${tVal}</span>
             </div>
           `;
         }
       }
     }
   } catch (e) {
-    console.error("Error generating Forge NFT:", e);
+    console.error("Error generating Forge Dude:", e);
   }
 }
 window.randomizeForgeWarrior = randomizeForgeWarrior;
 
-/* ── TOP BANNER WHITELIST SYNC (0ms Instant Display + Background Refresh) ── */
+/* ── TOP BANNER WHITELIST SYNC ── */
 const DEFAULT_WL_SETTINGS = {
   whitelistOpen: 'On',
   timerStart: '2026-08-26 05:40',
   timerDuration: '12',
-  postUrl: 'https://x.com/BlockbitInk'
+  postUrl: 'https://x.com/DudesCraft'
 };
 
 function getLocalWlSettings() {
@@ -357,13 +329,11 @@ function initTopBanner() {
       countEl.textContent = '';
       if (pulseEl) {
         pulseEl.style.backgroundColor = '#F59E0B';
-        pulseEl.style.animation = 'bannerAmberPulse 2s infinite';
       }
       if (bannerEl) bannerEl.classList.add('is-ready');
       return;
     }
 
-    // Parse Bangladesh time (UTC+6)
     const startStr = settings.timerStart || '';
     let startMs;
     if (startStr.indexOf('T') > -1) {
@@ -384,8 +354,7 @@ function initTopBanner() {
     const endTime = startMs + durationMs;
 
     if (pulseEl) {
-      pulseEl.style.backgroundColor = '#10B981';
-      pulseEl.style.animation = 'bannerGreenPulse 2s infinite';
+      pulseEl.style.backgroundColor = '#C6F221';
     }
 
     function updateBannerTimer() {
@@ -396,7 +365,7 @@ function initTopBanner() {
         labelEl.textContent = 'WHITELIST CLOSED';
         countEl.textContent = 'Allocations Filled';
         if (pulseEl) {
-          pulseEl.style.backgroundColor = '#94A3B8';
+          pulseEl.style.backgroundColor = '#8E98A8';
           pulseEl.style.boxShadow = 'none';
         }
         if (bannerInterval) {
@@ -410,7 +379,7 @@ function initTopBanner() {
       const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
       const secs = Math.floor((remaining % (1000 * 60)) / 1000);
 
-      labelEl.textContent = 'WHITELIST ENDING IN:';
+      labelEl.textContent = 'WHITELIST CLOSING IN:';
       countEl.textContent = totalHours.toString().padStart(2, '0') + 'h ' +
                             mins.toString().padStart(2, '0') + 'm ' +
                             secs.toString().padStart(2, '0') + 's';
@@ -422,10 +391,8 @@ function initTopBanner() {
     bannerInterval = setInterval(updateBannerTimer, 1000);
   }
 
-  // 1. Instant 0ms Render with local/cached settings
   applySettings(getLocalWlSettings());
 
-  // 2. Fetch live updates in background (non-blocking)
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const endpoint = (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint)
     ? window.BLOCKBIT_CONFIG.sheetEndpoint

@@ -5,12 +5,12 @@
  */
 
 const COLLECTION = {
-  name: "Blockbit Ink",
-  description: "1,999 unique generative anime/pixel NFTs. Each one is Algorithmically Generated and utterly unique. Slight variations in color, hat, chain, eyes, and background make every single Blockbit Ink one-of-a-kind.",
+  name: "Dudes Craft",
+  description: "1,999 unique generative 3D voxel warriors on the Robinhood Network. Each one is Algorithmically Generated and utterly unique.",
   totalSupply: 1999,
-  symbol: "DINK",
-  website: "https://blockbitink.xyz",
-  image: "https://blockbitink.xyz/collection.png",
+  symbol: "DCRAFT",
+  website: "https://blockbit.ink",
+  image: "https://blockbit.ink/logo.webp",
   // Set BLOCKBIT_CREATOR_ADDRESS in env before running generate.js to override.
   creatorAddress: (typeof process !== "undefined" && process.env && process.env.BLOCKBIT_CREATOR_ADDRESS)
     || "0x0000000000000000000000000000000000000000",
@@ -721,7 +721,7 @@ function generateMetadata(tokenId, nftData) {
   });
 
   return {
-    name: `Blockbit Ink #${tokenId}`,
+    name: `Dudes Craft #${tokenId}`,
     description: COLLECTION.description,
     image: `images/${tokenId}.png`,
     external_url: COLLECTION.website,

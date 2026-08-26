@@ -29,7 +29,7 @@ const SETTINGS_SHEET = 'Settings';
 
 /** Default settings used when Settings sheet is missing or incomplete. */
 const DEFAULT_SETTINGS = {
-  postUrl: 'https://x.com/BlockbitInk',
+  postUrl: 'https://x.com/DudesCraft',
   timerStart: Utilities.formatDate(new Date(), 'Asia/Dhaka', 'yyyy-MM-dd HH:mm'),
   timerDuration: '48',
   whitelistOpen: 'true'
