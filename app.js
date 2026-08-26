@@ -217,8 +217,17 @@ document.addEventListener('DOMContentLoaded', () => {
     animatePc();
   }
 
-  // ── DNA FORGE ──
-  initForge();
+  // ── DNA FORGE (Lazy Init on scroll) ──
+  const forgeSection = document.getElementById('forge');
+  if (forgeSection) {
+    const forgeObs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        initForge();
+        forgeObs.disconnect();
+      }
+    }, { rootMargin: '200px' });
+    forgeObs.observe(forgeSection);
+  }
 
   // ── SMOOTH ANCHOR SCROLL ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
