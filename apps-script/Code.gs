@@ -66,22 +66,36 @@ function isValidTwitterHandle(handle) {
 }
 
 function isValidSerial(serial) {
-  return typeof serial === 'string' && /^BBI-\d{4}-[0-9A-F]{6}$/.test(serial);
+  return typeof serial === 'string' && /^(DC|BBI)-[0-9A-F]{4}-[0-9A-F]{4,6}$/i.test(serial.trim());
 }
 
-/** Health check or settings endpoint. Usage: ?action=settings */
+/** 
+ * Fast Ping & Health check or settings endpoint.
+ * - Usage: ?action=ping (Pre-warms the Google Cloud container in memory)
+ * - Usage: ?action=settings (Returns current round settings)
+ */
 function doGet(e) {
-  if (e && e.parameter && e.parameter.action === 'settings') {
-    const settings = getSettings_();
-    return jsonResponse_({
-      ok: true,
-      settings: settings
-    });
+  if (e && e.parameter) {
+    if (e.parameter.action === 'ping') {
+      try {
+        const ss = SpreadsheetApp.getActiveSpreadsheet();
+        const sheet = ss.getSheetByName(SHEET_NAME);
+        if (sheet) sheet.getLastRow();
+      } catch (_) {}
+      return ContentService.createTextOutput('PONG').setMimeType(ContentService.MimeType.TEXT);
+    }
+    if (e.parameter.action === 'settings') {
+      const settings = getSettings_();
+      return jsonResponse_({
+        ok: true,
+        settings: settings
+      });
+    }
   }
   return jsonResponse_({
     ok: true,
-    service: 'Blockbit Ink Whitelist API',
-    version: 3,
+    service: 'Dudes Craft Whitelist API',
+    version: 4,
     timestamp: new Date().toISOString()
   });
 }
@@ -427,4 +441,34 @@ function adminList() {
   const last = sheet.getLastRow();
   if (last < 2) return [];
   return sheet.getRange(2, 1, last - 1, HEADERS.length).getValues().map(rowToObject_);
+}
+
+/**
+ * 24/7 Keep-Alive Warmup function.
+ * Keeps the Apps Script V8 runtime container and spreadsheet instance hot in Google Cloud memory.
+ */
+function keepAlive() {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName(SHEET_NAME);
+    if (sheet) sheet.getLastRow();
+  } catch (_) {}
+}
+
+/**
+ * Run setupKeepAlive() ONCE from the Apps Script editor to install the 5-minute trigger.
+ * This ensures the Google Sheet backend NEVER sleeps, keeping submission latency below 1-2 seconds.
+ */
+function setupKeepAlive() {
+  const triggers = ScriptApp.getProjectTriggers();
+  for (let i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === 'keepAlive') {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+  ScriptApp.newTrigger('keepAlive')
+    .timeBased()
+    .everyMinutes(5)
+    .create();
+  return 'Keep-alive installed! Google Apps Script will now stay hot 24/7.';
 }

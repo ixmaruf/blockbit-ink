@@ -121,6 +121,23 @@
       : DEFAULT_ENDPOINT;
   }
 
+  /* ─── Prewarm Google Apps Script Container (Zero Cold-Start Lag) ─── */
+  let lastPrewarmTime = 0;
+  function prewarmAppsScript() {
+    const now = Date.now();
+    if (now - lastPrewarmTime < 30000) return; // 30s debounce
+    lastPrewarmTime = now;
+    try {
+      const endpoint = getSheetEndpoint();
+      if (endpoint) {
+        fetch(endpoint + '?action=ping&_w=' + now, {
+          mode: 'no-cors',
+          cache: 'no-store'
+        }).catch(function () {});
+      }
+    } catch (_) {}
+  }
+
   /* ─── Extract tweet ID from URL ─── */
   function extractTweetId(url) {
     if (!url) return null;
@@ -130,6 +147,7 @@
 
   /* ─── Fetch settings from Apps Script (Always Fresh) ─── */
   async function fetchSettings() {
+    prewarmAppsScript();
     try {
       const url = getSheetEndpoint() + '?action=settings&_nocache=' + Date.now();
       const resp = await fetch(url, { cache: 'no-store' });
@@ -246,6 +264,7 @@
   function goToStep(n) {
     if (n < 1 || n > totalSteps) return;
     currentStep = n;
+    prewarmAppsScript();
 
     // Update Progress Indicators
     document.querySelectorAll('.progress-step').forEach((el) => {
@@ -620,9 +639,11 @@
   const shareBtn = document.getElementById('shareOnX');
   if (shareBtn) shareBtn.addEventListener('click', shareOnX);
 
-  /* ─── Input validation on input & blur ─── */
+  /* ─── Input validation on input & blur & prewarm on focus ─── */
   if (twitterInput) {
+    twitterInput.addEventListener('focus', prewarmAppsScript);
     twitterInput.addEventListener('input', function () {
+      prewarmAppsScript();
       if (twitterErr.textContent) {
         const raw = getTwitterRaw();
         if (raw.startsWith('@') && raw.length > 1) {
@@ -639,6 +660,7 @@
     });
   }
   if (walletInput) {
+    walletInput.addEventListener('focus', prewarmAppsScript);
     walletInput.addEventListener('blur', function () {
       const w = getWallet();
       if (w && !isValidWallet(w)) showErr(walletErr, 'Invalid address — must be 0x followed by 40 hex characters.');
