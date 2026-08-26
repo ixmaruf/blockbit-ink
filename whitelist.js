@@ -172,10 +172,20 @@
 
     if (!settings) return;
 
-    var isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off';
+    var isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off' && settings.whitelistOpen !== false;
     if (!isOpen) {
       if (timerEl) timerEl.style.display = 'none';
-      if (comingSoonEl) comingSoonEl.style.display = 'block';
+      if (comingSoonEl) {
+        comingSoonEl.style.display = 'block';
+        var titleEl = document.getElementById('comingSoonTitle');
+        var msgEl = document.getElementById('comingSoonMsg');
+        var badgeEl = document.getElementById('closedBadgeText');
+        var dateRow = document.getElementById('comingSoonDateRow');
+        if (titleEl) titleEl.textContent = 'Whitelist Allocation Closed';
+        if (msgEl) msgEl.textContent = 'The Genesis Robinhood Whitelist round is currently closed. Stay tuned for future allocation waves and mint updates.';
+        if (badgeEl) badgeEl.textContent = 'GENESIS STATUS: CLOSED';
+        if (dateRow) dateRow.style.display = 'none';
+      }
       if (containerEl) containerEl.style.display = 'none';
       return;
     }
@@ -203,7 +213,15 @@
       if (now < startMs) {
         if (comingSoonEl) {
           comingSoonEl.style.display = 'block';
+          var titleEl = document.getElementById('comingSoonTitle');
+          var msgEl = document.getElementById('comingSoonMsg');
+          var badgeEl = document.getElementById('closedBadgeText');
+          var dateRow = document.getElementById('comingSoonDateRow');
           var dateEl = document.getElementById('comingSoonDate');
+          if (titleEl) titleEl.textContent = 'Opening Soon';
+          if (msgEl) msgEl.textContent = 'The Genesis Robinhood Whitelist round will open soon. Prepare your wallet and X credentials.';
+          if (badgeEl) badgeEl.textContent = 'GENESIS STATUS: UPCOMING';
+          if (dateRow) dateRow.style.display = 'flex';
           if (dateEl) dateEl.textContent = new Date(startMs).toLocaleString();
         }
         if (containerEl) containerEl.style.display = 'none';
@@ -215,8 +233,12 @@
           comingSoonEl.style.display = 'block';
           var titleEl = document.getElementById('comingSoonTitle');
           var msgEl = document.getElementById('comingSoonMsg');
+          var badgeEl = document.getElementById('closedBadgeText');
+          var dateRow = document.getElementById('comingSoonDateRow');
           if (titleEl) titleEl.textContent = 'Whitelist Closed';
-          if (msgEl) msgEl.textContent = 'The Dudes Craft whitelist round has ended.';
+          if (msgEl) msgEl.textContent = 'The Dudes Craft Genesis whitelist allocation round has officially ended.';
+          if (badgeEl) badgeEl.textContent = 'GENESIS STATUS: ENDED';
+          if (dateRow) dateRow.style.display = 'none';
         }
         if (containerEl) containerEl.style.display = 'none';
         clearInterval(timerInterval);
