@@ -178,13 +178,18 @@
         if (containerEl) containerEl.style.display = 'none';
         if (comingSoonEl) {
           comingSoonEl.classList.add('active');
+          const titleEl = document.getElementById('comingSoonTitle');
+          const msgEl = document.getElementById('comingSoonMsg');
           if (!isOpen) {
-            comingSoonEl.querySelector('h2').textContent = 'Whitelist Closed';
-            document.getElementById('comingSoonDate').parentElement.textContent = 'The whitelist is currently paused or closed.';
+            if (titleEl) titleEl.textContent = 'Whitelist Closed';
+            if (msgEl) msgEl.textContent = 'The whitelist is currently paused or closed.';
           } else {
-            var openDate = new Date(endTime);
-            document.getElementById('comingSoonDate').textContent =
-              openDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            if (titleEl) titleEl.textContent = 'Coming Soon';
+            const dateEl = document.getElementById('comingSoonDate');
+            if (dateEl) {
+              const openDate = new Date(endTime);
+              dateEl.textContent = openDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            }
           }
         }
         return;

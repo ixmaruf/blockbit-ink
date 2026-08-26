@@ -338,10 +338,10 @@ function initTopBanner() {
         bannerInterval = null;
       }
       labelEl.textContent = 'WHITELIST OPENS SOON';
-      countEl.textContent = 'Stay tuned for Genesis Initiation';
+      countEl.textContent = '';
       if (pulseEl) {
         pulseEl.style.backgroundColor = '#F59E0B';
-        pulseEl.style.boxShadow = '0 0 0 rgba(245, 158, 11, 0.7)';
+        pulseEl.style.animation = 'bannerAmberPulse 2s infinite';
       }
       if (bannerEl) bannerEl.classList.add('is-ready');
       return;
@@ -369,7 +369,7 @@ function initTopBanner() {
 
     if (pulseEl) {
       pulseEl.style.backgroundColor = '#10B981';
-      pulseEl.style.boxShadow = '0 0 0 rgba(16, 185, 129, 0.7)';
+      pulseEl.style.animation = 'bannerGreenPulse 2s infinite';
     }
 
     function updateBannerTimer() {
