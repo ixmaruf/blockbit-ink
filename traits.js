@@ -9,8 +9,8 @@ const COLLECTION = {
   description: "1,999 unique generative 3D voxel warriors on the Robinhood Network. Each one is Algorithmically Generated and utterly unique.",
   totalSupply: 1999,
   symbol: "DCRAFT",
-  website: "https://blockbit.ink",
-  image: "https://blockbit.ink/logo.webp",
+  website: "https://dudescraft.store",
+  image: "https://dudescraft.store/logo.webp",
   // Set BLOCKBIT_CREATOR_ADDRESS in env before running generate.js to override.
   creatorAddress: (typeof process !== "undefined" && process.env && process.env.BLOCKBIT_CREATOR_ADDRESS)
     || "0x0000000000000000000000000000000000000000",

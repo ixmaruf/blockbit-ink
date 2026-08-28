@@ -649,7 +649,7 @@
         '1,999 unique 3D voxel warriors launching on Robinhood Network.\n\n' +
         '@DudesCraft #DudesCraft #NFT #Robinhood'
       );
-      var shareUrl = encodeURIComponent('https://blockbit.ink/whitelist');
+      var shareUrl = encodeURIComponent('https://dudescraft.store/whitelist');
       window.open('https://x.com/intent/tweet?text=' + shareText + '&url=' + shareUrl, '_blank', 'noopener,noreferrer');
     }, 600);
   }
