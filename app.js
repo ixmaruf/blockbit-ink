@@ -290,8 +290,8 @@ window.randomizeForgeWarrior = randomizeForgeWarrior;
 /* ── TOP BANNER WHITELIST SYNC ── */
 const DEFAULT_WL_SETTINGS = {
   whitelistOpen: 'On',
-  timerStart: '2026-08-26 05:40',
-  timerDuration: '12',
+  timerStart: '2026-08-29 00:00',
+  timerDuration: '96',
   postUrl: 'https://x.com/DudesCraft'
 };
 

@@ -189,8 +189,8 @@
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const DEFAULT_WL_SETTINGS = {
     whitelistOpen: 'true',
-    timerStart: '2026-08-26 05:40',
-    timerDuration: '72',
+    timerStart: '2026-08-29 00:00',
+    timerDuration: '96',
     postUrl: 'https://x.com/DudesCraft'
   };
 
