@@ -194,12 +194,26 @@
     postUrl: 'https://x.com/DudesCraft'
   };
 
+  const STORAGE_KEY = 'dudescraft_settings_v3';
+
+  // Automatically purge legacy localStorage from previous visits
+  (function autoPurgeLegacyCache() {
+    try {
+      localStorage.removeItem('bbi_wl_settings');
+      sessionStorage.removeItem('bbi_wl_settings');
+      localStorage.removeItem('blockbit_settings');
+      sessionStorage.removeItem('blockbit_settings');
+    } catch (_) {}
+  })();
+
   function getLocalWlSettings() {
     try {
-      const raw = localStorage.getItem('bbi_wl_settings') || sessionStorage.getItem('bbi_wl_settings');
+      const raw = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object') return parsed;
+        if (parsed && typeof parsed === 'object' && parsed.savedAt && (Date.now() - parsed.savedAt < 5 * 60 * 1000)) {
+          return parsed.settings || DEFAULT_WL_SETTINGS;
+        }
       }
     } catch (e) {}
     return DEFAULT_WL_SETTINGS;
@@ -830,8 +844,9 @@
         appSettings = fresh;
         currentPostUrl = fresh.postUrl || 'https://x.com/DudesCraft';
         try {
-          sessionStorage.setItem('bbi_wl_settings', JSON.stringify(fresh));
-          localStorage.setItem('bbi_wl_settings', JSON.stringify(fresh));
+          const cacheObj = { settings: fresh, savedAt: Date.now() };
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
         } catch (e) {}
         initTimer(fresh);
       }
