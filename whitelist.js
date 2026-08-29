@@ -20,6 +20,14 @@
   let appSettings = {};
   let timerInterval = null;
 
+  /* ─── Anti-Bot State ─── */
+  const sessionStartTime = Date.now();
+  let sessionChallenge = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  let challengeTimestamp = Date.now();
+  let clientIp = '';
+  let deviceFingerprint = '';
+  const ANTI_BOT_SECRET = 'DUDES_CRAFT_ROBINHOOD_GENESIS_2026_SECURE_KEY';
+
   /* ─── DOM refs ─── */
   const twitterInput = document.getElementById('twitterHandle');
   const walletInput  = document.getElementById('walletAddr');
@@ -43,6 +51,88 @@
   function isValidWallet(v) { return /^0x[a-fA-F0-9]{40}$/.test(v); }
   function showErr(el, msg) { if (el) el.textContent = msg; }
   function clearErr(el) { if (el) el.textContent = ''; }
+
+  /* ─── Cryptographic Hash & PoW Helpers ─── */
+  async function sha256Hex(str) {
+    if (window.crypto && crypto.subtle) {
+      const buf = new TextEncoder().encode(str);
+      const hashBuf = await crypto.subtle.digest('SHA-256', buf);
+      return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    // Fallback FNV-like 64-hex string
+    let h1 = 0x811c9dc5, h2 = 0x12345678;
+    for (let i = 0; i < str.length; i++) {
+      h1 ^= str.charCodeAt(i);
+      h1 = Math.imul(h1, 0x01000193);
+      h2 ^= str.charCodeAt(i);
+      h2 = Math.imul(h2, 0x01000193);
+    }
+    return (h1 >>> 0).toString(16).padStart(8, '0') + (h2 >>> 0).toString(16).padStart(8, '0');
+  }
+
+  async function getDeviceFingerprint() {
+    if (deviceFingerprint) return deviceFingerprint;
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 180; canvas.height = 40;
+      const ctx = canvas.getContext('2d');
+      ctx.textBaseline = 'top';
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#f60';
+      ctx.fillRect(100, 1, 50, 20);
+      ctx.fillStyle = '#069';
+      ctx.fillText('DudesCraft_AntiBot', 2, 12);
+      ctx.fillStyle = 'rgba(198, 242, 33, 0.7)';
+      ctx.fillText('DudesCraft_AntiBot', 4, 14);
+      const canvasHash = canvas.toDataURL();
+
+      const screenInfo = [
+        screen.width, screen.height, screen.colorDepth,
+        window.devicePixelRatio || 1,
+        Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+        navigator.language || '',
+        navigator.hardwareConcurrency || 2
+      ].join('~');
+
+      deviceFingerprint = await sha256Hex(canvasHash + '|||' + screenInfo);
+    } catch (_) {
+      deviceFingerprint = 'fp_' + Math.random().toString(36).slice(2);
+    }
+    return deviceFingerprint;
+  }
+
+  async function fetchClientIp() {
+    if (clientIp) return clientIp;
+    try {
+      const r = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+      const d = await r.json();
+      if (d && d.ip) {
+        clientIp = d.ip;
+        return clientIp;
+      }
+    } catch (_) {}
+    try {
+      const r2 = await fetch('https://api64.ipify.org?format=json', { cache: 'no-store' });
+      const d2 = await r2.json();
+      if (d2 && d2.ip) {
+        clientIp = d2.ip;
+        return clientIp;
+      }
+    } catch (_) {}
+    return '';
+  }
+
+  async function solveProofOfWork(challenge, ts) {
+    let nonce = 0;
+    while (nonce < 100000) {
+      const hash = await sha256Hex(challenge + ':' + nonce + ':' + ts);
+      if (hash.startsWith('000')) {
+        return { nonce: String(nonce), hash: hash };
+      }
+      nonce++;
+    }
+    return { nonce: '0', hash: '' };
+  }
 
   /* ─── Twitter Validation (Requires @) ─── */
   function validateTwitterInput() {
@@ -121,11 +211,11 @@
       : DEFAULT_ENDPOINT;
   }
 
-  /* ─── Prewarm Google Apps Script Container (Zero Cold-Start Lag) ─── */
+  /* ─── Prewarm Google Apps Script Container ─── */
   let lastPrewarmTime = 0;
   function prewarmAppsScript() {
     const now = Date.now();
-    if (now - lastPrewarmTime < 30000) return; // 30s debounce
+    if (now - lastPrewarmTime < 30000) return;
     lastPrewarmTime = now;
     try {
       const endpoint = getSheetEndpoint();
@@ -145,7 +235,7 @@
     return match ? match[1] : null;
   }
 
-  /* ─── Fetch settings from Apps Script (Always Fresh) ─── */
+  /* ─── Fetch settings from Apps Script ─── */
   async function fetchSettings() {
     prewarmAppsScript();
     try {
@@ -288,7 +378,6 @@
     currentStep = n;
     prewarmAppsScript();
 
-    // Update Progress Indicators
     document.querySelectorAll('.progress-step').forEach((el) => {
       const stepNum = parseInt(el.dataset.step);
       el.classList.remove('active', 'done');
@@ -296,7 +385,6 @@
       else if (stepNum === n) el.classList.add('active');
     });
 
-    // Update Form Panels
     document.querySelectorAll('.form-panel').forEach((panel) => {
       panel.classList.remove('active');
       if (parseInt(panel.dataset.panel) === n) {
@@ -434,7 +522,7 @@
     link.click();
   }
 
-  /* ─── Submit Application to Google Apps Script ─── */
+  /* ─── Submit Application with Full Anti-Bot Verification ─── */
   async function submitApplication() {
     if (submitted) return;
 
@@ -460,16 +548,52 @@
     }
 
     submitAndClaimBtn.disabled = true;
-    submitAndClaimBtn.querySelector('span').textContent = 'Submitting & Verifying...';
+    submitAndClaimBtn.querySelector('span').textContent = 'Solving Proof-of-Work & Verifying...';
     clearErr(step3Err);
+
+    // Check honeypot
+    const trap1 = document.getElementById('wlWebsiteTrap')?.value || '';
+    const trap2 = document.getElementById('wlBotTokenTrap')?.value || '';
+    if (trap1 || trap2) {
+      showErr(step3Err, 'Security error: Automated submission detected.');
+      submitAndClaimBtn.disabled = false;
+      submitAndClaimBtn.querySelector('span').textContent = 'Submit & Claim Slot';
+      return;
+    }
+
+    // 1. Solve Proof-of-Work puzzle
+    const pow = await solveProofOfWork(sessionChallenge, challengeTimestamp);
+
+    // 2. Generate HMAC Signature
+    const signature = await sha256Hex(sessionChallenge + ':' + challengeTimestamp + ':' + w.toLowerCase() + ':' + ANTI_BOT_SECRET);
+
+    // 3. Collect Fingerprint & IP
+    const [fp, ip] = await Promise.all([
+      getDeviceFingerprint(),
+      fetchClientIp()
+    ]);
+
+    const elapsed = Date.now() - sessionStartTime;
 
     const payload = {
       twitter: '@' + tw,
       wallet:  w,
       serial:  serial,
       source:  'dudes-craft-robinhood',
-      ts:      new Date().toISOString()
+      challenge: sessionChallenge,
+      challengeTime: challengeTimestamp,
+      nonce: pow.nonce,
+      powHash: pow.hash,
+      signature: signature,
+      fingerprint: fp,
+      ip: ip,
+      elapsedMs: elapsed,
+      website_trap: trap1,
+      bot_token_trap: trap2,
+      userAgent: navigator.userAgent
     };
+
+    submitAndClaimBtn.querySelector('span').textContent = 'Verifying Slot with Server...';
 
     try {
       const resp = await fetch(getSheetEndpoint(), {
@@ -488,7 +612,7 @@
           if (jsonMatch) {
             try { data = JSON.parse(jsonMatch[0]); } catch (_) {}
           }
-          if (!data && (rawText.includes('Whitelist submission recorded') || rawText.includes('"ok":true') || resp.ok)) {
+          if (!data && (rawText.includes('Whitelist spot confirmed') || rawText.includes('"ok":true') || resp.ok)) {
             data = { ok: true, serial: serial };
           }
         }
@@ -499,12 +623,12 @@
       if (data && data.ok) {
         submitted = true;
         goToStep(4);
-        showToast('Whitelist spot confirmed & Pass generated!');
+        showToast('Whitelist spot confirmed & VIP Pass generated!');
       } else if (data && data.error) {
         submitAndClaimBtn.disabled = false;
         submitAndClaimBtn.querySelector('span').textContent = 'Submit & Claim Slot';
         
-        const errMsg = data.error || 'Submission failed. Please try again.';
+        const errMsg = data.error || 'Submission rejected by security filters.';
         showErr(step3Err, errMsg);
         showToast(errMsg);
 
@@ -516,7 +640,7 @@
       } else {
         submitted = true;
         goToStep(4);
-        showToast('Whitelist spot confirmed & Pass generated!');
+        showToast('Whitelist spot confirmed & VIP Pass generated!');
       }
     } catch (err) {
       submitAndClaimBtn.disabled = false;
@@ -690,8 +814,12 @@
     });
   }
 
-  /* ─── Init App ─── */
+  /* ─── Init App & Background Security Warmup ─── */
   function initApp() {
+    // Pre-calculate fingerprint and IP in background
+    getDeviceFingerprint();
+    fetchClientIp();
+
     const initial = getLocalWlSettings();
     appSettings = initial;
     currentPostUrl = initial.postUrl || 'https://x.com/DudesCraft';
