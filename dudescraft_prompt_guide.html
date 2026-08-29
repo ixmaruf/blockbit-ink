@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dudes Craft — Cinematic Video Prompt Bible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm 12mm 10mm;
+  }
+  
+  :root {
+    --lime: #C6F221;
+    --lime-bright: #D4FF00;
+    --obsidian: #0A0B0E;
+    --card-bg: #14171E;
+    --card-border: #232834;
+    --text-main: #F4F5F8;
+    --text-muted: #9BA3AF;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--obsidian);
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    page-break-after: always;
+    padding: 10px 15px;
+    position: relative;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  /* Header */
+  .header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--lime);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-badge {
+    background: var(--lime);
+    color: #000;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .brand-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #FFF;
+  }
+
+  .header-tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--lime);
+    background: rgba(198, 242, 33, 0.1);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(198, 242, 33, 0.3);
+  }
+
+  /* Cover Page */
+  .cover-container {
+    text-align: center;
+    padding: 40px 20px 20px 20px;
+  }
+
+  .cover-eyebrow {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--lime);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .cover-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #FFF;
+    margin-bottom: 12px;
+  }
+
+  .cover-title span {
+    color: var(--lime);
+  }
+
+  .cover-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 580px;
+    margin: 0 auto 24px auto;
+  }
+
+  .cover-grid-preview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .cover-grid-preview img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+  }
+
+  .meta-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 25px;
+  }
+
+  .meta-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: left;
+  }
+
+  .meta-card-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .meta-card-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFF;
+  }
+
+  /* Section Styling */
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFF;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 16px;
+    background: var(--lime);
+    border-radius: 2px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .card-highlight {
+    border-left: 3px solid var(--lime);
+  }
+
+  /* Shot Block */
+  .shot-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    page-break-inside: avoid;
+  }
+
+  .shot-header {
+    background: #1B202B;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .shot-num {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--lime);
+  }
+
+  .shot-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFF;
+  }
+
+  .shot-time {
+    font-size: 11px;
+    color: var(--lime);
+    background: rgba(198, 242, 33, 0.15);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .shot-body {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 14px;
+    padding: 12px;
+  }
+
+  .shot-image-wrap {
+    position: relative;
+  }
+
+  .shot-image {
+    width: 100%;
+    height: 145px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid rgba(198, 242, 33, 0.3);
+  }
+
+  .shot-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .prompt-box {
+    background: #0D0F14;
+    border: 1px solid #282F3F;
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+
+  .prompt-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--lime);
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .prompt-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10.5px;
+    color: #D1D5DB;
+    line-height: 1.35;
+  }
+
+  .shot-params {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .param-tag {
+    font-size: 10.5px;
+    background: #171B24;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #232938;
+    color: #CBD5E1;
+  }
+
+  .param-tag strong {
+    color: var(--lime);
+    font-weight: 600;
+  }
+
+  .bengali-desc {
+    font-size: 11px;
+    color: #94A3B8;
+    line-height: 1.4;
+    border-left: 2px solid #3B82F6;
+    padding-left: 8px;
+    margin-top: 2px;
+  }
+
+  /* Consistency Rules */
+  .rule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .rule-box {
+    background: #10131A;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+
+  .rule-box h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    color: var(--lime);
+    margin-bottom: 6px;
+  }
+
+  .rule-box p, .rule-box ul {
+    font-size: 11px;
+    color: #CBD5E1;
+  }
+
+  .rule-box ul {
+    padding-left: 16px;
+    margin-top: 4px;
+  }
+
+  .rule-box li {
+    margin-bottom: 3px;
+  }
+
+  /* Table */
+  table.timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 11px;
+  }
+
+  table.timeline-table th {
+    background: #1C222E;
+    color: var(--lime);
+    text-align: left;
+    padding: 6px 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    border: 1px solid #283142;
+  }
+
+  table.timeline-table td {
+    padding: 6px 10px;
+    border: 1px solid #202736;
+    color: #E2E8F0;
+  }
+
+  table.timeline-table tr:nth-child(even) {
+    background: #11141C;
+  }
+
+  /* Footer */
+  .footer-note {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 10px;
+    color: #64748B;
+    border-top: 1px solid #1E2330;
+    padding-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1: COVER & OVERVIEW ================= -->
+<div class="page">
+  <div class="header-bar">
+    <div class="brand-logo">
+      <span class="brand-badge">VOXEL 3D</span>
+      <span class="brand-title">DUDES CRAFT</span>
+    </div>
+    <div class="header-tag">Robinhood Network &bull; Genesis Video Bible</div>
+  </div>
+
+  <div class="cover-container">
+    <div class="cover-eyebrow">AI CINEMATIC VIDEO & ANIMATION PRODUCTION</div>
+    <h1 class="cover-title">10–15s Master <span>Prompt Bible</span><br>& Character Consistency Guide</h1>
+    <p class="cover-subtitle">
+      Comprehensive prompt architecture, shot-by-shot keyframes, and image-to-video workflow designed for <strong>Google Flow, Veo, Kling AI, Luma Dream Machine & Sora</strong>.
+    </p>
+
+    <div class="cover-grid-preview">
+      <img src="video-storyboard/scene-1-metropolis.jpg" alt="Metropolis">
+      <img src="video-storyboard/scene-3-impact-crater.jpg" alt="Impact Crater">
+      <img src="video-storyboard/scene-5-logo-reveal.jpg" alt="Logo Reveal">
+    </div>
+
+    <div class="meta-cards">
+      <div class="meta-card">
+        <div class="meta-card-label">Target Duration</div>
+        <div class="meta-card-val">10s &bull; 15s Formats</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-card-label">Visual Style</div>
+        <div class="meta-card-val">3D Voxel Octane 8K</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-card-label">Signature Lighting</div>
+        <div class="meta-card-val">Robinhood Lime #C6F221</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-card-label">Primary Tool</div>
+        <div class="meta-card-val">Google Flow / Veo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-highlight" style="margin-top: 20px;">
+    <div class="section-title">Director's Core Concept (বাংলা সারসংক্ষেপ)</div>
+    <p style="font-size: 11.5px; color: #CBD5E1; line-height: 1.55;">
+      এই ভিডিওটি কোনো ফ্ল্যাট বা সাধারণ মাইনক্রাফট ভিডিও নয়—এটি হচ্ছে <strong>হাই-এন্ড থ্রিডি ভক্সেল আর্ট (3D Voxel Art, Octane Ray-traced Render)</strong> স্টাইলে নির্মিত ১৫ সেকেন্ডের আল্ট্রা-সিনেমেটিক টিজার। শহরের ভক্সেল চরিত্ররা আকাশের দিকে তাকালে একটি উজ্জ্বল রবিনহুড লাইম গ্রিন এনার্জি বক্স মহাশূন্য থেকে এসে ক্র্যাশ ল্যান্ড করে। বক্সটি যান্ত্রিকভাবে খুলে গিয়ে সেখান থেকে আলোর স্তম্ভ ও <strong>DUDES CRAFT</strong> গোল্ডেন ভক্সেল লোগো আবির্ভূত হয়।
+    </p>
+  </div>
+
+  <div class="footer-note">DUDES CRAFT &copy; 2026 &bull; Official Video Blueprint for Robinhood Network Launch</div>
+</div>
+
+
+<!-- ================= PAGE 2: CONSISTENCY ENGINE & DNA ================= -->
+<div class="page">
+  <div class="header-bar">
+    <div class="brand-logo">
+      <span class="brand-badge">STYLE DNA</span>
+      <span class="brand-title">Consistency Engine</span>
+    </div>
+    <div class="header-tag">AI Drift Prevention Protocol</div>
+  </div>
+
+  <div class="section-title">The Master Consistency Prompt Tokens (কখনোই পরিবর্তন করবেন না)</div>
+  <p style="font-size: 11.5px; color: #94A3B8; margin-bottom: 10px;">
+    এআই ভিডিও জেনারেটর (Google Flow / Kling / Veo) যেন একেক শটে একেক রকম চরিত্র বা গ্রাফিক্স তৈরি না করে, সেজন্য প্রতিটি প্রম্পটে নিচের মাস্টার স্টাইল টোকেন সবসময় ব্যবহার করবেন:
+  </p>
+
+  <div class="prompt-box" style="margin-bottom: 14px;">
+    <div class="prompt-label">
+      <span>Master Style Lock Token (Include in every prompt)</span>
+      <span style="color:#FFF;">LOCK-ID: DC-VOXEL-8K</span>
+    </div>
+    <div class="prompt-text">
+      cinematic 3D voxel art, sharp cubic voxels, MagicaVoxel 3D style, Octane Render, Unreal Engine 5 global illumination, ray-traced reflections, dark obsidian cyberpunk architecture, Robinhood electric lemon lime #C6F221 volumetric glow, atmospheric god rays, anamorphic lens flare, 8k resolution, photorealistic voxel textures, smooth cinematic motion, photorealistic micro-bevels
+    </div>
+  </div>
+
+  <div class="rule-grid">
+    <div class="rule-box">
+      <h4>🚫 Negative Prompt (যা যা নিষিদ্ধ করবেন)</h4>
+      <ul>
+        <li>2D flat pixel art, pixelated 8-bit sprites</li>
+        <li>Default Minecraft grass/dirt block textures</li>
+        <li>Round organic smooth meshes, photorealistic human flesh</li>
+        <li>Distorted limbs, messy hands, flickering voxels</li>
+        <li>Low resolution, blurry motion, watermarks, text artifacts</li>
+      </ul>
+    </div>
+    <div class="rule-box">
+      <h4>🎯 Character Consistency Rules</h4>
+      <ul>
+        <li><strong>Avatars:</strong> 3D Voxel humanoids with stylized boxy streetwear, cyberpunk hoodies, neon samurai helmets.</li>
+        <li><strong>Voxel Scale:</strong> Consistent 16x16 / 32x32 micro-cube voxel proportion throughout every scene.</li>
+        <li><strong>Lighting:</strong> Key lights must have Robinhood lime (#C6F221) and cyan/amber rim highlights.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title">Google Flow Image-to-Video (I2V) Workflow</div>
+  <div class="card">
+    <table class="timeline-table">
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Action in Google Flow</th>
+          <th>Settings &amp; Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Step 1</strong></td>
+          <td>Upload generated <strong>Scene 1 Keyframe</strong> as Starting Frame.</td>
+          <td>Motion: 4/10, Image Weight: 70%, Prompt: Scene 1 I2V</td>
+        </tr>
+        <tr>
+          <td><strong>Step 2</strong></td>
+          <td>Take last frame of Scene 1 output $\rightarrow$ upload to Scene 2 Start.</td>
+          <td>Camera Motion: Fast Pan Up + Zoom In</td>
+        </tr>
+        <tr>
+          <td><strong>Step 3</strong></td>
+          <td>Use <strong>Scene 3 Keyframe</strong> for impact shockwave transition.</td>
+          <td>Motion: 7/10, Camera Shake: Enabled</td>
+        </tr>
+        <tr>
+          <td><strong>Step 4</strong></td>
+          <td>Use <strong>Scene 4 &amp; 5 Keyframes</strong> for unfolding &amp; logo reveal.</td>
+          <td>Motion: 5/10, Smooth Orbit / Push In</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">DUDES CRAFT &copy; 2026 &bull; AI Video Consistency Architecture</div>
+</div>
+
+
+<!-- ================= PAGE 3: SHOT-BY-SHOT BREAKDOWN (PART 1) ================= -->
+<div class="page">
+  <div class="header-bar">
+    <div class="brand-logo">
+      <span class="brand-badge">SHOTS 1-2</span>
+      <span class="brand-title">Scene Breakdown</span>
+    </div>
+    <div class="header-tag">Timeline 00:00 &mdash; 00:06</div>
+  </div>
+
+  <!-- SHOT 1 -->
+  <div class="shot-block">
+    <div class="shot-header">
+      <span class="shot-num">SCENE 01</span>
+      <span class="shot-name">The Living Voxel Metropolis (City &amp; Look Up)</span>
+      <span class="shot-time">00:00 &mdash; 00:03 (3s)</span>
+    </div>
+    <div class="shot-body">
+      <div class="shot-image-wrap">
+        <img class="shot-image" src="video-storyboard/scene-1-metropolis.jpg" alt="Scene 1">
+      </div>
+      <div class="shot-details">
+        <div class="prompt-box">
+          <div class="prompt-label">AI Video Prompt (Google Flow / Kling / Veo)</div>
+          <div class="prompt-text">
+            Cinematic 3D voxel art wide shot, a bustling cyberpunk voxel city at dusk with glowing neon skyscrapers and streetlights. Multiple 3D voxel avatar characters in stylish streetwear and cyber samurai armor walk along voxel sidewalks. Suddenly they all stop and tilt their heads upward gazing at the dark sky in awe. Slow low-angle crane up, volumetric dusk lighting, Robinhood electric lime #C6F221 glow, Octane Render, 8k.
+          </div>
+        </div>
+        <div class="shot-params">
+          <div class="param-tag"><strong>Camera:</strong> Slow crane up, tilt up</div>
+          <div class="param-tag"><strong>SFX:</strong> City hum, gentle chime</div>
+        </div>
+        <div class="bengali-desc">
+          শুরুতেই ভক্সেল শহরের প্রাণবন্ত দৃশ্য। চরিত্ররা স্বাভাবিকভাবে হাঁটছিল, হঠাৎ সবাই একসাথে অবাক হয়ে আকাশের দিকে তাকাবে।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOT 2 -->
+  <div class="shot-block">
+    <div class="shot-header">
+      <span class="shot-num">SCENE 02</span>
+      <span class="shot-name">The Genesis Comet (Mystery Glowing Box Streak)</span>
+      <span class="shot-time">00:03 &mdash; 00:06 (3s)</span>
+    </div>
+    <div class="shot-body">
+      <div class="shot-image-wrap">
+        <img class="shot-image" src="video-storyboard/scene-2-box-streak.jpg" alt="Scene 2">
+      </div>
+      <div class="shot-details">
+        <div class="prompt-box">
+          <div class="prompt-label">AI Video Prompt (Google Flow / Kling / Veo)</div>
+          <div class="prompt-text">
+            Dynamic fast FPV tracking shot: a mysterious metallic 3D voxel cube artifact streaks across the dark starry night sky above voxel skyscrapers at hyperspeed. The glowing box emits a blinding Robinhood electric lime #C6F221 plasma comet trail, luminous ion particles and intense green laser glow. Motion blur, high velocity dive, Octane render, MagicaVoxel style, 8k resolution, cinematic lighting.
+          </div>
+        </div>
+        <div class="shot-params">
+          <div class="param-tag"><strong>Camera:</strong> Fast FPV tracking dive</div>
+          <div class="param-tag"><strong>SFX:</strong> Plasma sonic boom, whoosh</div>
+        </div>
+        <div class="bengali-desc">
+          আকাশের উপর দিয়ে অত্যন্ত দ্রুতগতিতে উজ্জ্বল লাইম গ্রিন প্লাজমা ট্রেইল নিয়ে রহস্যময় ভক্সেল বক্সটি ছুটে নিচে নেমে আসছে।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">DUDES CRAFT &copy; 2026 &bull; Scene Breakdown Part 1</div>
+</div>
+
+
+<!-- ================= PAGE 4: SHOT-BY-SHOT BREAKDOWN (PART 2) ================= -->
+<div class="page">
+  <div class="header-bar">
+    <div class="brand-logo">
+      <span class="brand-badge">SHOTS 3-4</span>
+      <span class="brand-title">Scene Breakdown</span>
+    </div>
+    <div class="header-tag">Timeline 00:06 &mdash; 00:12</div>
+  </div>
+
+  <!-- SHOT 3 -->
+  <div class="shot-block">
+    <div class="shot-header">
+      <span class="shot-num">SCENE 03</span>
+      <span class="shot-name">The Monolith Impact (BOOM! &amp; Crater Shockwave)</span>
+      <span class="shot-time">00:06 &mdash; 00:09 (3s)</span>
+    </div>
+    <div class="shot-body">
+      <div class="shot-image-wrap">
+        <img class="shot-image" src="video-storyboard/scene-3-impact-crater.jpg" alt="Scene 3">
+      </div>
+      <div class="shot-details">
+        <div class="prompt-box">
+          <div class="prompt-label">AI Video Prompt (Google Flow / Kling / Veo)</div>
+          <div class="prompt-text">
+            High-impact explosion ground shot: the high-tech glowing voxel cube slams violently into the cyber plaza ground. BOOM! Ground fractures into glowing Robinhood electric lime #C6F221 cracks, blasting cubic voxel debris and smoke shockwaves in slow motion. The cube rests in a smoking crater vibrating with intense green electrical sparks. Camera shake, cinematic debris physics, Octane render 8k.
+          </div>
+        </div>
+        <div class="shot-params">
+          <div class="param-tag"><strong>Camera:</strong> Ground impact + camera shake</div>
+          <div class="param-tag"><strong>SFX:</strong> Heavy sub-bass BOOM, debris</div>
+        </div>
+        <div class="bengali-desc">
+          প্রচণ্ড শব্দে বক্সটি মাটিতে আছড়ে পড়ে। চারপাশের ভক্সেল গ্রাউন্ড ভেঙে যায়, ধোঁয়া ও সবুজ আলো চারদিকে ছড়িয়ে পড়ে।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOT 4 -->
+  <div class="shot-block">
+    <div class="shot-header">
+      <span class="shot-num">SCENE 04</span>
+      <span class="shot-name">The Unfolding Genesis Core &amp; Crowd Gathering</span>
+      <span class="shot-time">00:09 &mdash; 00:12 (3s)</span>
+    </div>
+    <div class="shot-body">
+      <div class="shot-image-wrap">
+        <img class="shot-image" src="video-storyboard/scene-4-box-unfolding.jpg" alt="Scene 4">
+      </div>
+      <div class="shot-details">
+        <div class="prompt-box">
+          <div class="prompt-label">AI Video Prompt (Google Flow / Kling / Veo)</div>
+          <div class="prompt-text">
+            Low angle cinematic awe shot: the metallic voxel cube mechanically unlocks and unfolds into floating modular panels, shooting a blinding vertical pillar of pure white and Robinhood electric lime #C6F221 laser light straight up into the clouds. Surrounding 3D voxel characters in hoodies stand around the crater looking upward in shock and amazement. God rays, floating sparkles, Octane 8k.
+          </div>
+        </div>
+        <div class="shot-params">
+          <div class="param-tag"><strong>Camera:</strong> 360&deg; slow orbit upward</div>
+          <div class="param-tag"><strong>SFX:</strong> Mechanical opening, laser riser</div>
+        </div>
+        <div class="bengali-desc">
+          চরিত্ররা দৌড়ে এসে বক্সটিকে ঘিরে দাঁড়ায়। বক্সটি নিজে থেকেই খুলে যায় এবং তীব্র আলোর একটি স্তম্ভ সোজা আকাশের দিকে উঠে যায়।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">DUDES CRAFT &copy; 2026 &bull; Scene Breakdown Part 2</div>
+</div>
+
+
+<!-- ================= PAGE 5: GRAND CLIMAX & TIMELINE MATRIX ================= -->
+<div class="page">
+  <div class="header-bar">
+    <div class="brand-logo">
+      <span class="brand-badge">SHOT 5 &amp; AUDIO</span>
+      <span class="brand-title">Grand Climax &amp; Audio</span>
+    </div>
+    <div class="header-tag">Timeline 00:12 &mdash; 00:15</div>
+  </div>
+
+  <!-- SHOT 5 -->
+  <div class="shot-block">
+    <div class="shot-header">
+      <span class="shot-num">SCENE 05</span>
+      <span class="shot-name">The Grand Reveal: Dudes Craft Logo &amp; Launch Text</span>
+      <span class="shot-time">00:12 &mdash; 00:15 (3s)</span>
+    </div>
+    <div class="shot-body">
+      <div class="shot-image-wrap">
+        <img class="shot-image" src="video-storyboard/scene-5-logo-reveal.jpg" alt="Scene 5">
+      </div>
+      <div class="shot-details">
+        <div class="prompt-box">
+          <div class="prompt-label">AI Video Prompt (Google Flow / Kling / Veo)</div>
+          <div class="prompt-text">
+            Climax title card reveal: floating in the center of the light beam is the glorious 3D voxel DUDES CRAFT golden emblem, surrounded by spinning Robinhood electric lime #C6F221 plasma rings and floating magic sparkles. Camera slowly pushes in. Glowing 3D voxel bold typography appears: '1,999 GENESIS VOXELS' and 'ROBINHOOD NETWORK'. Starry cosmos background, cinematic brass hit, 8k resolution.
+          </div>
+        </div>
+        <div class="shot-params">
+          <div class="param-tag"><strong>Camera:</strong> Slow dramatic push-in</div>
+          <div class="param-tag"><strong>SFX:</strong> Massive synth braam, magic shimmer</div>
+        </div>
+        <div class="bengali-desc">
+          আলোর মধ্য থেকে DUDES CRAFT গোল্ডেন লোগো উপরে ভেসে উঠে। সাথে টেক্সট: 1,999 Genesis Voxels &bull; Robinhood Network &bull; Coming Soon!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timing Matrix -->
+  <div class="section-title">10-Second vs 15-Second Pacing Breakdown</div>
+  <table class="timeline-table">
+    <thead>
+      <tr>
+        <th>Scene</th>
+        <th>Visual Action</th>
+        <th>15-Second Cut</th>
+        <th>10-Second Cut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Scene 1</strong></td>
+        <td>Voxel city life + characters look up at sky</td>
+        <td>00:00 &mdash; 00:03 (3.0s)</td>
+        <td>00:00 &mdash; 00:02 (2.0s)</td>
+      </tr>
+      <tr>
+        <td><strong>Scene 2</strong></td>
+        <td>Genesis lime cube streaks across stratosphere</td>
+        <td>00:03 &mdash; 00:06 (3.0s)</td>
+        <td>00:02 &mdash; 00:04 (2.0s)</td>
+      </tr>
+      <tr>
+        <td><strong>Scene 3</strong></td>
+        <td>Ground crash explosion (BOOM!) &amp; vibration</td>
+        <td>00:06 &mdash; 00:09 (3.0s)</td>
+        <td>00:04 &mdash; 00:06 (2.0s)</td>
+      </tr>
+      <tr>
+        <td><strong>Scene 4</strong></td>
+        <td>Cube unfolds into modular plates + laser beam</td>
+        <td>00:09 &mdash; 00:12 (3.0s)</td>
+        <td>00:06 &mdash; 00:08 (2.0s)</td>
+      </tr>
+      <tr>
+        <td><strong>Scene 5</strong></td>
+        <td>Dudes Craft Logo rises + '1,999 Genesis Voxels'</td>
+        <td>00:12 &mdash; 00:15 (3.0s)</td>
+        <td>00:08 &mdash; 00:10 (2.0s)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Sound Design Box -->
+  <div class="card card-highlight" style="margin-top: 12px; padding: 10px 14px;">
+    <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FFF; font-size: 12px; margin-bottom: 4px;">
+      🎵 Recommended Music &amp; Audio Elements (CapCut / Premiere Pro)
+    </div>
+    <p style="font-size: 11px; color: #CBD5E1;">
+      <strong>Track Type:</strong> Hybrid Cyberpunk Synthwave / Cinematic Braam &bull; <strong>Drop Point:</strong> Exactly at 00:06 (when the cube hits the ground) &bull; <strong>Final Hit:</strong> Deep orchestral sub-bass at 00:12 when the DUDES CRAFT logo reveals.
+    </p>
+  </div>
+
+  <div class="footer-note">DUDES CRAFT &copy; 2026 &bull; Grand Climax &amp; Audio Architecture</div>
+</div>
+
+</body>
+</html>

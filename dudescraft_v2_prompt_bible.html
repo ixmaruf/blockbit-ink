@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dudes Craft — Official Video Prompt Bible (100% Consistent Edition)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+      --rh-lemon: #C6F221;
+      --rh-lemon-glow: rgba(198, 242, 33, 0.45);
+      --bg-dark: #0A0B0D;
+      --bg-card: #12151B;
+      --border-color: #242A35;
+      --text-main: #FFFFFF;
+      --text-muted: #9CA3AF;
+      --mc-green: #4ADE80;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      padding: 16mm 16mm;
+      page-break-after: always;
+      position: relative;
+      background: #0A0B0D;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .logo-badge {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 13px;
+      color: var(--rh-lemon);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .meta-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      background: #1C222C;
+      color: #A3E635;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(198, 242, 33, 0.3);
+    }
+
+    .page-footer {
+      border-top: 1px solid var(--border-color);
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9.5px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    h1 {
+      font-size: 23px;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--rh-lemon);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 11px;
+      color: #D1D5DB;
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .highlight-card {
+      background: linear-gradient(135deg, rgba(198, 242, 33, 0.08) 0%, rgba(18, 21, 27, 0.95) 100%);
+      border: 1px solid rgba(198, 242, 33, 0.4);
+    }
+
+    .prompt-box {
+      background: #060709;
+      border: 1px solid #28303F;
+      border-left: 4px solid var(--rh-lemon);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      color: #E5E7EB;
+      line-height: 1.45;
+      margin-top: 6px;
+      word-break: break-word;
+    }
+
+    .negative-box {
+      border-left-color: #EF4444;
+      background: #110A0A;
+      border-color: #3F1D1D;
+    }
+
+    .scene-preview-img {
+      width: 100%;
+      height: 205px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #323B4B;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .char-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .char-thumb-box {
+      background: #151A22;
+      border: 1px solid #2D3748;
+      border-radius: 6px;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .char-thumb-box img {
+      width: 100%;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .char-title {
+      font-size: 8.5px;
+      font-weight: 700;
+      color: #E2E8F0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge-lemon { background: var(--rh-lemon); color: #000; }
+    .badge-red { background: #EF4444; color: #fff; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+      margin-top: 6px;
+    }
+
+    th {
+      background: #181D26;
+      color: var(--rh-lemon);
+      text-align: left;
+      padding: 5px 8px;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 5px 8px;
+      border: 1px solid var(--border-color);
+      color: #D1D5DB;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: CHARACTER CONSISTENCY & NO-LEGS RULE -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <div class="logo-badge"><span>🟩</span> DUDES CRAFT</div>
+        <div class="meta-tag">100% CONSISTENT CHARACTERS (NO LEGS) • ROBINHOOD</div>
+      </div>
+
+      <div style="text-align: center; margin: 8px 0 12px 0;">
+        <span class="badge badge-lemon" style="font-size: 10px; padding: 3px 10px;">CANONICAL MASTER PROMPT BIBLE</span>
+        <h1 style="font-size: 23px; line-height: 1.2; margin-top: 4px;">10s - 15s Cinematic Voxel Intro<br><span style="color: var(--rh-lemon);">Zero Character Drift Across All Shots</span></h1>
+      </div>
+
+      <div class="card highlight-card">
+        <h2>🔒 100% Character Consistency Guarantee</h2>
+        <p style="font-size: 10.5px; margin-bottom: 4px;">
+          All Dudes Craft NFT characters remain <strong>100% identical in every shot</strong>. They are solid geometric <strong>rectangular column block totems with a flat wooden base, absolutely NO LEGS and NO FEET</strong>.
+        </p>
+      </div>
+
+      <h3>🧑‍🤝‍🧑 Official 5 Reference Characters (Locked Across All Scenes):</h3>
+      <div class="char-strip">
+        <div class="char-thumb-box">
+          <img src="video-storyboard/ref-char-1-visor.png" alt="Visor Dude">
+          <div class="char-title">Top Hat Visor</div>
+        </div>
+        <div class="char-thumb-box">
+          <img src="video-storyboard/ref-char-2-tophat-gold.png" alt="Gold Coat Dude">
+          <div class="char-title">Purple Hair Gold</div>
+        </div>
+        <div class="char-thumb-box">
+          <img src="video-storyboard/ref-char-3-beanie-gapteeth.png" alt="Beanie Gap Teeth">
+          <div class="char-title">Beanie Gap-Teeth</div>
+        </div>
+        <div class="char-thumb-box">
+          <img src="video-storyboard/ref-char-4-halo-headband.png" alt="Halo Headband">
+          <div class="char-title">Halo Headband</div>
+        </div>
+        <div class="char-thumb-box">
+          <img src="video-storyboard/ref-char-5-suit-tie.png" alt="Suit Tie">
+          <div class="char-title">Red Beanie Suit</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🛡️ Master Consistency Lock (Prompt Token)</h2>
+        <div class="prompt-box">
+          original stylized 3D voxel art diorama, custom geometric voxel nature landscape, smooth rolling green cubic terraces with micro-beveled edges, clean matte textures, minimalist geometric oak and pine trees, authentic Dudes Craft NFT characters with solid rectangular column block totem bodies, flat wooden base at bottom, absolutely NO LEGS, NO FEET, square eyes with black pupils, thick rectangular eyebrows, MagicaVoxel 3D style, Octane Render, Unreal Engine 5 global illumination, Robinhood electric lemon-lime #C6F221 glow, 8k resolution
+        </div>
+        <div class="prompt-box negative-box">
+          <strong style="color: #EF4444;">NEGATIVE PROMPT:</strong> human legs, walking legs, human feet, boots, shoes, denim jeans pants, detached lower body limbs, default Minecraft cobblestone textures, 16x16 pixelated sprites, generic Minecraft clone, cyberpunk city, skyscrapers, photorealistic human face, round smooth meshes, 2D sprites, distorted hands, watermark
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Dudes Craft x Robinhood Network</span>
+      <span>Prompt Bible v5.0 • Page 1 of 5</span>
+    </div>
+  </div>
+
+  <!-- PAGE 2: SCENE 1 -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <div class="logo-badge"><span>🟩</span> DUDES CRAFT</div>
+        <div class="meta-tag">SCENE 01: SERENE MEADOW</div>
+      </div>
+
+      <div class="card highlight-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <h2 style="margin: 0; font-size: 15px;">📍 SCENE 01: Serene Voxel Meadow & Skyward Awe</h2>
+          <span class="badge badge-lemon">00:00 – 00:03 (3s)</span>
+        </div>
+        <img class="scene-preview-img" src="video-storyboard/v4-scene-1-meadow.jpg" alt="Scene 1 Meadow">
+        <p style="font-size: 11px; margin-bottom: 6px;">
+          <strong>Action:</strong> Three iconic no-leg block totem characters (Beanie gap-teeth dude, Top hat red-headband halo dude, and Red beanie suit dude) stand on the stylized stone path. Sunlight brightens with a warm Robinhood lemon-lime glow; they tilt their heads up at the sky in wonder.
+        </p>
+        <div class="prompt-box">
+          Original 3D stylized voxel art wide shot: a serene custom voxel nature meadow with smooth geometric green terraces, clean minimalist cubic oak and pine trees, and a stylized stone pathway under a warm sunlit sky. In the foreground, authentic Dudes Craft NFT characters with solid rectangular column block totem bodies, flat wooden bases at the bottom, absolutely NO LEGS, NO FEET (a dude in orange beanie with gap teeth, a dude in black top hat with red headband and glowing gold halo, and a dude in red beanie and suit) stand upright and gaze up in awe as the sky brightens with Robinhood lemon-lime #C6F221 sunlight. MagicaVoxel diorama style, Octane 3D render, soft ambient occlusion, clean matte textures, NOT Minecraft, 8k.
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Dudes Craft x Robinhood Network</span>
+      <span>Prompt Bible v5.0 • Page 2 of 5</span>
+    </div>
+  </div>
+
+  <!-- PAGE 3: SCENE 2 & SCENE 3 -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <div class="logo-badge"><span>🟩</span> DUDES CRAFT</div>
+        <div class="meta-tag">SCENE 02 & SCENE 03</div>
+      </div>
+
+      <!-- SCENE 2 -->
+      <div class="card" style="margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <h2 style="margin: 0; font-size: 14px;">📍 SCENE 02: The Genesis Box Streaking</h2>
+          <span class="badge badge-lemon">00:03 – 00:06 (3s)</span>
+        </div>
+        <img class="scene-preview-img" style="height: 145px;" src="video-storyboard/v4-scene-2-comet.jpg" alt="Scene 2 Comet">
+        <div class="prompt-box" style="font-size: 9.5px;">
+          Dynamic fast aerial tracking shot: a high-tech glowing 3D voxel cube artifact streaks across the sky above stylized geometric green hills and clean low-poly mountains. The voxel cube glows with intense Robinhood electric lemon-lime #C6F221 neon light and features the glowing Robinhood feather emblem and circuit lines on its sides, leaving a blazing green plasma comet trail and sparkling cubic pixel particles across the sky. Octane render, MagicaVoxel style, 8k resolution, ray-tracing.
+        </div>
+      </div>
+
+      <!-- SCENE 3 -->
+      <div class="card highlight-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <h2 style="margin: 0; font-size: 14px;">📍 SCENE 03: Meadow Crash Landing (BOOM!)</h2>
+          <span class="badge badge-lemon">00:06 – 00:09 (3s)</span>
+        </div>
+        <img class="scene-preview-img" style="height: 145px;" src="video-storyboard/v4-scene-3-impact.jpg" alt="Scene 3 Impact">
+        <div class="prompt-box" style="font-size: 9.5px;">
+          Cinematic ground impact action shot: the glowing Robinhood neon lime voxel cube artifact slams with tremendous force into the stylized geometric green voxel meadow. BOOM! The clean cubic ground fractures into a glowing impact crater with Robinhood electric lemon-lime #C6F221 energy cracks, blasting smooth geometric soil cubes into the air. In the foreground, the EXACT SAME stylized rectangular block totem characters with NO legs (Beanie gap-teeth, Halo dude, Red beanie suit) observe in shock with green rim lighting. Octane 3D render.
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Dudes Craft x Robinhood Network</span>
+      <span>Prompt Bible v5.0 • Page 3 of 5</span>
+    </div>
+  </div>
+
+  <!-- PAGE 4: SCENE 4 & SCENE 5 -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <div class="logo-badge"><span>🟩</span> DUDES CRAFT</div>
+        <div class="meta-tag">SCENE 04 & SCENE 05</div>
+      </div>
+
+      <!-- SCENE 4 -->
+      <div class="card" style="margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <h2 style="margin: 0; font-size: 14px;">📍 SCENE 04: Genesis Core Light Beam Ascent</h2>
+          <span class="badge badge-lemon">00:09 – 00:12 (3s)</span>
+        </div>
+        <img class="scene-preview-img" style="height: 145px;" src="video-storyboard/v4-scene-4-unfold.jpg" alt="Scene 4 Unfold">
+        <div class="prompt-box" style="font-size: 9.5px;">
+          Cinematic awe wide shot: the glowing voxel cube in the crater center mechanically unfolds its cubic panels, shooting a colossal vertical pillar of blinding white and Robinhood electric lemon-lime #C6F221 laser light straight up into the clouds. The EXACT SAME Dudes Craft column block totem characters with NO legs (Beanie gap-teeth, Halo dude, Red beanie suit, Top hat visor) stand around the crater rim looking up in awe. Octane render 8k.
+        </div>
+      </div>
+
+      <!-- SCENE 5 -->
+      <div class="card highlight-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <h2 style="margin: 0; font-size: 14px;">📍 SCENE 05: Climax Logo Reveal & Launch</h2>
+          <span class="badge badge-lemon">00:12 – 00:15 (3s)</span>
+        </div>
+        <img class="scene-preview-img" style="height: 145px;" src="video-storyboard/v4-scene-5-logo.jpg" alt="Scene 5 Logo">
+        <div class="prompt-box" style="font-size: 9.5px;">
+          Climax title reveal shot: rising from the vertical light pillar into the sunset sky above the stylized voxel world is the 3D voxel DUDES CRAFT emblem featuring the iconic block avatar dude holding the glowing Robinhood feather, surrounded by radiant Robinhood electric lemon lime #C6F221 neon rings and floating magic sparkles. Bold 3D typography reads 'DUDES CRAFT', with glowing subtitles '1,999 GENESIS VOXELS' and 'ROBINHOOD NETWORK • COMING SOON'. Octane 8k.
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Dudes Craft x Robinhood Network</span>
+      <span>Prompt Bible v5.0 • Page 4 of 5</span>
+    </div>
+  </div>
+
+  <!-- PAGE 5: GOOGLE FLOW WORKFLOW & SOUND DESIGN -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <div class="logo-badge"><span>🟩</span> DUDES CRAFT</div>
+        <div class="meta-tag">GOOGLE FLOW I2V WORKFLOW</div>
+      </div>
+
+      <h2>🚀 Google Flow Generation Process</h2>
+      <div class="card">
+        <ol style="font-size: 11px; padding-left: 16px; color: #D1D5DB; line-height: 1.6;">
+          <li><strong>Step 1:</strong> In Google Flow, upload <code>v4-scene-1-meadow.jpg</code> as the starting frame.</li>
+          <li><strong>Step 2:</strong> Paste Scene 1 prompt and set <em>Camera Motion: Slow Push / Upward Tilt</em> (Motion: 3–4).</li>
+          <li><strong>Step 3:</strong> Upload <code>v4-scene-2-comet.jpg</code> for Scene 2 with <em>Fast Aerial Tracking</em>.</li>
+          <li><strong>Step 4:</strong> Upload <code>v4-scene-3-impact.jpg</code> for Scene 3 (BOOM!) with <em>Camera Shake</em>.</li>
+          <li><strong>Step 5:</strong> Upload <code>v4-scene-4-unfold.jpg</code> and <code>v4-scene-5-logo.jpg</code> for the final light beam and title card reveal.</li>
+        </ol>
+      </div>
+
+      <h2>🎵 Sound Design & Timing Grid</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Timecode</th>
+            <th>Scene Action</th>
+            <th>Foley & Sound FX</th>
+            <th>Music Layer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>00:00 – 00:03</td>
+            <td>Meadow & Totem Gaze</td>
+            <td>Soft voxel breeze, subtle nature ambience</td>
+            <td>Lofi acoustic guitar + ambient synth</td>
+          </tr>
+          <tr>
+            <td>00:03 – 00:06</td>
+            <td>Genesis Box Streaking</td>
+            <td>Plasma whoosh & sonic hum</td>
+            <td>Sub-bass tension riser</td>
+          </tr>
+          <tr>
+            <td>00:06 – 00:09</td>
+            <td>Meadow Impact (BOOM!)</td>
+            <td>Heavy sub explosion, debris blast</td>
+            <td>Heavy cinematic drum drop</td>
+          </tr>
+          <tr>
+            <td>00:09 – 00:12</td>
+            <td>Light Pillar Ascent</td>
+            <td>Mechanical unfold click, laser hum</td>
+            <td>Heavenly choir & riser</td>
+          </tr>
+          <tr>
+            <td>00:12 – 00:15</td>
+            <td>Logo & Launch Reveal</td>
+            <td>Metallic lock, sparkling chime</td>
+            <td>Triumphant brass hit & bass drop</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card highlight-card" style="margin-top: 10px;">
+        <p style="font-size: 10.5px; margin: 0; color: #9CA3AF;">
+          <strong>Website:</strong> <code style="color:#FFF">dudescraft.store</code> &nbsp;|&nbsp; 
+          <strong>Network:</strong> Robinhood Network &nbsp;|&nbsp; 
+          <strong>Supply:</strong> 1,999 Genesis Voxels &nbsp;|&nbsp; 
+          <strong>Brand Color:</strong> Lemon Lime <code style="color:var(--rh-lemon)">#C6F221</code>
+        </p>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Dudes Craft x Robinhood Network</span>
+      <span>Prompt Bible v5.0 • Page 5 of 5</span>
+    </div>
+  </div>
+
+</body>
+</html>
