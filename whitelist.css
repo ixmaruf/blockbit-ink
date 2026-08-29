@@ -166,6 +166,30 @@ a { color: var(--obsidian); text-decoration: none; }
   box-shadow: 3px 3px 0px var(--obsidian);
 }
 
+.nav-social {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--obsidian);
+  color: var(--obsidian);
+  background: var(--bg-card);
+  box-shadow: 2px 2px 0px var(--lemon);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.nav-social:hover {
+  background: var(--lemon-soft);
+  transform: translate(-1px, -1px);
+}
+.nav-social:active {
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+
 .mobile-menu-btn { display: none; }
 .mobile-menu-overlay { display: none; }
 

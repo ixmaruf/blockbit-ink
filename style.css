@@ -1124,8 +1124,41 @@ body {
 }
 
 @media (max-width: 768px) {
-  .nav-links, .nav-actions .nav-cta, .nav-actions .nav-social { display: none; }
-  .mobile-menu-btn { display: block; }
+  .nav-links, .nav-actions .nav-cta { display: none; }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-actions .nav-social {
+    display: flex;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--r-md);
+    border: 1.5px solid var(--obsidian);
+    background: var(--bg-card);
+    box-shadow: 2px 2px 0px var(--lemon);
+    color: var(--obsidian);
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .nav-actions .nav-social:active {
+    transform: translate(1px, 1px);
+    box-shadow: none;
+  }
+  .nav-actions .nav-social svg {
+    width: 14px;
+    height: 14px;
+  }
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+  }
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
   .utility-grid { grid-template-columns: 1fr; }
   .clans-grid { grid-template-columns: 1fr; }
