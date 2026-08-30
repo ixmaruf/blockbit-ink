@@ -1,11 +1,11 @@
-# Blockbit Ink — 1,999 Anime Pixel Warriors & Whitelist Portal
+# Dudes Craft — 1,999 3D Voxel Warriors & Whitelist Portal
 
-[![Ink Superchain](https://img.shields.io/badge/Blockchain-Ink%20L2%20(Kraken)-8b5cf6?style=for-the-badge)](https://inkonchain.com)
-[![Three.js Badge](https://img.shields.io/badge/Engine-HTML5%20Canvas-0ea5e9?style=for-the-badge))](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
+[![Robinhood Network](https://img.shields.io/badge/Blockchain-Robinhood%20Network-C6F221?style=for-the-badge)](https://dudescraft.store)
+[![HTML5 Canvas](https://img.shields.io/badge/Engine-HTML5%20Canvas-0ea5e9?style=for-the-badge)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=for-the-badge)](#license)
 [![GitHub Pages Ready](https://img.shields.io/badge/GitHub%20Pages-Ready%20to%20Deploy-f59e0b?style=for-the-badge)](#github-pages-deployment)
 
-**Blockbit Ink** is an anime-themed generative NFT collection of 1,999 pixel warriors on the **Ink Superchain L2** (powered by Kraken & Optimism OP Stack). This repository contains the complete editorial landing page, a procedural pixel-art DNA forge, rarity showroom, multi-step whitelist application, an OpenSea-compatible batch generator, and a portable NFT rendering sandbox.
+**Dudes Craft** is a generative 3D voxel NFT collection of 1,999 warriors on the **Robinhood Network**. This repository contains the complete editorial landing page, procedural voxel DNA forge, rarity showroom, anti-bot multi-step whitelist application, OpenSea-compatible batch generator, and metadata collection.
 
 ---
 

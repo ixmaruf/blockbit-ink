@@ -1,7 +1,7 @@
 {
-  "name": "blockbit-ink-nft",
+  "name": "dudes-craft-nft",
   "version": "1.0.0",
-  "description": "Blockbit Ink — Enchanted 3D Anime NFT Realm & Whitelist Portal on Ink Blockchain",
+  "description": "Dudes Craft — 1,999 3D Voxel Warriors & Whitelist Portal on Robinhood Network",
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
@@ -13,11 +13,11 @@
     "nft",
     "html5-canvas",
     "web3",
-    "ink-blockchain",
+    "robinhood-network",
     "whitelist",
     "opensea"
   ],
-  "author": "Blockbit Ink Team",
+  "author": "Dudes Craft Team",
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {

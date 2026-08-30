@@ -1,5 +1,5 @@
 /**
- * Blockbit Ink — Whitelist runtime configuration (template)
+ * Dudes Craft — Whitelist runtime configuration (template)
  *
  * Copy this file to `whitelist-config.js` and fill in your real values.
  * `whitelist-config.js` is in .gitignore so the URL stays private.
@@ -14,7 +14,7 @@ window.BLOCKBIT_CONFIG = {
   sheetEndpoint: '',
 
   // Optional human-readable label shown to users after submission.
-  collectionName: 'Blockbit Ink Genesis',
+  collectionName: 'Dudes Craft Genesis',
 
   // Maximum retries on network failure before showing a hard error.
   maxRetries: 2,

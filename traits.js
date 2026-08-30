@@ -1,6 +1,6 @@
 /**
- * Blockbit Ink — Trait System v2
- * 1,999 unique generative anime/pixel NFTs
+ * Dudes Craft — Trait System v2
+ * 1,999 unique generative 3D voxel warriors on Robinhood Network
  * Solid color backgrounds with color harmony system
  */
 
@@ -11,8 +11,8 @@ const COLLECTION = {
   symbol: "DCRAFT",
   website: "https://dudescraft.store",
   image: "https://dudescraft.store/logo.webp",
-  // Set BLOCKBIT_CREATOR_ADDRESS in env before running generate.js to override.
-  creatorAddress: (typeof process !== "undefined" && process.env && process.env.BLOCKBIT_CREATOR_ADDRESS)
+  // Set DUDESCRAFT_CREATOR_ADDRESS in env before running generate.js to override.
+  creatorAddress: (typeof process !== "undefined" && process.env && (process.env.DUDESCRAFT_CREATOR_ADDRESS || process.env.BLOCKBIT_CREATOR_ADDRESS))
     || "0x0000000000000000000000000000000000000000",
 };
 

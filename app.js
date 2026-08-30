@@ -247,7 +247,8 @@ function initForge() {
 function randomizeForgeWarrior() {
   if (!forgeRenderer || typeof generateNFT === 'undefined') return;
   
-  const seed = Math.floor(Math.random() * 1999) + 1;
+  const tokenId = Math.floor(Math.random() * 1999) + 1;
+  const seed = tokenId * 7919 + 31337;
   
   try {
     const nftData = generateNFT(seed);
@@ -257,7 +258,7 @@ function randomizeForgeWarrior() {
     const rankEl = document.getElementById('forgeRank');
     const traitsGrid = document.getElementById('forgeTraitsGrid');
     
-    if (nameEl) nameEl.textContent = `Dude #${String(seed).padStart(4, '0')}`;
+    if (nameEl) nameEl.textContent = `Dude #${String(tokenId).padStart(4, '0')}`;
     
     if (rankEl && nftData.rarity) {
       rankEl.textContent = nftData.rarity.name || nftData.rarity.tier || 'Common';
