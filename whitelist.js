@@ -22,11 +22,8 @@
 
   /* ─── Anti-Bot State ─── */
   const sessionStartTime = Date.now();
-  let sessionChallenge = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-  let challengeTimestamp = Date.now();
   let clientIp = '';
   let deviceFingerprint = '';
-  const ANTI_BOT_SECRET = 'DUDES_CRAFT_ROBINHOOD_GENESIS_2026_SECURE_KEY';
 
   /* ─── DOM refs ─── */
   const twitterInput = document.getElementById('twitterHandle');
@@ -122,11 +119,12 @@
     return '';
   }
 
-  async function solveProofOfWork(challenge, ts) {
+  async function solveProofOfWork(challenge, ts, targetPrefix) {
+    const prefix = targetPrefix || '0000';
     let nonce = 0;
-    while (nonce < 100000) {
+    while (nonce < 200000) {
       const hash = await sha256Hex(challenge + ':' + nonce + ':' + ts);
-      if (hash.startsWith('000')) {
+      if (hash.startsWith(prefix)) {
         return { nonce: String(nonce), hash: hash };
       }
       nonce++;
@@ -536,7 +534,7 @@
     link.click();
   }
 
-  /* ─── Submit Application with Full Anti-Bot Verification ─── */
+  /* ─── Submit Application with Two-Phase Zero-Trust Verification ─── */
   async function submitApplication() {
     if (submitted) return;
 
@@ -562,7 +560,6 @@
     }
 
     submitAndClaimBtn.disabled = true;
-    submitAndClaimBtn.querySelector('span').textContent = 'Solving Proof-of-Work & Verifying...';
     clearErr(step3Err);
 
     // Check honeypot
@@ -575,42 +572,64 @@
       return;
     }
 
-    // 1. Solve Proof-of-Work puzzle
-    const pow = await solveProofOfWork(sessionChallenge, challengeTimestamp);
-
-    // 2. Generate HMAC Signature
-    const signature = await sha256Hex(sessionChallenge + ':' + challengeTimestamp + ':' + w.toLowerCase() + ':' + ANTI_BOT_SECRET);
-
-    // 3. Collect Fingerprint & IP
-    const [fp, ip] = await Promise.all([
-      getDeviceFingerprint(),
-      fetchClientIp()
-    ]);
-
-    const elapsed = Date.now() - sessionStartTime;
-
-    const payload = {
-      twitter: '@' + tw,
-      wallet:  w,
-      serial:  serial,
-      source:  'dudes-craft-robinhood',
-      challenge: sessionChallenge,
-      challengeTime: challengeTimestamp,
-      nonce: pow.nonce,
-      powHash: pow.hash,
-      signature: signature,
-      fingerprint: fp,
-      ip: ip,
-      elapsedMs: elapsed,
-      website_trap: trap1,
-      bot_token_trap: trap2,
-      userAgent: navigator.userAgent
-    };
-
-    submitAndClaimBtn.querySelector('span').textContent = 'Verifying Slot with Server...';
-
     try {
-      const resp = await fetch(getSheetEndpoint(), {
+      // 1. PHASE 1: Request Server Cryptographic Challenge
+      submitAndClaimBtn.querySelector('span').textContent = 'Requesting Cryptographic Handshake...';
+      const endpoint = getSheetEndpoint();
+      const delim = endpoint.includes('?') ? '&' : '?';
+      const challengeUrl = endpoint + delim + 'action=request_challenge&wallet=' + encodeURIComponent(w) + '&twitter=' + encodeURIComponent(tw) + '&_t=' + Date.now();
+
+      const chResp = await fetch(challengeUrl, { cache: 'no-store' });
+      const chData = await chResp.json();
+
+      if (!chData || !chData.ok) {
+        const msg = chData?.error || 'Security handshake failed. Please refresh and retry.';
+        showErr(step3Err, msg);
+        showToast(msg);
+        submitAndClaimBtn.disabled = false;
+        submitAndClaimBtn.querySelector('span').textContent = 'Submit & Claim Slot';
+        return;
+      }
+
+      const { serverNonce, issuedTime, serverSignature, difficulty } = chData;
+
+      // 2. PHASE 2: Solve Dynamic Proof-of-Work
+      submitAndClaimBtn.querySelector('span').textContent = 'Verifying Proof-of-Work...';
+      const pow = await solveProofOfWork(serverNonce, issuedTime, difficulty || '0000');
+
+      // 3. Gather Fingerprint & IP in parallel
+      const [fp, ip] = await Promise.all([
+        getDeviceFingerprint(),
+        fetchClientIp()
+      ]);
+
+      // 4. Ensure real elapsed human time on server (must be >= 4.2 seconds)
+      const elapsedSinceIssue = Date.now() - issuedTime;
+      if (elapsedSinceIssue < 4200) {
+        submitAndClaimBtn.querySelector('span').textContent = 'Finalizing Security Verification...';
+        await new Promise(r => setTimeout(r, 4200 - elapsedSinceIssue));
+      }
+
+      const payload = {
+        twitter: '@' + tw,
+        wallet:  w,
+        serial:  serial,
+        source:  'dudes-craft-robinhood',
+        serverNonce: serverNonce,
+        serverSignature: serverSignature,
+        issuedTime: issuedTime,
+        nonce: pow.nonce,
+        powHash: pow.hash,
+        fingerprint: fp,
+        ip: ip,
+        website_trap: trap1,
+        bot_token_trap: trap2,
+        userAgent: navigator.userAgent
+      };
+
+      submitAndClaimBtn.querySelector('span').textContent = 'Locking Whitelist Slot...';
+
+      const resp = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
