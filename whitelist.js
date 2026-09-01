@@ -8,6 +8,26 @@
     window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
   }
 
+  // ── GLOBAL CACHE-BUST & AUTO-UPDATE ──
+  const CURRENT_APP_VERSION = 'v6.1_20260902';
+  try {
+    const storedVer = localStorage.getItem('dudescraft_app_version');
+    if (storedVer !== CURRENT_APP_VERSION) {
+      localStorage.setItem('dudescraft_app_version', CURRENT_APP_VERSION);
+      localStorage.removeItem('bbi_wl_settings');
+      localStorage.removeItem('blockbit_settings');
+      localStorage.removeItem('dudescraft_settings_v3');
+    }
+  } catch (_) {}
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      for (let reg of registrations) {
+        reg.update().catch(function () {});
+      }
+    }).catch(function () {});
+  }
+
   /* ─── State ─── */
   let currentStep = 1;
   const totalSteps = 4;
