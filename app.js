@@ -388,8 +388,8 @@ function initTopBanner() {
       const mm = parseInt(timeParts[1]) || 0;
       startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
     }
-    const durationHours = parseInt(settings.timerDuration || '96', 10);
-    const durationMs = (isNaN(durationHours) ? 96 : durationHours) * 60 * 60 * 1000;
+    const durationHours = parseInt(settings.timerDuration || '144', 10);
+    const durationMs = (isNaN(durationHours) ? 144 : durationHours) * 60 * 60 * 1000;
     const endTime = startMs + durationMs;
 
     if (pulseEl) {

@@ -206,10 +206,10 @@
   /* ─── Endpoint Config & Settings ─── */
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const DEFAULT_WL_SETTINGS = {
-    whitelistOpen: 'true',
-    timerStart: '2026-08-29 00:00',
-    timerDuration: '96',
-    postUrl: 'https://x.com/DudesCraft'
+    whitelistOpen: 'On',
+    timerStart: '2026-08-29 11:00',
+    timerDuration: '144',
+    postUrl: 'https://x.com/dudescraft/status/2093534635510702415'
   };
 
   const STORAGE_KEY = 'dudescraft_settings_v3';
