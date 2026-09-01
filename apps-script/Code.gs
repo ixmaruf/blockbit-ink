@@ -1,19 +1,12 @@
 /**
  * Dudes Craft Genesis Whitelist — Military-Grade Anti-Bot & Whitelist Backend
- * Version: 6.0 (Zero-Trust Two-Phase Server Token + Dynamic PoW + Rate Limiting + Automated Spam Cleaner)
- * 
- * SECURITY ARCHITECTURE:
- * 1. Two-Phase Challenge: Client MUST request a server-signed one-time nonce before submission.
- * 2. Private Server Secret: Server HMAC signature uses a secret that is NEVER exposed to the frontend.
- * 3. Server Clock Verification: Measures real elapsed server time (rejects submissions < 4.0s).
- * 4. Token Burn on Use: Server nonces are burned immediately to prevent replay attacks.
- * 5. Global & Per-Identity Rate Limiting: Blocks scripted concurrent floods and duplicate wallets/handles.
- * 6. Spam Purge Tool: Built-in function to clean spam rows (retaining real submissions 1-46).
+ * Version: 6.1 (Explicit Spreadsheet Binding + Zero-Trust Two-Phase Server Token + Dynamic PoW + Rate Limiting)
  */
 
 /** Sheet names inside the bound spreadsheet. */
 const SHEET_NAME = 'Submissions';
 const SETTINGS_SHEET = 'Settings';
+const SPREADSHEET_ID = '1XMew79sWhhgRVoJitYh14MvRxI_V9_AL2pCfjjcNS-s';
 
 /** 
  * PRIVATE SERVER SECRET: NEVER EXPOSE TO FRONTEND JAVASCRIPT!
@@ -46,6 +39,15 @@ const HEADERS = [
   'Server Elapsed Time',
   'User Agent'
 ];
+
+/** Helper to reliably get the exact spreadsheet */
+function getSpreadsheet_() {
+  try {
+    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  } catch (_) {
+    return SpreadsheetApp.getActiveSpreadsheet();
+  }
+}
 
 /**
  * Strict EVM address validator (0x followed by 40 hex chars).
@@ -110,7 +112,7 @@ function doGet(e) {
   // 1. Pre-warm Ping
   if (params.action === 'ping') {
     try {
-      const ss = SpreadsheetApp.getActiveSpreadsheet();
+      const ss = getSpreadsheet_();
       const sheet = ss.getSheetByName(SHEET_NAME);
       if (sheet) sheet.getLastRow();
     } catch (_) {}
@@ -175,7 +177,7 @@ function doGet(e) {
   return jsonResponse_({
     ok: true,
     service: 'Dudes Craft Whitelist Security API',
-    version: '6.0-ZeroTrust',
+    version: '6.1-ZeroTrust',
     timestamp: new Date().toISOString()
   });
 }
@@ -285,7 +287,7 @@ function doPost(e) {
     }
 
     // 9. SPREADSHEET DATABASE RECORDING
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getSpreadsheet_();
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
@@ -345,7 +347,7 @@ function doPost(e) {
 
 /** Read settings from Settings sheet. */
 function getSettings_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
   let sheet = ss.getSheetByName(SETTINGS_SHEET);
   if (!sheet) {
     setupSettingsSheet();
@@ -385,7 +387,7 @@ function getSettings_() {
  * Setup sheet headers & styling.
  */
 function setupSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
 
@@ -414,11 +416,12 @@ function setupSheet() {
  * Automatically deletes all spam submissions from row 47 to the end of the sheet.
  */
 function purgeSpamRowsFrom47() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
   const sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) return 'No Submissions sheet found.';
 
   const lastRow = sheet.getLastRow();
+  Logger.log('Current Last Row: ' + lastRow);
   if (lastRow <= 46) {
     return 'Sheet is already clean! Total rows: ' + lastRow + ' (All 46 authentic entries preserved).';
   }
@@ -426,17 +429,18 @@ function purgeSpamRowsFrom47() {
   const spamCount = lastRow - 46;
   sheet.deleteRows(47, spamCount);
   
-  // Clear cache so old spam entries don't block anything
+  // Clear cache
   try {
     CacheService.getScriptCache().removeAll(['tw_', 'wl_']);
   } catch (_) {}
 
+  Logger.log('Cleaned ' + spamCount + ' spam rows!');
   return 'SUCCESS: Cleaned ' + spamCount + ' spam rows! Rows 1 to 46 are 100% safe, clean, and authentic.';
 }
 
 /** Run setupSettingsSheet */
 function setupSettingsSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
   let sheet = ss.getSheetByName(SETTINGS_SHEET);
   if (!sheet) {
     sheet = ss.insertSheet(SETTINGS_SHEET);
@@ -483,7 +487,7 @@ function setupSettingsSheet() {
 /** Keep Alive Warmup (24/7 Hot) */
 function keepAlive() {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getSpreadsheet_();
     const sheet = ss.getSheetByName(SHEET_NAME);
     if (sheet) sheet.getLastRow();
   } catch (_) {}
