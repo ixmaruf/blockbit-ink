@@ -739,7 +739,11 @@
       showErr(twitterErr, 'Please enter your X (Twitter) username.');
       return false;
     }
-    const clean = getTwitterClean();
+    const clean = raw.replace(/^@+/, '').trim();
+    if (!clean) {
+      showErr(twitterErr, 'Please enter your X (Twitter) username.');
+      return false;
+    }
     if (!isValidTwitter(clean)) {
       showErr(twitterErr, 'Invalid username — 1 to 15 characters, letters, numbers and underscores only.');
       return false;
