@@ -447,6 +447,22 @@
       }
     });
 
+    if (n === 3) {
+      setTimeout(function() {
+        if (window.turnstile) {
+          const widgetEl = document.getElementById('turnstile-widget');
+          if (widgetEl && !widgetEl.hasChildNodes()) {
+            try {
+              turnstile.render(widgetEl, {
+                sitekey: '0x4AAAAAAEktxuLQRdm2OfPn',
+                theme: 'dark'
+              });
+            } catch (_) {}
+          }
+        }
+      }, 150);
+    }
+
     if (n === 4) renderSummary();
   }
 
