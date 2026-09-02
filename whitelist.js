@@ -733,6 +733,21 @@
   }
 
   /* ─── Validation ─── */
+  function validateTwitterInput() {
+    const raw = getTwitterRaw();
+    if (!raw) {
+      showErr(twitterErr, 'Please enter your X (Twitter) username.');
+      return false;
+    }
+    const clean = getTwitterClean();
+    if (!isValidTwitter(clean)) {
+      showErr(twitterErr, 'Invalid username — 1 to 15 characters, letters, numbers and underscores only.');
+      return false;
+    }
+    clearErr(twitterErr);
+    return true;
+  }
+
   function validateAndNext(targetStep) {
     if (targetStep === 2) {
       if (!validateTwitterInput()) return false;
