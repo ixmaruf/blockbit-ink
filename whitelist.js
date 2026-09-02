@@ -9,7 +9,7 @@
   }
 
   // ── GLOBAL CACHE-BUST & AUTO-UPDATE ──
-  const CURRENT_APP_VERSION = 'v6.1_20260902';
+  const CURRENT_APP_VERSION = 'v7.0_20260902';
   try {
     const storedVer = localStorage.getItem('dudescraft_app_version');
     if (storedVer !== CURRENT_APP_VERSION) {
@@ -139,10 +139,33 @@
     return '';
   }
 
+  /* ─── Real Human Interaction & Gesture Telemetry ─── */
+  const humanGestureEvents = [];
+  function recordHumanGesture(e) {
+    if (humanGestureEvents.length > 50) return;
+    const t = Date.now();
+    const x = Math.round(e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0) || 0);
+    const y = Math.round(e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0) || 0);
+    humanGestureEvents.push([x, y, t]);
+  }
+
+  window.addEventListener('mousemove', recordHumanGesture, { passive: true });
+  window.addEventListener('touchmove', recordHumanGesture, { passive: true });
+  window.addEventListener('pointerdown', recordHumanGesture, { passive: true });
+  window.addEventListener('keydown', recordHumanGesture, { passive: true });
+
+  async function getHumanGestureProof() {
+    const timeOnPage = Date.now() - sessionStartTime;
+    const count = Math.max(1, humanGestureEvents.length);
+    const sample = humanGestureEvents.slice(-10).map(p => p[0] + ',' + p[1]).join('|');
+    const raw = timeOnPage + ':' + count + ':' + sample + ':' + (navigator.language || 'en');
+    return await sha256Hex('gesture_proof_v7:' + raw);
+  }
+
   async function solveProofOfWork(challenge, ts, targetPrefix) {
-    const prefix = targetPrefix || '0000';
+    const prefix = targetPrefix || '00000';
     let nonce = 0;
-    while (nonce < 200000) {
+    while (nonce < 2000000) {
       const hash = await sha256Hex(challenge + ':' + nonce + ':' + ts);
       if (hash.startsWith(prefix)) {
         return { nonce: String(nonce), hash: hash };
@@ -596,8 +619,12 @@
       // 1. PHASE 1: Request Server Cryptographic Challenge
       submitAndClaimBtn.querySelector('span').textContent = 'Requesting Cryptographic Handshake...';
       const endpoint = getSheetEndpoint();
+      // 1. PHASE 1: Real Human Gesture Entropy + Server Challenge
+      submitAndClaimBtn.querySelector('span').textContent = 'Verifying Human Presence...';
+      const gesture = await getHumanGestureProof();
+
       const delim = endpoint.includes('?') ? '&' : '?';
-      const challengeUrl = endpoint + delim + 'action=request_challenge&wallet=' + encodeURIComponent(w) + '&twitter=' + encodeURIComponent(tw) + '&_t=' + Date.now();
+      const challengeUrl = endpoint + delim + 'action=v7_init_human_challenge&wallet=' + encodeURIComponent(w) + '&twitter=' + encodeURIComponent(tw) + '&gesture=' + encodeURIComponent(gesture) + '&_t=' + Date.now();
 
       const chResp = await fetch(challengeUrl, { cache: 'no-store' });
       const chData = await chResp.json();
@@ -613,9 +640,9 @@
 
       const { serverNonce, issuedTime, serverSignature, difficulty } = chData;
 
-      // 2. PHASE 2: Solve Dynamic Proof-of-Work
-      submitAndClaimBtn.querySelector('span').textContent = 'Verifying Proof-of-Work...';
-      const pow = await solveProofOfWork(serverNonce, issuedTime, difficulty || '0000');
+      // 2. PHASE 2: Solve Dynamic Proof-of-Work (5-Zero Difficulty)
+      submitAndClaimBtn.querySelector('span').textContent = 'Computing VIP Cryptographic Proof...';
+      const pow = await solveProofOfWork(serverNonce, issuedTime, difficulty || '00000');
 
       // 3. Gather Fingerprint & IP in parallel
       const [fp, ip] = await Promise.all([
@@ -623,11 +650,11 @@
         fetchClientIp()
       ]);
 
-      // 4. Ensure real elapsed human time on server (must be >= 4.2 seconds)
+      // 4. Ensure real elapsed human time on server (must be >= 4.5 seconds)
       const elapsedSinceIssue = Date.now() - issuedTime;
-      if (elapsedSinceIssue < 4200) {
+      if (elapsedSinceIssue < 4600) {
         submitAndClaimBtn.querySelector('span').textContent = 'Finalizing Security Verification...';
-        await new Promise(r => setTimeout(r, 4200 - elapsedSinceIssue));
+        await new Promise(r => setTimeout(r, 4600 - elapsedSinceIssue));
       }
 
       const payload = {
@@ -638,6 +665,7 @@
         serverNonce: serverNonce,
         serverSignature: serverSignature,
         issuedTime: issuedTime,
+        gesture: gesture,
         nonce: pow.nonce,
         powHash: pow.hash,
         fingerprint: fp,
