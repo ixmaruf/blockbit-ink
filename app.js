@@ -12,7 +12,7 @@ if (window.location.pathname.endsWith('.html')) {
 
 // ── GLOBAL CACHE-BUST & AUTO-UPDATE SYSTEM ──
 (function enforceLatestAppVersion() {
-  const CURRENT_APP_VERSION = 'v7.0_20260902';
+  const CURRENT_APP_VERSION = 'v8.0_20260902';
   try {
     const storedVer = localStorage.getItem('dudescraft_app_version');
     if (storedVer !== CURRENT_APP_VERSION) {

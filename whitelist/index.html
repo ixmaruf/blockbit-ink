@@ -6,10 +6,10 @@
   <title>Genesis Whitelist &mdash; DUDES CRAFT</title>
   <meta name="description" content="Join the Dudes Craft whitelist on Robinhood Network. Complete the initiation quest to claim your guaranteed Genesis Mint Pass.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260902_v70">
-  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260902_v70">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260902_v70">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260902_v70">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260902_v80">
+  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260902_v80">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260902_v80">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260902_v80">
   <link rel="canonical" href="https://dudescraft.store/whitelist">
 
   <!-- Open Graph -->
@@ -18,7 +18,7 @@
   <meta property="og:title" content="DUDES CRAFT &mdash; Genesis Whitelist on Robinhood">
   <meta property="og:description" content="1,999 unique 3D voxel warriors launching on Robinhood Network. Claim your guaranteed VIP Mint Pass.">
   <meta property="og:url" content="https://dudescraft.store/whitelist">
-  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260902_v70">
+  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260902_v80">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
 
@@ -28,7 +28,7 @@
   <meta name="twitter:creator" content="@DudesCraft">
   <meta name="twitter:title" content="DUDES CRAFT &mdash; Genesis Whitelist on Robinhood">
   <meta name="twitter:description" content="1,999 unique 3D voxel warriors launching on Robinhood Network. Claim your guaranteed VIP Mint Pass.">
-  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260902_v70">
+  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260902_v80">
 
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -37,10 +37,11 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <!-- Cloudflare Turnstile Anti-Bot Shield -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-  <link rel="stylesheet" href="/style.css?v=20260902_v70">
-  <link rel="stylesheet" href="/whitelist.css?v=20260902_v70">
+  <link rel="stylesheet" href="/style.css?v=20260902_v80">
+  <link rel="stylesheet" href="/whitelist.css?v=20260902_v80">
 </head>
 <body>
   <!-- Ambient Animations -->
@@ -275,6 +276,11 @@
                 <span class="quest-btn action-status">Verify</span>
               </button>
             </div>
+            
+            <!-- Cloudflare Turnstile Verification -->
+            <div style="margin: 18px 0; display: flex; justify-content: center; min-height: 65px;">
+              <div id="turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAAEktxuLQRdm2OfPn" data-theme="dark"></div>
+            </div>
 
             <div class="step-actions">
               <button type="button" class="btn-outline" data-prev="2">&larr; Back</button>
@@ -337,8 +343,8 @@
     </div>
   </div>
 
-  <script src="/app.js?v=20260902_v70" defer></script>
-  <script src="/whitelist-config.js?v=20260902_v70" defer></script>
-  <script src="/whitelist.js?v=20260902_v70" defer></script>
+  <script src="/app.js?v=20260902_v80" defer></script>
+  <script src="/whitelist-config.js?v=20260902_v80" defer></script>
+  <script src="/whitelist.js?v=20260902_v80" defer></script>
 </body>
 </html>

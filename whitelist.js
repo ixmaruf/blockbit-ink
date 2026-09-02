@@ -9,7 +9,7 @@
   }
 
   // ── GLOBAL CACHE-BUST & AUTO-UPDATE ──
-  const CURRENT_APP_VERSION = 'v7.0_20260902';
+  const CURRENT_APP_VERSION = 'v8.0_20260902';
   try {
     const storedVer = localStorage.getItem('dudescraft_app_version');
     if (storedVer !== CURRENT_APP_VERSION) {
@@ -619,6 +619,17 @@
       // 1. PHASE 1: Request Server Cryptographic Challenge
       submitAndClaimBtn.querySelector('span').textContent = 'Requesting Cryptographic Handshake...';
       const endpoint = getSheetEndpoint();
+      // 0. Cloudflare Turnstile Verification Check
+      let cfToken = '';
+      const cfInput = document.querySelector('[name="cf-turnstile-response"]');
+      if (cfInput && cfInput.value) {
+        cfToken = cfInput.value;
+      } else if (window.turnstile) {
+        try {
+          cfToken = turnstile.getResponse('#turnstile-widget') || turnstile.getResponse() || '';
+        } catch (_) {}
+      }
+
       // 1. PHASE 1: Real Human Gesture Entropy + Server Challenge
       submitAndClaimBtn.querySelector('span').textContent = 'Verifying Human Presence...';
       const gesture = await getHumanGestureProof();
@@ -650,11 +661,11 @@
         fetchClientIp()
       ]);
 
-      // 4. Ensure real elapsed human time on server (must be >= 4.5 seconds)
+      // 4. Ensure real elapsed human time on server (must be >= 4.0 seconds)
       const elapsedSinceIssue = Date.now() - issuedTime;
-      if (elapsedSinceIssue < 4600) {
+      if (elapsedSinceIssue < 4100) {
         submitAndClaimBtn.querySelector('span').textContent = 'Finalizing Security Verification...';
-        await new Promise(r => setTimeout(r, 4600 - elapsedSinceIssue));
+        await new Promise(r => setTimeout(r, 4100 - elapsedSinceIssue));
       }
 
       const payload = {
@@ -666,6 +677,7 @@
         serverSignature: serverSignature,
         issuedTime: issuedTime,
         gesture: gesture,
+        turnstileToken: cfToken,
         nonce: pow.nonce,
         powHash: pow.hash,
         fingerprint: fp,

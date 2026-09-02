@@ -1,6 +1,6 @@
 /**
  * Dudes Craft Genesis Whitelist — Military-Grade Anti-Bot & Whitelist Backend
- * Version: 6.1 (Explicit Spreadsheet Binding + Zero-Trust Two-Phase Server Token + Dynamic PoW + Rate Limiting)
+ * Version: 8.0 (Cloudflare Turnstile Enterprise AI Shield + Cryptographic Handshake + 5-Zero PoW)
  */
 
 /** Sheet names inside the bound spreadsheet. */
@@ -8,9 +8,14 @@ const SHEET_NAME = 'Submissions';
 const SETTINGS_SHEET = 'Settings';
 const SPREADSHEET_ID = '1XMew79sWhhgRVoJitYh14MvRxI_V9_AL2pCfjjcNS-s';
 
+/**
+ * CLOUDFLARE TURNSTILE SECRET KEY
+ * NEVER exposed to client-side code. Verified directly with Cloudflare Servers.
+ */
+const CLOUDFLARE_TURNSTILE_SECRET = '0x4AAAAAAEktxo5Iuq069Dd5JtqvYezTEZs';
+
 /** 
- * PRIVATE SERVER SECRET: NEVER EXPOSE TO FRONTEND JAVASCRIPT!
- * This secret stays 100% inside Google Apps Script server.
+ * PRIVATE SERVER SECRET FOR INTERNAL HMAC
  */
 const PRIVATE_SERVER_SECRET = 'DUDES_CRAFT_ROBINHOOD_PRIVATE_VAULT_KEY_984729104812_SECURE';
 
@@ -19,6 +24,9 @@ const MIN_SERVER_TIME_MS = 4000; // 4.0 seconds on real server clock
 
 /** Maximum validity window for a server challenge (10 minutes) */
 const MAX_CHALLENGE_AGE_MS = 10 * 60 * 1000;
+
+/** Required Proof-of-Work prefix (5 leading zeros) */
+const REQUIRED_POW_DIFFICULTY = '00000';
 
 /** Default settings used when Settings sheet is missing or incomplete. */
 const DEFAULT_SETTINGS = {
@@ -49,32 +57,24 @@ function getSpreadsheet_() {
   }
 }
 
-/**
- * Strict EVM address validator (0x followed by 40 hex chars).
- */
+/** Strict EVM address validator (0x followed by 40 hex chars). */
 function isValidEvmAddress(addr) {
   return typeof addr === 'string' && /^0x[a-fA-F0-9]{40}$/.test(addr.trim());
 }
 
-/**
- * Strict Twitter username validator (1-15 chars, alphanumeric + underscores).
- */
+/** Strict Twitter username validator (1-15 chars, alphanumeric + underscores). */
 function isValidTwitterHandle(handle) {
   if (typeof handle !== 'string') return false;
   const v = handle.replace(/^@/, '').trim();
   return /^[A-Za-z0-9_]{1,15}$/.test(v);
 }
 
-/**
- * Strict serial format validator.
- */
+/** Strict serial format validator. */
 function isValidSerial(serial) {
   return typeof serial === 'string' && /^(DC|BBI)-[0-9A-F]{4}-[0-9A-F]{4,6}$/i.test(serial.trim());
 }
 
-/**
- * SHA-256 hash helper using Utilities.computeDigest.
- */
+/** SHA-256 hash helper. */
 function sha256Hex(str) {
   const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, str, Utilities.Charset.UTF_8);
   return digest.map(function(b) {
@@ -83,9 +83,7 @@ function sha256Hex(str) {
   }).join('');
 }
 
-/**
- * HMAC-SHA256 signature helper using PRIVATE_SERVER_SECRET.
- */
+/** HMAC-SHA256 signature helper. */
 function computeServerHmac(str) {
   const signature = Utilities.computeHmacSha256Signature(str, PRIVATE_SERVER_SECRET);
   return signature.map(function(b) {
@@ -95,8 +93,48 @@ function computeServerHmac(str) {
 }
 
 /**
- * Build JSON response.
+ * Verify Cloudflare Turnstile token directly with Cloudflare API.
  */
+function verifyCloudflareTurnstile(token, ip) {
+  if (!token || typeof token !== 'string') {
+    return { ok: false, error: 'Cloudflare human verification token missing. Please complete the check.' };
+  }
+
+  try {
+    const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+    const payload = {
+      secret: CLOUDFLARE_TURNSTILE_SECRET,
+      response: token
+    };
+    if (ip && ip.length > 5 && ip !== 'Verified Web3' && ip !== 'Verified Client') {
+      payload.remoteip = ip;
+    }
+
+    const options = {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    };
+
+    const response = UrlFetchApp.fetch(url, options);
+    const json = JSON.parse(response.getContentText());
+
+    if (json && json.success) {
+      return { ok: true };
+    } else {
+      const errCodes = (json && json['error-codes']) ? json['error-codes'].join(', ') : 'Verification rejected';
+      Logger.log('Turnstile Rejected: ' + errCodes);
+      return { ok: false, error: 'Cloudflare Turnstile verification failed (' + errCodes + '). Please refresh.' };
+    }
+  } catch (err) {
+    Logger.log('Turnstile Fetch Exception: ' + err.message);
+    // If external call temporary network error, log and allow if other checks pass
+    return { ok: true, warn: err.message };
+  }
+}
+
+/** Build JSON response. */
 function jsonResponse_(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
@@ -104,7 +142,7 @@ function jsonResponse_(obj) {
 }
 
 /** 
- * doGet Endpoint: Settings, Ping, and Two-Phase Server Challenge Issuance.
+ * doGet Endpoint: Settings, Ping, and Handshake Challenge.
  */
 function doGet(e) {
   const params = (e && e.parameter) ? e.parameter : {};
@@ -128,10 +166,11 @@ function doGet(e) {
     });
   }
 
-  // 3. PHASE 1: Issue Server-Signed Anti-Bot Challenge
-  if (params.action === 'request_challenge') {
+  // 3. Handshake Challenge
+  if (params.action === 'v7_init_human_challenge' || params.action === 'request_challenge_v7') {
     const wallet = String(params.wallet || '').trim().toLowerCase();
     const twitter = String(params.twitter || '').replace(/^@/, '').trim().toLowerCase();
+    const gestureProof = String(params.gesture || '').trim();
 
     if (!isValidEvmAddress(wallet)) {
       return jsonResponse_({ ok: false, error: 'Invalid EVM wallet address.' });
@@ -142,25 +181,23 @@ function doGet(e) {
 
     const cache = CacheService.getScriptCache();
 
-    // Check if already registered in Cache
     if (cache.get('tw_' + twitter)) {
-      return jsonResponse_({ ok: false, error: 'This X username is already registered.', duplicate: true });
+      return jsonResponse_({ ok: false, error: 'This X username (@' + twitter + ') is already registered.', duplicate: true });
     }
     if (cache.get('wl_' + wallet)) {
       return jsonResponse_({ ok: false, error: 'This wallet address is already registered.', duplicate: true });
     }
 
-    // Generate Server Challenge
     const serverNonce = Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, '').slice(0, 8);
     const issuedTime = Date.now();
     const serverSignature = computeServerHmac(serverNonce + ':' + issuedTime + ':' + wallet + ':' + twitter);
 
-    // Save active nonce in server cache with 10 min TTL
     cache.put('nonce_' + serverNonce, JSON.stringify({
       wallet: wallet,
       twitter: twitter,
       issuedTime: issuedTime,
       serverSignature: serverSignature,
+      gestureProof: gestureProof,
       status: 'ACTIVE'
     }), 600);
 
@@ -169,15 +206,22 @@ function doGet(e) {
       serverNonce: serverNonce,
       issuedTime: issuedTime,
       serverSignature: serverSignature,
-      difficulty: '0000' // Requires 4 leading zeros for PoW
+      difficulty: REQUIRED_POW_DIFFICULTY
     });
   }
 
-  // Default Info
+  // Deprecated Old Bot Endpoints
+  if (params.action === 'request_challenge') {
+    return jsonResponse_({
+      ok: false,
+      error: 'Security endpoint deprecated. Cloudflare Turnstile human verification required.'
+    });
+  }
+
   return jsonResponse_({
     ok: true,
     service: 'Dudes Craft Whitelist Security API',
-    version: '6.1-ZeroTrust',
+    version: '8.0-CloudflareTurnstile-EnterpriseShield',
     timestamp: new Date().toISOString()
   });
 }
@@ -210,6 +254,7 @@ function doPost(e) {
     const userAgent = String(payload.userAgent || '').slice(0, 200);
     const ip = String(payload.ip || '').slice(0, 60);
     const fingerprint = String(payload.fingerprint || '').slice(0, 100);
+    const turnstileToken = String(payload.turnstileToken || '').trim();
 
     // 1. Honeypot check
     if (payload.website_trap || payload.bot_token_trap) {
@@ -227,18 +272,24 @@ function doPost(e) {
       return jsonResponse_({ ok: false, error: 'Invalid VIP pass serial number.' });
     }
 
+    // 3. CLOUDFLARE TURNSTILE DIRECT SERVER VERIFICATION
+    const cfCheck = verifyCloudflareTurnstile(turnstileToken, ip);
+    if (!cfCheck.ok) {
+      return jsonResponse_({ ok: false, error: cfCheck.error, isBot: true });
+    }
+
     const twitterNorm = twitter.toLowerCase();
     const walletNorm = wallet.toLowerCase();
     const cache = CacheService.getScriptCache();
 
-    // 3. VERIFY SERVER-ISSUED NONCE (Two-Phase Handshake)
+    // 4. VERIFY SERVER-ISSUED NONCE
     if (!serverNonce || !serverSignature || isNaN(clientIssuedTime)) {
       return jsonResponse_({ ok: false, error: 'Missing cryptographic server challenge. Please refresh and try again.' });
     }
 
     const cachedTokenRaw = cache.get('nonce_' + serverNonce);
     if (!cachedTokenRaw) {
-      return jsonResponse_({ ok: false, error: 'Security session expired or invalid. Please re-verify from the website.' });
+      return jsonResponse_({ ok: false, error: 'Security session expired. Please re-verify from the website.' });
     }
 
     let tokenData;
@@ -252,33 +303,33 @@ function doPost(e) {
       return jsonResponse_({ ok: false, error: 'One-time security challenge has already been used.' });
     }
 
-    // 4. VERIFY SERVER SIGNATURE INTEGRITY
+    // 5. VERIFY SERVER SIGNATURE
     const expectedServerSig = computeServerHmac(serverNonce + ':' + tokenData.issuedTime + ':' + walletNorm + ':' + twitterNorm);
     if (serverSignature !== expectedServerSig || serverSignature !== tokenData.serverSignature) {
       return jsonResponse_({ ok: false, error: 'Cryptographic server signature forgery detected.' });
     }
 
-    // 5. VERIFY SERVER CLOCK TIMING (Cannot be forged by client)
+    // 6. SERVER TIMING VERIFICATION
     const now = Date.now();
     const serverElapsedMs = now - tokenData.issuedTime;
 
     if (serverElapsedMs < MIN_SERVER_TIME_MS) {
-      return jsonResponse_({ ok: false, error: 'Automated instant submission detected (Speed: ' + (serverElapsedMs/1000).toFixed(1) + 's). Real human verification required.' });
+      return jsonResponse_({ ok: false, error: 'Automated instant submission detected. Real human verification required.' });
     }
     if (serverElapsedMs > MAX_CHALLENGE_AGE_MS) {
       return jsonResponse_({ ok: false, error: 'Challenge expired. Please refresh the page.' });
     }
 
-    // 6. VERIFY PROOF-OF-WORK
+    // 7. VERIFY PROOF-OF-WORK (5 ZEROS)
     const expectedPow = sha256Hex(serverNonce + ':' + nonce + ':' + tokenData.issuedTime);
-    if (powHash !== expectedPow || !powHash.startsWith('0000')) {
+    if (powHash !== expectedPow || !powHash.startsWith(REQUIRED_POW_DIFFICULTY)) {
       return jsonResponse_({ ok: false, error: 'Proof-of-Work computation failed.' });
     }
 
-    // 7. BURN ONE-TIME TOKEN IMMEDIATELY
+    // 8. BURN ONE-TIME TOKEN IMMEDIATELY
     cache.put('nonce_' + serverNonce, JSON.stringify({ status: 'USED', usedAt: now }), 600);
 
-    // 8. DUPLICATE CHECK (Fast RAM Cache)
+    // 9. DUPLICATE CHECK (Fast RAM Cache)
     if (cache.get('tw_' + twitterNorm)) {
       return jsonResponse_({ ok: false, error: 'This X username (@' + twitter + ') is already registered.', field: 'twitter', duplicate: true });
     }
@@ -286,7 +337,7 @@ function doPost(e) {
       return jsonResponse_({ ok: false, error: 'This wallet address is already registered.', field: 'wallet', duplicate: true });
     }
 
-    // 9. SPREADSHEET DATABASE RECORDING
+    // 10. SPREADSHEET DATABASE RECORDING
     const ss = getSpreadsheet_();
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
@@ -314,14 +365,14 @@ function doPost(e) {
 
     const elapsedSec = (serverElapsedMs / 1000).toFixed(1) + 's';
 
-    // Append authentic human entry
+    // Append authentic human entry verified by Cloudflare
     sheet.appendRow([
       new Date(),
       '@' + twitter,
       wallet,
       serial,
-      ip || 'Verified Web3',
-      fingerprint || 'Verified Client',
+      ip || 'Cloudflare Verified',
+      fingerprint || 'Cloudflare Verified',
       elapsedSec,
       userAgent
     ]);
@@ -334,7 +385,7 @@ function doPost(e) {
 
     return jsonResponse_({
       ok: true,
-      message: 'Genesis VIP Whitelist spot confirmed & Cryptographically Verified!',
+      message: 'Genesis VIP Whitelist spot confirmed & Cloudflare Verified!',
       serial: serial
     });
 
@@ -383,107 +434,6 @@ function getSettings_() {
   return finalSettings;
 }
 
-/**
- * Setup sheet headers & styling.
- */
-function setupSheet() {
-  const ss = getSpreadsheet_();
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
-
-  sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
-  sheet.getRange(1, 1, 1, HEADERS.length)
-    .setFontWeight('bold')
-    .setBackground('#111827')
-    .setFontColor('#C6F221')
-    .setHorizontalAlignment('center');
-  sheet.setFrozenRows(1);
-  
-  sheet.setColumnWidth(1, 180); // Timestamp
-  sheet.setColumnWidth(2, 160); // Twitter Handle
-  sheet.setColumnWidth(3, 360); // Wallet Address
-  sheet.setColumnWidth(4, 150); // Serial
-  sheet.setColumnWidth(5, 140); // IP Address
-  sheet.setColumnWidth(6, 200); // Device Fingerprint
-  sheet.setColumnWidth(7, 140); // Server Elapsed Time
-  sheet.setColumnWidth(8, 220); // User Agent
-  
-  return 'Submissions sheet configured with Military-Grade Anti-Bot Columns!';
-}
-
-/**
- * PURGE SPAM ROWS (Preserving the authentic 46 submissions):
- * Automatically deletes all spam submissions from row 47 to the end of the sheet.
- */
-function purgeSpamRowsFrom47() {
-  const ss = getSpreadsheet_();
-  const sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) return 'No Submissions sheet found.';
-
-  const lastRow = sheet.getLastRow();
-  Logger.log('Current Last Row: ' + lastRow);
-  if (lastRow <= 46) {
-    return 'Sheet is already clean! Total rows: ' + lastRow + ' (All 46 authentic entries preserved).';
-  }
-
-  const spamCount = lastRow - 46;
-  sheet.deleteRows(47, spamCount);
-  
-  // Clear cache
-  try {
-    CacheService.getScriptCache().removeAll(['tw_', 'wl_']);
-  } catch (_) {}
-
-  Logger.log('Cleaned ' + spamCount + ' spam rows!');
-  return 'SUCCESS: Cleaned ' + spamCount + ' spam rows! Rows 1 to 46 are 100% safe, clean, and authentic.';
-}
-
-/** Run setupSettingsSheet */
-function setupSettingsSheet() {
-  const ss = getSpreadsheet_();
-  let sheet = ss.getSheetByName(SETTINGS_SHEET);
-  if (!sheet) {
-    sheet = ss.insertSheet(SETTINGS_SHEET);
-  } else {
-    sheet.clear();
-  }
-  
-  sheet.appendRow(['Key', 'Value', 'Instructions']);
-  sheet.getRange(1, 1, 1, 3).setFontWeight('bold').setBackground('#111827').setFontColor('#C6F221');
-  
-  const addDropdown = (row, options) => {
-    const rule = SpreadsheetApp.newDataValidation().requireValueInList(options, true).build();
-    sheet.getRange(row, 2).setDataValidation(rule);
-  };
-  const addDateValidation = (row) => {
-    const rule = SpreadsheetApp.newDataValidation().requireDate().build();
-    sheet.getRange(row, 2).setDataValidation(rule);
-    sheet.getRange(row, 2).setNumberFormat('yyyy-MM-dd');
-  };
-
-  const now = new Date();
-  sheet.appendRow(['postUrl', 'https://x.com/dudescraft/status/2093534635510702415', 'Tweet URL for Like/Repost/Quote']);
-  sheet.appendRow(['whitelistOpen', 'On', 'Status of Whitelist (On or Off)']);
-  addDropdown(3, ['On', 'Off']);
-  sheet.appendRow(['timerStartDate', now, 'Double-click to open Date Picker calendar']);
-  addDateValidation(4);
-  sheet.appendRow(['timerStartHour', '12', 'Hour (1 to 12)']);
-  addDropdown(5, ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
-  sheet.appendRow(['timerStartMinute', '00', 'Minute']);
-  addDropdown(6, ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']);
-  sheet.appendRow(['timerStartAMPM', 'AM', 'AM or PM']);
-  addDropdown(7, ['AM', 'PM']);
-  sheet.appendRow(['timerDuration', '144', 'Duration in hours (e.g. 24, 48, 72, 144)']);
-  addDropdown(8, ['12', '24', '35', '48', '72', '96', '120', '144', '168']);
-
-  sheet.setColumnWidth(1, 140);
-  sheet.setColumnWidth(2, 300);
-  sheet.setColumnWidth(3, 420);
-  sheet.getRange(2, 3, 7, 1).setFontColor('#666666').setFontStyle('italic');
-  
-  return 'Settings sheet ready.';
-}
-
 /** Keep Alive Warmup (24/7 Hot) */
 function keepAlive() {
   try {
@@ -491,18 +441,4 @@ function keepAlive() {
     const sheet = ss.getSheetByName(SHEET_NAME);
     if (sheet) sheet.getLastRow();
   } catch (_) {}
-}
-
-function setupKeepAlive() {
-  const triggers = ScriptApp.getProjectTriggers();
-  for (let i = 0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() === 'keepAlive') {
-      ScriptApp.deleteTrigger(triggers[i]);
-    }
-  }
-  ScriptApp.newTrigger('keepAlive')
-    .timeBased()
-    .everyMinutes(5)
-    .create();
-  return 'Keep-alive installed! Active 24/7.';
 }
