@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUDES CRAFT — Official Partnership & Influencer Collab Kit</title>
+  <meta name="description" content="Official Influencer & Creator Collaboration Kit for Dudes Craft on Robinhood Network. Guaranteed VIP allocations, copy-ready post templates, and brand assets.">
+  <meta name="theme-color" content="#C6F221">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=20260902_v80">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260902_v80">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dudes Craft">
+  <meta property="og:title" content="DUDES CRAFT — Official Partnership & Influencer Collab Kit">
+  <meta property="og:description" content="Guaranteed VIP allocations, official post formats, and generative voxel specifications.">
+  <meta property="og:url" content="https://dudescraft.store/collab">
+  <meta property="og:image" content="https://dudescraft.store/nft-preview/1.webp">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DUDES CRAFT — Official Partnership & Influencer Kit">
+  <meta name="twitter:description" content="1,999 Genesis 3D Voxel Warriors on Robinhood Network. Official Creator Brief.">
+  <meta name="twitter:image" content="https://dudescraft.store/nft-preview/1.webp">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="style.css?v=20260902_v80">
+
+  <style>
+    body.collab-page {
+      background-color: #0A0B0D !important;
+      background-image: 
+        linear-gradient(rgba(198, 242, 33, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(198, 242, 33, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px) !important;
+      background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px !important;
+      color: #F8FAFC !important;
+    }
+    .collab-hero {
+      padding: 140px 0 60px;
+      text-align: center;
+      position: relative;
+    }
+    .collab-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(198, 242, 33, 0.12);
+      border: 1px solid rgba(198, 242, 33, 0.4);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      color: var(--lemon);
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .collab-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .collab-title span {
+      color: var(--lemon);
+      text-shadow: 0 0 30px var(--lemon-glow);
+    }
+    .collab-sub {
+      font-size: 1.2rem;
+      color: #94A3B8;
+      max-width: 680px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
+    }
+    .collab-card {
+      background: #121418;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+    .collab-card.highlight {
+      border: 2px solid var(--lemon);
+      box-shadow: 0 0 35px rgba(198, 242, 33, 0.15), 6px 6px 0px #0A0B0D;
+    }
+    .sec-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--lemon);
+      color: #0A0B0D;
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .sec-h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .specs-item {
+      background: #161920;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 3px solid var(--lemon);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .specs-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #94A3B8;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .specs-val {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .specs-val.accent {
+      color: var(--lemon);
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .benefit-item {
+      background: #161920;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+    }
+    .benefit-icon-box {
+      width: 44px;
+      height: 44px;
+      background: rgba(198, 242, 33, 0.1);
+      border: 1px solid rgba(198, 242, 33, 0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--lemon);
+      flex-shrink: 0;
+    }
+    .benefit-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+    .benefit-info p {
+      font-size: 0.9rem;
+      color: #94A3B8;
+      line-height: 1.5;
+    }
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .showcase-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .showcase-card {
+      background: #161920;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+    .showcase-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .rarity-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: 0.5px;
+    }
+    .rarity-common { background: #64748B; }
+    .rarity-rare { background: #0284C7; }
+    .rarity-epic { background: #9333EA; }
+    .rarity-legendary { background: #D97706; }
+
+    /* Post format templates */
+    .tweet-box {
+      background: #0A0B0D;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .tweet-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .tweet-code {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: #E2E8F0;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      background: #121418;
+      padding: 18px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      margin-bottom: 16px;
+    }
+    .copy-btn {
+      background: var(--lemon);
+      color: #0A0B0D;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .copy-btn:hover {
+      background: #D4FF00;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(198, 242, 33, 0.4);
+    }
+    .copy-btn.copied {
+      background: #10B981;
+      color: #FFFFFF;
+    }
+    .security-callout {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body class="collab-page">
+  <!-- Ambient animations from main site -->
+  <canvas id="ambient-canvas"></canvas>
+  <div class="grain-overlay"></div>
+
+  <div class="site-wrap">
+    <!-- NAV -->
+    <nav class="nav" id="nav">
+      <div class="nav-inner">
+        <a href="/" class="nav-brand">
+          <img src="logo.webp?v=26" alt="Dudes Craft" class="nav-logo" width="38" height="38">
+          <div class="nav-brand-text">
+            <span class="nav-brand-name">DUDES<span>CRAFT</span></span>
+            <span class="nav-brand-sub">Robinhood Network</span>
+          </div>
+        </a>
+
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/#lore">Lore</a>
+          <a href="/#forge">DNA Forge</a>
+          <a href="/whitelist">Whitelist Portal</a>
+        </div>
+
+        <div class="nav-actions">
+          <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="nav-social" aria-label="Official X Profile">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="/whitelist" class="nav-cta">Whitelist VIP</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="collab-hero">
+      <div class="container">
+        <div class="collab-badge">
+          <span style="width:6px; height:6px; background:#C6F221; border-radius:50%; display:inline-block;"></span>
+          OFFICIAL CREATOR &amp; PARTNERSHIP BRIEF
+        </div>
+        <h1 class="collab-title">
+          DUDES <span>CRAFT</span>
+        </h1>
+        <p class="collab-sub">
+          The Premier 3D Voxel Genesis Collection natively built on the <strong>Robinhood Network (RH Layer-2)</strong>. Official onboarding memorandum for creators, KOLs, and Web3 communities.
+        </p>
+
+        <!-- QUICK LINKS -->
+        <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom: 20px;">
+          <a href="https://dudescraft.store" class="btn-outline" style="border-radius:8px; padding:10px 20px;">Portal: dudescraft.store</a>
+          <a href="https://dudescraft.store/whitelist" class="btn-primary" style="border-radius:8px; padding:10px 24px;">Whitelist: dudescraft.store/whitelist</a>
+          <a href="https://x.com/dudescraft" target="_blank" class="btn-outline" style="border-radius:8px; padding:10px 20px; display:inline-flex; align-items:center; gap:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Follow @dudescraft
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN BRIEF CONTENT -->
+    <main class="container" style="max-width: 960px; padding-bottom: 80px;">
+      
+      <!-- 01: COLLECTION ARCHITECTURE -->
+      <div class="collab-card highlight">
+        <span class="sec-tag">01 / ARCHITECTURE</span>
+        <h2 class="sec-h2">Genesis Collection Specifications</h2>
+        <p style="color:#94A3B8; font-size:1rem; line-height:1.6;">
+          Dudes Craft is a strictly hardcapped generative collection of 1,999 3D voxel artifacts. Each warrior features handcrafted voxel geometry, on-chain trait verification, and direct integration into future Robinhood Network decentralized utility mechanics.
+        </p>
+
+        <div class="specs-grid">
+          <div class="specs-item">
+            <div class="specs-label">Total Supply</div>
+            <div class="specs-val accent">1,999</div>
+            <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">Strict Fixed Hardcap</div>
+          </div>
+          <div class="specs-item">
+            <div class="specs-label">Blockchain</div>
+            <div class="specs-val">Robinhood</div>
+            <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">Ethereum Layer-2</div>
+          </div>
+          <div class="specs-item">
+            <div class="specs-label">Token Standard</div>
+            <div class="specs-val">ERC-721</div>
+            <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">Verified On-Chain</div>
+          </div>
+          <div class="specs-item">
+            <div class="specs-label">Whitelist Tier</div>
+            <div class="specs-val accent">GTD VIP</div>
+            <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">Guaranteed Allocation</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02: 4-TIER ARTWORK SHOWCASE -->
+      <div class="collab-card">
+        <span class="sec-tag">02 / ARTWORK</span>
+        <h2 class="sec-h2">3D Voxel Rarity Tiers</h2>
+        <p style="color:#94A3B8; font-size:1rem; line-height:1.6; margin-bottom:24px;">
+          Generated with over 100+ bespoke procedural traits across 4 distinct tier classes. From street-smart Common dudes to Legendary Crowned Kings:
+        </p>
+
+        <div class="showcase-grid">
+          <div class="showcase-card">
+            <img src="deck_assets/common_1001.png" alt="Common Dude">
+            <span class="rarity-pill rarity-common">COMMON</span>
+            <div style="font-size:0.8rem; color:#94A3B8; margin-top:8px;">Base Voxel Matrix</div>
+          </div>
+          <div class="showcase-card">
+            <img src="deck_assets/rare_1000.png" alt="Rare Dude">
+            <span class="rarity-pill rarity-rare">RARE</span>
+            <div style="font-size:0.8rem; color:#94A3B8; margin-top:8px;">Traditional &amp; Armor</div>
+          </div>
+          <div class="showcase-card">
+            <img src="deck_assets/epic_1003.png" alt="Epic Dude">
+            <span class="rarity-pill rarity-epic">EPIC</span>
+            <div style="font-size:0.8rem; color:#94A3B8; margin-top:8px;">Cyber Aura &amp; Shaders</div>
+          </div>
+          <div class="showcase-card" style="border-color: rgba(217, 119, 6, 0.4);">
+            <img src="deck_assets/legendary_1820.png" alt="Legendary Crowned King">
+            <span class="rarity-pill rarity-legendary">LEGENDARY</span>
+            <div style="font-size:0.8rem; color:#F59E0B; margin-top:8px;">Crowned Genesis King</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03: VALUE PROPOSITION -->
+      <div class="collab-card">
+        <span class="sec-tag">03 / VALUE PACKAGE</span>
+        <h2 class="sec-h2">Creator &amp; Partner Benefits</h2>
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+            </div>
+            <div class="benefit-info">
+              <h3>Guaranteed VIP Mint Passes</h3>
+              <p>Direct allocation of 5 to 15 Guaranteed VIP spots for creator and community giveaways.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div class="benefit-info">
+              <h3>Founders Alpha Channel</h3>
+              <p>Direct communication with lead engineers, private advisory channels, and priority testnet access.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <div class="benefit-info">
+              <h3>Co-Marketing Amplification</h3>
+              <p>Official quote-reposts, influencer spotlights, and ecosystem discovery through verified @dudescraft.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <div class="benefit-info">
+              <h3>Metaverse Interoperability</h3>
+              <p>Full 3D voxel game-ready models engineered for forthcoming Robinhood Network immersive environments.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04: PROTOCOL DELIVERABLES -->
+      <div class="collab-card">
+        <span class="sec-tag">04 / PROTOCOL</span>
+        <h2 class="sec-h2">Verification Deliverables</h2>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="display:flex; align-items:center; gap:16px; background:#161920; padding:16px 20px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+            <span style="font-family:var(--font-pixel); font-size:0.75rem; color:var(--lemon); background:#121418; padding:6px 12px; border-radius:4px; border:1px solid rgba(198,242,33,0.3);">STEP 1</span>
+            <div style="font-size:0.95rem; color:#FFFFFF;">
+              Follow official project profile on X: <a href="https://x.com/dudescraft" target="_blank" style="color:var(--lemon); font-weight:700;">https://x.com/dudescraft</a>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:16px; background:#161920; padding:16px 20px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+            <span style="font-family:var(--font-pixel); font-size:0.75rem; color:var(--lemon); background:#121418; padding:6px 12px; border-radius:4px; border:1px solid rgba(198,242,33,0.3);">STEP 2</span>
+            <div style="font-size:0.95rem; color:#FFFFFF;">
+              Engage &amp; quote-repost Genesis Announcement: <a href="https://x.com/dudescraft/status/2093534635510702415" target="_blank" style="color:var(--lemon); font-weight:700;">Pinned Tweet Link</a>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:16px; background:#161920; padding:16px 20px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+            <span style="font-family:var(--font-pixel); font-size:0.75rem; color:var(--lemon); background:#121418; padding:6px 12px; border-radius:4px; border:1px solid rgba(198,242,33,0.3);">STEP 3</span>
+            <div style="font-size:0.95rem; color:#FFFFFF;">
+              Publish the partnership giveaway or alpha analysis within <strong>24 to 48 hours</strong> using the templates below.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05: POST FORMAT TEMPLATES (WITH 1-CLICK COPY BUTTONS) -->
+      <div class="collab-card highlight">
+        <span class="sec-tag">05 / SOCIAL TEMPLATES</span>
+        <h2 class="sec-h2">Copy-Ready Post Formats</h2>
+
+        <!-- FORMAT A -->
+        <div class="tweet-box">
+          <div class="tweet-top">
+            <div>
+              <strong style="color:#FFFFFF; font-size:1rem;">Format A: Community Raffle &amp; Whitelist Allocation</strong>
+              <div style="font-size:0.8rem; color:#64748B;">Recommended for Creator Giveaways</div>
+            </div>
+            <button class="copy-btn" onclick="copyTemplate('tpl-a', this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy Tweet</span>
+            </button>
+          </div>
+          <div class="tweet-code" id="tpl-a">DUDES CRAFT x [CREATOR_HANDLE] — OFFICIAL WHITELIST ALLOCATION
+
+Partnering with @dudescraft to distribute 5x Guaranteed (GTD) VIP Whitelist Passes for the upcoming Genesis 3D Voxel collection on Robinhood Network.
+
+Collection Details:
+— Supply: 1,999 Genesis Units
+— Network: Robinhood L2
+— Access: Guaranteed VIP Mint
+
+Entry Guidelines:
+1. Follow @dudescraft and @[CREATOR_HANDLE]
+2. Repost this announcement
+3. Mention 3 collectors and submit your EVM address
+4. Claim VIP verification pass: dudescraft.store/whitelist
+
+Allocations finalized in 48 hours.
+#DudesCraft #RobinhoodNetwork #NFT #Whitelist</div>
+        </div>
+
+        <!-- FORMAT B -->
+        <div class="tweet-box" style="margin-bottom:0;">
+          <div class="tweet-top">
+            <div>
+              <strong style="color:#FFFFFF; font-size:1rem;">Format B: Research &amp; Project Spotlight</strong>
+              <div style="font-size:0.8rem; color:#64748B;">Recommended for Alpha Callers &amp; Analysts</div>
+            </div>
+            <button class="copy-btn" onclick="copyTemplate('tpl-b', this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy Tweet</span>
+            </button>
+          </div>
+          <div class="tweet-code" id="tpl-b">Project Spotlight: @dudescraft (Robinhood Network)
+
+A focused look at the premier 3D voxel genesis collection launching on Robinhood's Layer-2 ecosystem:
+
+— Architecture: 1,999 strictly capped voxel avatars with on-chain metadata.
+— Utility: Deflationary staking mechanisms and metaverse-ready assets.
+— Verification: VIP whitelist portal currently live with cryptographic proof:
+   dudescraft.store/whitelist
+
+Follow @dudescraft for official deployment updates.
+#DudesCraft #Robinhood #Crypto</div>
+        </div>
+      </div>
+
+      <!-- 06: SECURITY PROTOCOL -->
+      <div class="security-callout">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" style="flex-shrink:0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div style="font-size:0.9rem; color:#FCA5A5; line-height:1.5;">
+          <strong style="color:#FFFFFF;">OFFICIAL SECURITY NOTICE:</strong> Never interact with unofficial links, direct messages, or fake smart contracts. Official deployment notifications and contract addresses are published exclusively via <strong>@dudescraft</strong> on X and the verified portal <strong>https://dudescraft.store</strong>.
+        </div>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container" style="text-align:center; padding: 40px 0; color:#64748B; font-size:0.85rem; border-top:1px solid rgba(255,255,255,0.06);">
+        &copy; 2026 Dudes Craft. Robinhood Network Layer-2. All rights reserved.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function copyTemplate(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const span = btn.querySelector('span');
+        const orig = span.innerText;
+        span.innerText = 'COPIED!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          span.innerText = orig;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
