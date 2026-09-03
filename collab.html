@@ -57,12 +57,85 @@
       margin: 0 !important;
     }
 
-    /* Fix header positioning on Collab page (no 38px gap) */
-    .collab-page .nav {
-      top: 0 !important;
-      background: rgba(250, 250, 247, 0.95) !important;
-      border-bottom: 2px solid #0A0B0D !important;
-      box-shadow: 0 4px 0px rgba(10, 11, 13, 0.04) !important;
+    /* Clean Top Bar & Home Button */
+    .collab-top-bar {
+      max-width: 900px;
+      margin: 20px auto 0;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    @media (max-width: 768px) {
+      .collab-top-bar {
+        margin: 14px auto 0;
+        padding: 0 12px;
+      }
+    }
+
+    .home-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      color: #0A0B0D;
+      border: 2px solid #0A0B0D;
+      box-shadow: 3px 3px 0px #0A0B0D;
+      padding: 8px 16px;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+    }
+    .home-nav-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #0A0B0D;
+      background: #C6F221;
+    }
+    .home-nav-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #0A0B0D;
+    }
+
+    .top-bar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .top-brand-logo {
+      border: 1.5px solid #0A0B0D;
+      box-shadow: 2px 2px 0px #0A0B0D;
+      display: block;
+    }
+    .top-brand-text {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      color: #0A0B0D;
+      letter-spacing: 0.5px;
+    }
+    .top-brand-text span {
+      color: #79A300;
+    }
+
+    .top-x-btn {
+      width: 36px;
+      height: 36px;
+      background: #FFFFFF;
+      border: 2px solid #0A0B0D;
+      box-shadow: 3px 3px 0px #0A0B0D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0A0B0D;
+      text-decoration: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+    }
+    .top-x-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #0A0B0D;
+      background: #C6F221;
     }
 
     /* Strictly Sharp Corners for all elements */
@@ -72,14 +145,14 @@
 
     /* Hero Section */
     .collab-hero {
-      padding: 90px 16px 40px;
+      padding: 30px 16px 36px;
       text-align: center;
       max-width: 900px;
       margin: 0 auto;
     }
     @media (max-width: 768px) {
       .collab-hero {
-        padding: 80px 14px 28px;
+        padding: 22px 12px 28px;
       }
     }
 
@@ -533,32 +606,22 @@
 <body class="collab-page">
 
   <div class="site-wrap">
-    <!-- NAVIGATION (Fixed at top: 0 with clean day-mode border) -->
-    <nav class="nav" id="nav">
-      <div class="nav-inner">
-        <a href="/" class="nav-brand">
-          <img src="/logo.webp?v=26" alt="Dudes Craft" class="nav-logo" width="38" height="38">
-          <div class="nav-brand-text">
-            <span class="nav-brand-name">DUDES<span>CRAFT</span></span>
-            <span class="nav-brand-sub">Robinhood Network</span>
-          </div>
-        </a>
+    <!-- TOP BAR WITH SHARP HOME BUTTON (Returns to Main Website) -->
+    <header class="collab-top-bar">
+      <a href="/" class="home-nav-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </a>
 
-        <div class="nav-links">
-          <a href="/">Home</a>
-          <a href="/#lore">Lore</a>
-          <a href="/#forge">DNA Forge</a>
-          <a href="/whitelist">Whitelist Portal</a>
-        </div>
-
-        <div class="nav-actions">
-          <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="nav-social" aria-label="Official X Profile" style="border: 1.5px solid #0A0B0D; box-shadow: 2px 2px 0px #0A0B0D; background: #FFFFFF; color: #0A0B0D;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <a href="/whitelist" class="nav-cta" style="border: 2px solid #0A0B0D; box-shadow: 3px 3px 0px #0A0B0D;">Join Whitelist</a>
-        </div>
+      <div class="top-bar-brand">
+        <img src="/logo.webp?v=26" alt="Dudes Craft" width="28" height="28" class="top-brand-logo">
+        <span class="top-brand-text">DUDES<span>CRAFT</span></span>
       </div>
-    </nav>
+
+      <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="top-x-btn" aria-label="Official X Profile">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+    </header>
 
     <!-- HERO (Clean Day Mode, No Gap) -->
     <header class="collab-hero">
