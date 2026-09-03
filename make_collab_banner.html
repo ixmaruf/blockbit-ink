@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dudes Craft — Collab OG Banner (1200x630)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Press+Start+2P&family=Space+Grotesk:wght@700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; }
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    background-color: #0A0B0D;
+    background-image: 
+      linear-gradient(rgba(198, 242, 33, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(198, 242, 33, 0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+    color: #FFFFFF;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 44px 50px;
+    position: relative;
+    border: 12px solid #0A0B0D;
+    outline: 4px solid #C6F221;
+  }
+
+  /* Ambient corner glow */
+  body::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(198, 242, 33, 0.22) 0%, rgba(10, 11, 13, 0) 70%);
+    pointer-events: none;
+  }
+
+  /* Top Bar */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-box {
+    width: 48px;
+    height: 48px;
+    background: #C6F221;
+    border: 2.5px solid #000000;
+    box-shadow: 3px 3px 0px #C6F221;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-box img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  .brand-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #FFFFFF;
+  }
+  .brand-title span {
+    color: #C6F221;
+  }
+
+  .badge-kicker {
+    background: #C6F221;
+    color: #0A0B0D;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.72rem;
+    padding: 8px 14px;
+    border: 2px solid #0A0B0D;
+    box-shadow: 3px 3px 0px #000000;
+    letter-spacing: 1px;
+  }
+
+  /* Center Content */
+  .content-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    position: relative;
+    z-index: 2;
+    margin: 10px 0;
+  }
+
+  .left-info {
+    flex: 1;
+    max-width: 540px;
+  }
+  .hero-headline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.4rem;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+  .hero-headline span {
+    color: #0A0B0D;
+    background: #C6F221;
+    padding: 0 8px;
+    border: 2px solid #0A0B0D;
+    box-shadow: 4px 4px 0px #000000;
+    display: inline-block;
+  }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: #CBD5E1;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .pills-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pill-spec {
+    background: #161920;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 2px 2px 0px #000000;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .pill-spec.highlight {
+    background: #C6F221;
+    color: #0A0B0D;
+    border-color: #0A0B0D;
+  }
+
+  /* Right Showcase Grid */
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 500px;
+  }
+  .card-voxel {
+    background: #161920;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 4px 4px 0px #000000;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+  }
+  .card-voxel.legendary {
+    border-color: #F59E0B;
+    box-shadow: 4px 4px 0px #D97706, 0 0 20px rgba(245, 158, 11, 0.25);
+  }
+  .card-voxel img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+    margin-bottom: 8px;
+    background: #0A0B0D;
+  }
+  .voxel-tier-tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 3px 6px;
+    display: block;
+  }
+  .tag-common { background: #475569; color: #FFFFFF; }
+  .tag-rare { background: #0284C7; color: #FFFFFF; }
+  .tag-epic { background: #9333EA; color: #FFFFFF; }
+  .tag-legendary { background: #D97706; color: #FFFFFF; }
+
+  /* Bottom Bar */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.1);
+    padding-top: 14px;
+    position: relative;
+    z-index: 2;
+  }
+  .bottom-left {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94A3B8;
+  }
+  .bottom-left span {
+    color: #C6F221;
+    font-weight: bold;
+  }
+  .bottom-right {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bottom-right span {
+    color: #C6F221;
+  }
+</style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="brand-group">
+      <div class="logo-box">
+        <img src="deck_assets/dudescraft_logo.png" alt="Dudes Craft">
+      </div>
+      <div class="brand-title">DUDES<span>CRAFT</span></div>
+    </div>
+    <div class="badge-kicker">OFFICIAL CREATOR &amp; PARTNERSHIP BRIEF</div>
+  </div>
+
+  <!-- CENTER CONTENT -->
+  <div class="content-row">
+    <div class="left-info">
+      <h1 class="hero-headline">CREATOR <span>KIT</span></h1>
+      <p class="hero-sub">
+        1,999 Genesis 3D Voxel Collection launching on Robinhood Network (L2). Guaranteed VIP whitelist allocations &amp; partner deployment brief.
+      </p>
+
+      <div class="pills-row">
+        <div class="pill-spec highlight">
+          <span>5-15x Guaranteed VIP Passes</span>
+        </div>
+        <div class="pill-spec">
+          <span>Robinhood Network L2</span>
+        </div>
+        <div class="pill-spec">
+          <span>ERC-721 Metadata</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4-TIER SHOWCASE -->
+    <div class="showcase-grid">
+      <div class="card-voxel">
+        <img src="deck_assets/common_1001.png" alt="Common Dude">
+        <span class="voxel-tier-tag tag-common">COMMON</span>
+      </div>
+      <div class="card-voxel">
+        <img src="deck_assets/rare_1000.png" alt="Rare Dude">
+        <span class="voxel-tier-tag tag-rare">RARE</span>
+      </div>
+      <div class="card-voxel">
+        <img src="deck_assets/epic_1003.png" alt="Epic Dude">
+        <span class="voxel-tier-tag tag-epic">EPIC</span>
+      </div>
+      <div class="card-voxel legendary">
+        <img src="deck_assets/legendary_1820.png" alt="Legendary Crowned King">
+        <span class="voxel-tier-tag tag-legendary">LEGENDARY KING</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <div class="bottom-left">
+      Official Kit URL: <span>dudescraft.store/collab</span>
+    </div>
+    <div class="bottom-right">
+      Official X: <span>@dudescraft</span> &bull; <span>Verified Protocol</span>
+    </div>
+  </div>
+
+</body>
+</html>
