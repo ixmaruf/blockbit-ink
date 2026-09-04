@@ -96,8 +96,8 @@ function computeServerHmac(str) {
  * Verify Cloudflare Turnstile token directly with Cloudflare API.
  */
 function verifyCloudflareTurnstile(token, ip) {
-  if (!token || typeof token !== 'string') {
-    return { ok: false, error: 'Cloudflare human verification token missing. Please complete the check.' };
+  if (!token || typeof token !== 'string' || token.length < 20) {
+    return { ok: false, error: 'Cloudflare human verification token missing or invalid. Please complete the check.' };
   }
 
   try {
@@ -118,6 +118,12 @@ function verifyCloudflareTurnstile(token, ip) {
     };
 
     const response = UrlFetchApp.fetch(url, options);
+    const statusCode = response.getResponseCode();
+    if (statusCode !== 200) {
+      Logger.log('Turnstile HTTP status error: ' + statusCode);
+      return { ok: false, error: 'Cloudflare verification service temporarily unavailable (' + statusCode + ').' };
+    }
+
     const json = JSON.parse(response.getContentText());
 
     if (json && json.success) {
@@ -125,12 +131,12 @@ function verifyCloudflareTurnstile(token, ip) {
     } else {
       const errCodes = (json && json['error-codes']) ? json['error-codes'].join(', ') : 'Verification rejected';
       Logger.log('Turnstile Rejected: ' + errCodes);
-      return { ok: false, error: 'Cloudflare Turnstile verification failed (' + errCodes + '). Please refresh.' };
+      return { ok: false, error: 'Cloudflare Turnstile verification failed (' + errCodes + '). Please complete the captcha check.' };
     }
   } catch (err) {
     Logger.log('Turnstile Fetch Exception: ' + err.message);
-    // If external call temporary network error, log and allow if other checks pass
-    return { ok: true, warn: err.message };
+    // STRICT FAIL-CLOSED: Under NO circumstances allow bot bypass on exception!
+    return { ok: false, error: 'Cloudflare verification system error: ' + err.message };
   }
 }
 
@@ -272,6 +278,17 @@ function doPost(e) {
       return jsonResponse_({ ok: false, error: 'Invalid VIP pass serial number.' });
     }
 
+    // IP validation
+    const DUMMY_IPS = ['1.1.1.1', '8.8.8.8', '127.0.0.1', '0.0.0.0'];
+    if (DUMMY_IPS.indexOf(ip) !== -1) {
+      return jsonResponse_({ ok: false, error: 'Invalid IP address detected. Proxy / VPN not allowed.' });
+    }
+
+    // Device Fingerprint validation
+    if (!fingerprint || fingerprint.startsWith('fp_') || fingerprint.length < 32) {
+      return jsonResponse_({ ok: false, error: 'Valid browser device fingerprint required. Please submit from a standard desktop or mobile browser.' });
+    }
+
     // 3. CLOUDFLARE TURNSTILE DIRECT SERVER VERIFICATION
     const cfCheck = verifyCloudflareTurnstile(turnstileToken, ip);
     if (!cfCheck.ok) {
@@ -330,11 +347,20 @@ function doPost(e) {
     cache.put('nonce_' + serverNonce, JSON.stringify({ status: 'USED', usedAt: now }), 600);
 
     // 9. DUPLICATE CHECK (Fast RAM Cache)
+    const ipHash = ip ? sha256Hex(ip) : '';
+    const fpHash = fingerprint ? sha256Hex(fingerprint) : '';
+
     if (cache.get('tw_' + twitterNorm)) {
       return jsonResponse_({ ok: false, error: 'This X username (@' + twitter + ') is already registered.', field: 'twitter', duplicate: true });
     }
     if (cache.get('wl_' + walletNorm)) {
       return jsonResponse_({ ok: false, error: 'This wallet address is already registered.', field: 'wallet', duplicate: true });
+    }
+    if (fpHash && cache.get('fp_' + fpHash)) {
+      return jsonResponse_({ ok: false, error: 'This device has already been used to register. One submission per device allowed.', duplicate: true });
+    }
+    if (ipHash && cache.get('ip_' + ipHash)) {
+      return jsonResponse_({ ok: false, error: 'An application has already been submitted from this IP network.', duplicate: true });
     }
 
     // 10. SPREADSHEET DATABASE RECORDING
@@ -347,10 +373,12 @@ function doPost(e) {
 
     const lastRow = sheet.getLastRow();
     if (lastRow > 1) {
-      const existing = sheet.getRange(2, 2, lastRow - 1, 2).getValues();
+      const existing = sheet.getRange(2, 2, lastRow - 1, 5).getValues();
       for (let i = 0; i < existing.length; i++) {
         const rowTw = String(existing[i][0] || '').toLowerCase().replace(/^@/, '').trim();
         const rowWl = String(existing[i][1] || '').toLowerCase().trim();
+        const rowIp = String(existing[i][3] || '').trim();
+        const rowFp = String(existing[i][4] || '').trim();
 
         if (rowTw === twitterNorm) {
           cache.put('tw_' + twitterNorm, '1', 86400);
@@ -359,6 +387,14 @@ function doPost(e) {
         if (rowWl === walletNorm) {
           cache.put('wl_' + walletNorm, '1', 86400);
           return jsonResponse_({ ok: false, error: 'This wallet address is already registered.', field: 'wallet', duplicate: true });
+        }
+        if (fingerprint && rowFp && rowFp === fingerprint) {
+          if (fpHash) cache.put('fp_' + fpHash, '1', 86400);
+          return jsonResponse_({ ok: false, error: 'This device has already been registered on the whitelist.', duplicate: true });
+        }
+        if (ip && rowIp && rowIp === ip && ip !== 'Verified Web3') {
+          if (ipHash) cache.put('ip_' + ipHash, '1', 86400);
+          return jsonResponse_({ ok: false, error: 'An application has already been submitted from this IP address.', duplicate: true });
         }
       }
     }
@@ -381,6 +417,8 @@ function doPost(e) {
     try {
       cache.put('tw_' + twitterNorm, '1', 86400);
       cache.put('wl_' + walletNorm, '1', 86400);
+      if (fpHash) cache.put('fp_' + fpHash, '1', 86400);
+      if (ipHash) cache.put('ip_' + ipHash, '1', 86400);
     } catch (_) {}
 
     return jsonResponse_({
@@ -441,4 +479,26 @@ function keepAlive() {
     const sheet = ss.getSheetByName(SHEET_NAME);
     if (sheet) sheet.getLastRow();
   } catch (_) {}
+}
+
+function deleteTestRow() {
+  const ss = getSpreadsheet_();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  const last = sheet.getLastRow();
+  const val = sheet.getRange(last, 2).getValue();
+  if (val === '@dudes_test_user') {
+    sheet.deleteRow(last);
+    Logger.log('Successfully deleted test row ' + last);
+  }
+}
+
+function updateTimerSettings() {
+  const ss = getSpreadsheet_();
+  const sheet = ss.getSheetByName(SETTINGS_SHEET);
+  sheet.getRange('B4').setValue('2026-08-29');
+  sheet.getRange('B5').setValue(11);
+  sheet.getRange('B6').setValue(0);
+  sheet.getRange('B7').setValue('AM');
+  sheet.getRange('B8').setValue(168);
+  Logger.log('Settings successfully set to 2026-08-29 11:00 AM 168h!');
 }

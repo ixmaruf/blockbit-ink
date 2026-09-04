@@ -9,7 +9,7 @@
   }
 
   // ── GLOBAL CACHE-BUST & AUTO-UPDATE ──
-  const CURRENT_APP_VERSION = 'v8.0_20260902';
+  const CURRENT_APP_VERSION = 'v8.4_20260905';
   try {
     const storedVer = localStorage.getItem('dudescraft_app_version');
     if (storedVer !== CURRENT_APP_VERSION) {
@@ -17,6 +17,8 @@
       localStorage.removeItem('bbi_wl_settings');
       localStorage.removeItem('blockbit_settings');
       localStorage.removeItem('dudescraft_settings_v3');
+      localStorage.removeItem('dudescraft_settings_v4');
+      localStorage.removeItem('dudescraft_settings_v5');
     }
   } catch (_) {}
 
@@ -240,18 +242,18 @@
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const DEFAULT_WL_SETTINGS = {
     whitelistOpen: 'On',
-    timerStart: '2026-09-04 12:00',
-    timerDuration: '144',
+    timerStart: '2026-08-29 11:00',
+    timerDuration: '168',
     postUrl: 'https://x.com/dudescraft/status/2093534635510702415',
     _isServerConfirmed: false
   };
 
-  const STORAGE_KEY = 'dudescraft_settings_v5';
+  const STORAGE_KEY = 'dudescraft_settings_v6';
 
   // Automatically purge legacy localStorage from previous visits
   (function autoPurgeLegacyCache() {
     try {
-      ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4'].forEach(function (k) {
+      ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4', 'dudescraft_settings_v5'].forEach(function (k) {
         localStorage.removeItem(k);
         sessionStorage.removeItem(k);
       });
@@ -359,7 +361,7 @@
       return;
     }
 
-    var startStr = (settings && settings.timerStart) || '2026-09-04 12:00';
+    var startStr = (settings && settings.timerStart) || '2026-08-29 11:00';
     var startMs;
     if (startStr.indexOf('T') > -1) {
       startMs = new Date(startStr).getTime();
@@ -368,13 +370,13 @@
       var dateParts = (parts[0] || '').split('-');
       var timeParts = (parts[1] || '').split(':');
       var y = parseInt(dateParts[0]) || 2026;
-      var m = parseInt(dateParts[1]) || 9;
-      var d = parseInt(dateParts[2]) || 4;
-      var hh = parseInt(timeParts[0]) || 12;
+      var m = parseInt(dateParts[1]) || 8;
+      var d = parseInt(dateParts[2]) || 29;
+      var hh = parseInt(timeParts[0]) || 11;
       var mm = parseInt(timeParts[1]) || 0;
       startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
     }
-    var durationHours = parseFloat((settings && settings.timerDuration) || '144') || 144;
+    var durationHours = parseFloat((settings && settings.timerDuration) || '168') || 168;
     var endTime = startMs + (durationHours * 3600 * 1000);
 
     function update() {

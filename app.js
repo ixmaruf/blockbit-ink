@@ -12,7 +12,7 @@ if (window.location.pathname.endsWith('.html')) {
 
 // ── GLOBAL CACHE-BUST & AUTO-UPDATE SYSTEM ──
 (function enforceLatestAppVersion() {
-  const CURRENT_APP_VERSION = 'v8.0_20260902';
+  const CURRENT_APP_VERSION = 'v8.4_20260905';
   try {
     const storedVer = localStorage.getItem('dudescraft_app_version');
     if (storedVer !== CURRENT_APP_VERSION) {
@@ -21,6 +21,8 @@ if (window.location.pathname.endsWith('.html')) {
       localStorage.removeItem('bbi_wl_settings');
       localStorage.removeItem('blockbit_settings');
       localStorage.removeItem('dudescraft_settings_v3');
+      localStorage.removeItem('dudescraft_settings_v4');
+      localStorage.removeItem('dudescraft_settings_v5');
     }
   } catch (_) {}
 
@@ -315,18 +317,18 @@ window.randomizeForgeWarrior = randomizeForgeWarrior;
 /* ── TOP BANNER WHITELIST SYNC ── */
 const DEFAULT_WL_SETTINGS = {
   whitelistOpen: 'On',
-  timerStart: '2026-09-04 12:00',
-  timerDuration: '144',
+  timerStart: '2026-08-29 11:00',
+  timerDuration: '168',
   postUrl: 'https://x.com/dudescraft/status/2093534635510702415',
   _isServerConfirmed: false
 };
 
-const STORAGE_KEY = 'dudescraft_settings_v5';
+const STORAGE_KEY = 'dudescraft_settings_v6';
 
 // Automatically purge legacy localStorage from previous visits
 (function autoPurgeLegacyCache() {
   try {
-    ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4'].forEach(function (k) {
+    ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4', 'dudescraft_settings_v5'].forEach(function (k) {
       localStorage.removeItem(k);
       sessionStorage.removeItem(k);
     });
