@@ -506,6 +506,148 @@ body {
   transform: translate(-2px, -2px);
 }
 
+/* ── ALLOCATION CHECKER HERO BANNER ── */
+.hero-checker-banner {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 680px;
+}
+
+.btn-checker-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--obsidian);
+  color: #FFFFFF;
+  border: 2px solid var(--lemon);
+  border-radius: var(--r-md);
+  padding: 14px 22px;
+  text-decoration: none;
+  box-shadow: 4px 4px 0px var(--lemon), 0 10px 25px -5px rgba(198, 242, 33, 0.25);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-checker-hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(198, 242, 33, 0.15), transparent);
+  transform: skewX(-25deg);
+  transition: left 0.75s ease;
+}
+
+.btn-checker-hero:hover::before {
+  left: 150%;
+}
+
+.btn-checker-hero:hover {
+  transform: translate(-2px, -3px);
+  box-shadow: 6px 6px 0px var(--lemon), 0 15px 30px -5px rgba(198, 242, 33, 0.4);
+  background: #11141A;
+}
+
+.btn-checker-hero:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px var(--lemon);
+}
+
+.checker-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.checker-banner-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(198, 242, 33, 0.12);
+  border: 1.5px solid var(--lemon);
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lemon);
+  flex-shrink: 0;
+}
+
+.checker-banner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.checker-banner-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+}
+
+.badge-checker-soon {
+  background: var(--lemon);
+  color: var(--obsidian);
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  animation: pulse 1.8s infinite;
+}
+
+.checker-banner-sub {
+  font-size: 0.78rem;
+  color: var(--slate);
+  letter-spacing: 0.02em;
+}
+
+.checker-banner-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--lemon);
+  color: var(--obsidian);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  padding: 8px 16px;
+  border-radius: var(--r-sm);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-checker-hero:hover .checker-banner-cta {
+  background: #d8ff3b;
+  transform: translateX(3px);
+}
+
+@media (max-width: 600px) {
+  .btn-checker-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .checker-banner-cta {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+
+
 .scroll-hint {
   margin-top: 3.5rem;
   display: flex;

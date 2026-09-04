@@ -48,6 +48,14 @@ const SECURITY_HEADERS = {
 http.createServer((req, res) => {
   let urlPath = req.url.split('?')[0] || '/';
   if (urlPath === '/') urlPath = 'index.html';
+  else if (urlPath.endsWith('/')) urlPath += 'index.html';
+  else if (!path.extname(urlPath)) {
+    if (fs.existsSync(path.join(ROOT, urlPath + '.html'))) {
+      urlPath += '.html';
+    } else if (fs.existsSync(path.join(ROOT, urlPath, 'index.html'))) {
+      urlPath += '/index.html';
+    }
+  }
 
   const fp = safeResolve(urlPath);
   if (!fp) {
