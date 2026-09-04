@@ -315,20 +315,21 @@ window.randomizeForgeWarrior = randomizeForgeWarrior;
 /* ── TOP BANNER WHITELIST SYNC ── */
 const DEFAULT_WL_SETTINGS = {
   whitelistOpen: 'On',
-  timerStart: '2026-08-29 00:00',
-  timerDuration: '96',
-  postUrl: 'https://x.com/DudesCraft'
+  timerStart: '2026-09-04 12:00',
+  timerDuration: '144',
+  postUrl: 'https://x.com/dudescraft/status/2093534635510702415',
+  _isServerConfirmed: false
 };
 
-const STORAGE_KEY = 'dudescraft_settings_v3';
+const STORAGE_KEY = 'dudescraft_settings_v5';
 
 // Automatically purge legacy localStorage from previous visits
 (function autoPurgeLegacyCache() {
   try {
-    localStorage.removeItem('bbi_wl_settings');
-    sessionStorage.removeItem('bbi_wl_settings');
-    localStorage.removeItem('blockbit_settings');
-    sessionStorage.removeItem('blockbit_settings');
+    ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4'].forEach(function (k) {
+      localStorage.removeItem(k);
+      sessionStorage.removeItem(k);
+    });
   } catch (_) {}
 })();
 
@@ -337,12 +338,14 @@ function getLocalWlSettings() {
     const raw = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object' && parsed.savedAt && (Date.now() - parsed.savedAt < 5 * 60 * 1000)) {
-        return parsed.settings || DEFAULT_WL_SETTINGS;
+      if (parsed && typeof parsed === 'object' && parsed.savedAt && (Date.now() - parsed.savedAt < 24 * 60 * 60 * 1000)) {
+        const s = Object.assign({}, parsed.settings);
+        s._isServerConfirmed = !!parsed.isServerConfirmed;
+        return s;
       }
     }
   } catch (e) {}
-  return DEFAULT_WL_SETTINGS;
+  return Object.assign({}, DEFAULT_WL_SETTINGS);
 }
 
 let bannerInterval = null;
@@ -354,12 +357,16 @@ function initTopBanner() {
   const pulseEl = document.getElementById('bannerPulse');
   if (!labelEl || !countEl) return;
 
-  function applySettings(settings) {
+  function applySettings(settings, isAuthoritative) {
     if (!settings) return;
 
+    const authoritative = (isAuthoritative === true);
     const isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off';
 
     if (!isOpen) {
+      if (!authoritative) {
+        return;
+      }
       if (bannerInterval) {
         clearInterval(bannerInterval);
         bannerInterval = null;
@@ -388,8 +395,8 @@ function initTopBanner() {
       const mm = parseInt(timeParts[1]) || 0;
       startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
     }
-    const durationHours = parseInt(settings.timerDuration || '144', 10);
-    const durationMs = (isNaN(durationHours) ? 144 : durationHours) * 60 * 60 * 1000;
+    const durationHours = parseInt(settings.timerDuration || '168', 10);
+    const durationMs = (isNaN(durationHours) ? 168 : durationHours) * 60 * 60 * 1000;
     const endTime = startMs + durationMs;
 
     if (pulseEl) {
@@ -401,6 +408,12 @@ function initTopBanner() {
       const remaining = endTime - now;
 
       if (remaining <= 0) {
+        if (!authoritative) {
+          labelEl.textContent = 'WHITELIST CLOSING SOON:';
+          countEl.textContent = 'Allocations Wave';
+          if (bannerEl) bannerEl.classList.add('is-ready');
+          return;
+        }
         labelEl.textContent = 'WHITELIST CLOSED';
         countEl.textContent = 'Allocations Filled';
         if (pulseEl) {
@@ -430,7 +443,8 @@ function initTopBanner() {
     bannerInterval = setInterval(updateBannerTimer, 1000);
   }
 
-  applySettings(getLocalWlSettings());
+  const local = getLocalWlSettings();
+  applySettings(local, false);
 
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const endpoint = (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint)
@@ -442,11 +456,12 @@ function initTopBanner() {
     .then(function (data) {
       if (data && data.ok && data.settings) {
         try {
-          const cacheObj = { settings: data.settings, savedAt: Date.now() };
+          const cacheObj = { settings: data.settings, savedAt: Date.now(), isServerConfirmed: true };
           sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
         } catch (e) {}
-        applySettings(data.settings);
+        data.settings._isServerConfirmed = true;
+        applySettings(data.settings, true);
       }
     })
     .catch(function (err) {

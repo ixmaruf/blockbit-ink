@@ -113,7 +113,11 @@
 
       deviceFingerprint = await sha256Hex(canvasHash + '|||' + screenInfo);
     } catch (_) {
-      deviceFingerprint = 'fp_' + Math.random().toString(36).slice(2);
+      try {
+        deviceFingerprint = await sha256Hex((navigator.userAgent || 'UA') + '|||' + (screen.width + 'x' + screen.height) + '|||' + (navigator.language || 'en') + '|||' + Math.random());
+      } catch (e) {
+        deviceFingerprint = 'd7a8fbb307d7809469ca933b02b1f18f3a4f164be472f5b816049fc71f44ac28';
+      }
     }
     return deviceFingerprint;
   }
@@ -121,7 +125,10 @@
   async function fetchClientIp() {
     if (clientIp) return clientIp;
     try {
-      const r = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), 1500);
+      const r = await fetch('https://api.ipify.org?format=json', { cache: 'no-store', signal: ctrl.signal });
+      clearTimeout(tid);
       const d = await r.json();
       if (d && d.ip) {
         clientIp = d.ip;
@@ -129,7 +136,10 @@
       }
     } catch (_) {}
     try {
-      const r2 = await fetch('https://api64.ipify.org?format=json', { cache: 'no-store' });
+      const ctrl2 = new AbortController();
+      const tid2 = setTimeout(() => ctrl2.abort(), 1500);
+      const r2 = await fetch('https://api64.ipify.org?format=json', { cache: 'no-store', signal: ctrl2.signal });
+      clearTimeout(tid2);
       const d2 = await r2.json();
       if (d2 && d2.ip) {
         clientIp = d2.ip;
@@ -230,20 +240,21 @@
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const DEFAULT_WL_SETTINGS = {
     whitelistOpen: 'On',
-    timerStart: '2026-08-29 11:00',
+    timerStart: '2026-09-04 12:00',
     timerDuration: '144',
-    postUrl: 'https://x.com/dudescraft/status/2093534635510702415'
+    postUrl: 'https://x.com/dudescraft/status/2093534635510702415',
+    _isServerConfirmed: false
   };
 
-  const STORAGE_KEY = 'dudescraft_settings_v3';
+  const STORAGE_KEY = 'dudescraft_settings_v5';
 
   // Automatically purge legacy localStorage from previous visits
   (function autoPurgeLegacyCache() {
     try {
-      localStorage.removeItem('bbi_wl_settings');
-      sessionStorage.removeItem('bbi_wl_settings');
-      localStorage.removeItem('blockbit_settings');
-      sessionStorage.removeItem('blockbit_settings');
+      ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4'].forEach(function (k) {
+        localStorage.removeItem(k);
+        sessionStorage.removeItem(k);
+      });
     } catch (_) {}
   })();
 
@@ -252,12 +263,14 @@
       const raw = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed.savedAt && (Date.now() - parsed.savedAt < 5 * 60 * 1000)) {
-          return parsed.settings || DEFAULT_WL_SETTINGS;
+        if (parsed && typeof parsed === 'object' && parsed.savedAt && (Date.now() - parsed.savedAt < 24 * 60 * 60 * 1000)) {
+          const s = Object.assign({}, parsed.settings);
+          s._isServerConfirmed = !!parsed.isServerConfirmed;
+          return s;
         }
       }
     } catch (e) {}
-    return DEFAULT_WL_SETTINGS;
+    return Object.assign({}, DEFAULT_WL_SETTINGS);
   }
 
   function getSheetEndpoint() {
@@ -292,20 +305,22 @@
 
   /* ─── Fetch settings from Apps Script ─── */
   async function fetchSettings() {
-    prewarmAppsScript();
     try {
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), 3500);
       const url = getSheetEndpoint() + '?action=settings&_nocache=' + Date.now();
-      const resp = await fetch(url, { cache: 'no-store' });
+      const resp = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+      clearTimeout(tid);
       const data = await resp.json();
       if (data.ok && data.settings) return data.settings;
     } catch (err) {
-      console.warn('Settings fetch failed, using defaults:', err);
+      console.warn('Settings fetch failed or timed out, using defaults:', err);
     }
     return null;
   }
 
   /* ─── Initialize countdown timer ─── */
-  function initTimer(settings) {
+  function initTimer(settings, isAuthoritative) {
     var timerEl = document.getElementById('wlTimer');
     var comingSoonEl = document.getElementById('wlComingSoon');
     var containerEl = document.querySelector('.wl-container');
@@ -317,8 +332,17 @@
 
     if (!settings) return;
 
+    var authoritative = (isAuthoritative === true);
     var isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off' && settings.whitelistOpen !== false;
+
     if (!isOpen) {
+      // Never close based on unconfirmed fallback data while server request is in flight
+      if (!authoritative) {
+        if (comingSoonEl) comingSoonEl.style.display = 'none';
+        if (containerEl) containerEl.style.display = 'block';
+        if (timerEl) timerEl.style.display = 'inline-flex';
+        return;
+      }
       if (timerEl) timerEl.style.display = 'none';
       if (comingSoonEl) {
         comingSoonEl.style.display = 'block';
@@ -335,7 +359,7 @@
       return;
     }
 
-    var startStr = settings.timerStart || '';
+    var startStr = (settings && settings.timerStart) || '2026-09-04 12:00';
     var startMs;
     if (startStr.indexOf('T') > -1) {
       startMs = new Date(startStr).getTime();
@@ -344,18 +368,24 @@
       var dateParts = (parts[0] || '').split('-');
       var timeParts = (parts[1] || '').split(':');
       var y = parseInt(dateParts[0]) || 2026;
-      var m = parseInt(dateParts[1]) || 1;
-      var d = parseInt(dateParts[2]) || 1;
-      var hh = parseInt(timeParts[0]) || 0;
+      var m = parseInt(dateParts[1]) || 9;
+      var d = parseInt(dateParts[2]) || 4;
+      var hh = parseInt(timeParts[0]) || 12;
       var mm = parseInt(timeParts[1]) || 0;
       startMs = Date.UTC(y, m - 1, d, hh - 6, mm);
     }
-    var durationHours = parseFloat(settings.timerDuration || '72') || 72;
+    var durationHours = parseFloat((settings && settings.timerDuration) || '144') || 144;
     var endTime = startMs + (durationHours * 3600 * 1000);
 
     function update() {
       var now = Date.now();
       if (now < startMs) {
+        if (!authoritative) {
+          if (comingSoonEl) comingSoonEl.style.display = 'none';
+          if (containerEl) containerEl.style.display = 'block';
+          if (timerEl) timerEl.style.display = 'inline-flex';
+          return;
+        }
         if (comingSoonEl) {
           comingSoonEl.style.display = 'block';
           var titleEl = document.getElementById('comingSoonTitle');
@@ -374,6 +404,21 @@
       }
 
       if (now >= endTime) {
+        if (!authoritative) {
+          // Fallback / default timer ran out, but server fetch is in-flight!
+          // Keep form completely OPEN and interactive. Never show "ENDED" on fallback defaults.
+          if (comingSoonEl) comingSoonEl.style.display = 'none';
+          if (containerEl) containerEl.style.display = 'block';
+          if (timerEl) timerEl.style.display = 'inline-flex';
+          var hEl = document.getElementById('timerHours');
+          var mEl = document.getElementById('timerMins');
+          var sEl = document.getElementById('timerSecs');
+          if (hEl) hEl.textContent = '00';
+          if (mEl) mEl.textContent = '00';
+          if (sEl) sEl.textContent = '00';
+          return;
+        }
+
         if (comingSoonEl) {
           comingSoonEl.style.display = 'block';
           var titleEl = document.getElementById('comingSoonTitle');
@@ -950,19 +995,20 @@
 
     const initial = getLocalWlSettings();
     appSettings = initial;
-    currentPostUrl = initial.postUrl || 'https://x.com/DudesCraft';
-    initTimer(initial);
+    currentPostUrl = initial.postUrl || 'https://x.com/dudescraft/status/2093534635510702415';
+    initTimer(initial, false);
 
     fetchSettings().then(function (fresh) {
       if (fresh) {
+        fresh._isServerConfirmed = true;
         appSettings = fresh;
-        currentPostUrl = fresh.postUrl || 'https://x.com/DudesCraft';
+        currentPostUrl = fresh.postUrl || 'https://x.com/dudescraft/status/2093534635510702415';
         try {
-          const cacheObj = { settings: fresh, savedAt: Date.now() };
+          const cacheObj = { settings: fresh, savedAt: Date.now(), isServerConfirmed: true };
           sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
         } catch (e) {}
-        initTimer(fresh);
+        initTimer(fresh, true);
       }
     });
   }
