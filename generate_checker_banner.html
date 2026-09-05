@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dudes Craft — Genesis Allocation Checker OG Banner (1200x630)</title>
+<title>Dudes Craft — Genesis Allocation Checker OG Banner (White Mode 1200x630)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Space+Grotesk:wght@600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -12,45 +12,44 @@
     width: 1200px;
     height: 630px;
     overflow: hidden;
-    background-color: #0A0B0D;
+    background-color: #FFFFFF;
     background-image: 
-      linear-gradient(rgba(198, 242, 33, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(198, 242, 33, 0.08) 1px, transparent 1px),
-      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 60px 60px, 60px 60px, 15px 15px, 15px 15px;
+      linear-gradient(rgba(10, 11, 13, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10, 11, 13, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(198, 242, 33, 0.2) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(198, 242, 33, 0.2) 1px, transparent 1px);
+    background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
     background-position: -1px -1px;
-    color: #FFFFFF;
+    color: #0A0B0D;
     font-family: 'DM Sans', sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 42px 48px;
+    padding: 38px 48px;
     position: relative;
-    border: 10px solid #0A0B0D;
-    outline: 4px solid #C6F221;
+    border: 12px solid #0A0B0D;
   }
 
-  /* Ambient corner glow */
+  /* Ambient soft lime & emerald glow */
   body::before {
     content: '';
     position: absolute;
-    top: -80px;
-    right: -80px;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(198, 242, 33, 0.25) 0%, rgba(10, 11, 13, 0) 70%);
+    top: -100px;
+    right: -100px;
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, rgba(198, 242, 33, 0.45) 0%, rgba(255, 255, 255, 0) 70%);
     pointer-events: none;
   }
 
   body::after {
     content: '';
     position: absolute;
-    bottom: -80px;
-    left: -80px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(34, 197, 94, 0.18) 0%, rgba(10, 11, 13, 0) 70%);
+    bottom: -100px;
+    left: -100px;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
     pointer-events: none;
   }
 
@@ -70,12 +69,12 @@
   }
 
   .logo-box {
-    width: 50px;
-    height: 50px;
+    width: 54px;
+    height: 54px;
     background: #C6F221;
-    border: 2px solid #FFFFFF;
-    box-shadow: 3px 3px 0px #C6F221;
-    border-radius: 8px;
+    border: 2.5px solid #0A0B0D;
+    box-shadow: 4px 4px 0px #0A0B0D;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -95,46 +94,52 @@
 
   .brand-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.65rem;
     font-weight: 800;
-    letter-spacing: 0.5px;
-    color: #FFFFFF;
+    letter-spacing: -0.5px;
+    color: #0A0B0D;
     line-height: 1.1;
   }
 
   .brand-title span {
-    color: #C6F221;
+    color: #0A0B0D;
+    background: #C6F221;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+    border: 1.5px solid #0A0B0D;
   }
 
   .brand-chain {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #94A3B8;
+    font-size: 0.74rem;
+    font-weight: 800;
+    color: #64748B;
     letter-spacing: 1.5px;
     text-transform: uppercase;
+    margin-top: 3px;
   }
 
   .live-pill {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(34, 197, 94, 0.15);
-    border: 1.5px solid #22C55E;
-    color: #4ADE80;
+    gap: 10px;
+    background: #C6F221;
+    border: 2.5px solid #0A0B0D;
+    box-shadow: 4px 4px 0px #0A0B0D;
+    color: #0A0B0D;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 800;
-    letter-spacing: 1px;
-    padding: 8px 16px;
+    letter-spacing: 0.5px;
+    padding: 10px 18px;
     border-radius: 9999px;
   }
 
   .pulse-dot {
-    width: 9px;
-    height: 9px;
-    background-color: #22C55E;
+    width: 10px;
+    height: 10px;
+    background-color: #0A0B0D;
     border-radius: 50%;
-    box-shadow: 0 0 8px #22C55E;
   }
 
   /* Main Content Row */
@@ -145,51 +150,58 @@
     gap: 36px;
     position: relative;
     z-index: 2;
-    margin: 8px 0;
+    margin: 6px 0;
   }
 
   .left-col {
     flex: 1;
-    max-width: 620px;
+    max-width: 630px;
   }
 
   .sub-tag {
     font-family: 'Press Start 2P', monospace;
-    font-size: 0.65rem;
-    color: #C6F221;
-    letter-spacing: 1.5px;
-    margin-bottom: 12px;
+    font-size: 0.68rem;
+    color: #059669;
+    background: #DCFCE7;
+    border: 1.5px solid #059669;
+    padding: 6px 12px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
     display: inline-block;
   }
 
   .hero-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 3.5rem;
+    font-size: 3.8rem;
     font-weight: 800;
     line-height: 1.05;
-    letter-spacing: -1.5px;
-    color: #FFFFFF;
+    letter-spacing: -2px;
+    color: #0A0B0D;
     margin-bottom: 14px;
   }
 
   .hero-title .highlight {
     background: #C6F221;
     color: #0A0B0D;
-    padding: 0 10px;
-    border-radius: 6px;
-    box-shadow: 4px 4px 0px #000000;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 3px solid #0A0B0D;
+    box-shadow: 5px 5px 0px #0A0B0D;
     display: inline-block;
   }
 
   .hero-desc {
-    font-size: 1.08rem;
-    color: #94A3B8;
+    font-size: 1.15rem;
+    color: #334155;
     line-height: 1.5;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
+    font-weight: 500;
   }
 
   .hero-desc strong {
-    color: #FFFFFF;
+    color: #0A0B0D;
+    font-weight: 800;
   }
 
   /* Feature Badges */
@@ -200,35 +212,31 @@
   }
 
   .feature-chip {
-    background: #161920;
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-    padding: 8px 14px;
+    border: 2px solid #0A0B0D;
+    border-radius: 10px;
+    box-shadow: 3.5px 3.5px 0px #0A0B0D;
+    padding: 9px 16px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #E2E8F0;
+    font-size: 0.92rem;
+    font-weight: 800;
   }
 
   .feature-chip.chip-gold {
-    border-color: #F59E0B;
-    background: rgba(245, 158, 11, 0.12);
-    color: #FCD34D;
+    background: #FEF3C7;
+    color: #92400E;
   }
 
   .feature-chip.chip-cyan {
-    border-color: #0284C7;
-    background: rgba(2, 132, 199, 0.12);
-    color: #7DD3FC;
+    background: #E0F2FE;
+    color: #0369A1;
   }
 
   .feature-chip.chip-lime {
-    border-color: #C6F221;
-    background: rgba(198, 242, 33, 0.12);
-    color: #C6F221;
+    background: #C6F221;
+    color: #0A0B0D;
   }
 
   /* Right Mascot Showcase */
@@ -241,10 +249,10 @@
   }
 
   .mascot-display-card {
-    background: linear-gradient(180deg, #161920 0%, #0F1217 100%);
-    border: 2px solid rgba(198, 242, 33, 0.5);
-    box-shadow: 6px 6px 0px #000000, 0 0 30px rgba(198, 242, 33, 0.2);
-    border-radius: 16px;
+    background: #FFFFFF;
+    border: 3px solid #0A0B0D;
+    box-shadow: 8px 8px 0px #0A0B0D;
+    border-radius: 20px;
     padding: 20px 24px;
     width: 100%;
     position: relative;
@@ -257,24 +265,26 @@
     justify-content: space-between;
     margin-bottom: 12px;
     padding-bottom: 10px;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+    border-bottom: 2px solid #E2E8F0;
   }
 
   .card-chip {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 800;
-    color: #C6F221;
-    background: rgba(198, 242, 33, 0.15);
-    padding: 3px 8px;
-    border-radius: 4px;
+    color: #0A0B0D;
+    background: #C6F221;
+    border: 1.5px solid #0A0B0D;
+    padding: 4px 10px;
+    border-radius: 6px;
     text-transform: uppercase;
   }
 
   .card-serial {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: #94A3B8;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #64748B;
   }
 
   .card-center-stage {
@@ -282,36 +292,39 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 180px;
+    height: 185px;
+    background: radial-gradient(circle at center, rgba(198, 242, 33, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 12px;
   }
 
   .stage-pedestal {
     position: absolute;
-    bottom: 0px;
-    width: 160px;
-    height: 32px;
-    background: radial-gradient(ellipse at center, rgba(198, 242, 33, 0.6) 0%, rgba(198, 242, 33, 0.1) 60%, transparent 80%);
+    bottom: 8px;
+    width: 170px;
+    height: 34px;
+    background: radial-gradient(ellipse at center, rgba(198, 242, 33, 0.9) 0%, rgba(198, 242, 33, 0.4) 60%, transparent 80%);
     border-radius: 50%;
     filter: blur(4px);
   }
 
   .stage-mascot {
-    max-height: 175px;
+    max-height: 180px;
     object-fit: contain;
     position: relative;
     z-index: 2;
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(0 10px 18px rgba(10, 11, 13, 0.25));
   }
 
   .card-stats-row {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background: #0A0B0D;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-top: 12px;
+    background: #F8FAFC;
+    border: 2px solid #0A0B0D;
+    box-shadow: 3px 3px 0px #0A0B0D;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-top: 14px;
   }
 
   .mini-stat {
@@ -324,22 +337,24 @@
   .mini-val {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 800;
-    font-size: 0.98rem;
-    color: #FFFFFF;
+    font-size: 1.05rem;
+    color: #0A0B0D;
     line-height: 1.1;
   }
 
   .mini-lbl {
-    font-size: 0.65rem;
-    color: #94A3B8;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #64748B;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-top: 2px;
   }
 
   .mini-divider {
-    width: 1px;
-    height: 22px;
-    background: rgba(255, 255, 255, 0.1);
+    width: 2px;
+    height: 26px;
+    background: #CBD5E1;
   }
 
   /* Bottom Bar */
@@ -347,7 +362,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-top: 2.5px solid #0A0B0D;
     padding-top: 16px;
     position: relative;
     z-index: 2;
@@ -358,33 +373,41 @@
     align-items: center;
     gap: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.86rem;
-    color: #94A3B8;
+    font-size: 0.88rem;
+    color: #475569;
+    font-weight: 600;
   }
 
   .bottom-left strong {
-    color: #C6F221;
+    color: #0A0B0D;
+    background: #F1F5F9;
+    padding: 4px 8px;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 6px;
   }
 
   .bottom-right {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #FFFFFF;
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #0A0B0D;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
 
   .arrow-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
     background: #C6F221;
     color: #0A0B0D;
-    border-radius: 4px;
+    border: 2px solid #0A0B0D;
+    box-shadow: 2px 2px 0px #0A0B0D;
+    border-radius: 6px;
+    font-weight: 800;
   }
 </style>
 </head>
@@ -411,7 +434,7 @@
   <!-- Center Content -->
   <div class="content-row">
     <div class="left-col">
-      <span class="sub-tag">&bull; GENESIS SNAPSHOT VERIFIED</span>
+      <span class="sub-tag">&#10004; GENESIS SNAPSHOT VERIFIED</span>
       <h1 class="hero-title">
         GENESIS <span class="highlight">CHECKER</span>
       </h1>
@@ -455,12 +478,12 @@
           </div>
           <div class="mini-divider"></div>
           <div class="mini-stat">
-            <span class="mini-val" style="color:#C6F221;">Robinhood</span>
+            <span class="mini-val" style="color:#0A0B0D;">Robinhood</span>
             <span class="mini-lbl">Network</span>
           </div>
           <div class="mini-divider"></div>
           <div class="mini-stat">
-            <span class="mini-val" style="color:#4ADE80;">Audited</span>
+            <span class="mini-val" style="color:#059669;">Audited</span>
             <span class="mini-lbl">Merkle Root</span>
           </div>
         </div>
