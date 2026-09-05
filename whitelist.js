@@ -642,17 +642,10 @@
 
   /* ─── Submit Application with Two-Phase Zero-Trust Verification ─── */
   async function submitApplication() {
-    if (submitted) return;
+    alert('Genesis Whitelist registration is officially closed! Please verify your allocation on the Genesis Checker.');
+    window.location.href = '/checker';
+    return;
 
-    if (!validateTwitterInput()) {
-      goToStep(1);
-      return;
-    }
-    const w = getWallet();
-    if (!w || !isValidWallet(w)) {
-      goToStep(2);
-      return;
-    }
 
     const allDone = tasksCompleted.follow && tasksCompleted.like && tasksCompleted.repost && tasksCompleted.quote;
     if (!allDone) {

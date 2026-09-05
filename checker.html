@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Genesis Allocation Checker &mdash; DUDES CRAFT</title>
-  <meta name="description" content="Verify your Cryptographic VIP Mint Pass, Robinhood Network wallet qualification, and Genesis Tier allocation status.">
+  <meta name="description" content="Official allocation verification engine for Dudes Craft Genesis on Robinhood Network. Check your GDT Guaranteed and FCFS allocation status.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260905_v86">
-  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260905_v86">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260905_v86">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260906_v88">
+  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260906_v88">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260906_v88">
   <link rel="canonical" href="https://dudescraft.store/checker">
 
   <script>
@@ -22,35 +22,37 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Dudes Craft">
   <meta property="og:title" content="Genesis Allocation Checker &mdash; DUDES CRAFT">
-  <meta property="og:description" content="Verify your VIP Mint Pass and Robinhood Network Genesis Allocation tier. Total 1,999 Voxel Warriors.">
+  <meta property="og:description" content="Verify your GDT Guaranteed and FCFS Genesis Allocation for 1,999 Voxel Warriors on Robinhood Network.">
   <meta property="og:url" content="https://dudescraft.store/checker">
-  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260905_v86">
+  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260906_v88">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@DudesCraft">
   <meta name="twitter:title" content="Genesis Allocation Checker &mdash; DUDES CRAFT">
-  <meta name="twitter:description" content="Verify your VIP Mint Pass and Robinhood Network Genesis Allocation tier. Total 1,999 Voxel Warriors.">
-  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260905_v86">
+  <meta name="twitter:description" content="Verify your GDT Guaranteed and FCFS Genesis Allocation for 1,999 Voxel Warriors on Robinhood Network.">
+  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260906_v88">
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500;700;800&family=Press+Start+2P&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/checker.css?v=20260905_v86">
+  <link rel="stylesheet" href="/checker.css?v=20260906_v88">
+  <script src="/whitelist-config.js?v=20260906_v88"></script>
+  <script src="/checker-data.js?v=20260906_v88"></script>
 </head>
 <body class="checker-body">
 
-  <!-- Voxel Ambient Grid Layer (Matching Main Site) -->
-  <div class="checker-grid-bg"></div>
+  <!-- Canvas Confetti Overlay -->
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
 
   <div class="checker-wrap">
 
-    <!-- ── NAV BAR ── -->
+    <!-- ── NAVIGATION BAR ── -->
     <header class="checker-nav">
       <a href="/" class="checker-brand">
-        <img src="/logo.webp?v=20260905_v86" alt="Dudes Craft" width="36" height="36">
+        <img src="/logo.webp?v=20260906_v88" alt="Dudes Craft" width="38" height="38">
         <div class="checker-brand-text">
           <span class="checker-brand-name">DUDES CRAFT</span>
           <span class="checker-brand-chain">Robinhood Network</span>
@@ -58,341 +60,141 @@
       </a>
 
       <div class="checker-nav-actions">
-        <a href="/" class="btn-nav-outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          <span>Home</span>
+        <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="btn-nav-outline" title="Official X">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <span class="nav-btn-text">Follow X</span>
         </a>
-        <a href="/whitelist" class="btn-nav-lemon">
-          <span>Join Whitelist</span>
+        <a href="/" class="btn-nav-lemon">
+          <span>Home</span>
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
     </header>
 
-    <main>
-      <!-- ── HERO WITH CHECKER COCKPIT DIRECTLY AT TOP ── -->
-      <section class="checker-hero-section">
-        <div class="hero-intro-box">
-          <div class="checker-kicker">
-            <span class="pulse-dot"></span>
-            <span>Genesis Protocol &bull; Allocation Engine</span>
-          </div>
-
-          <h1 class="checker-title">
-            GENESIS <span class="highlight">CHECKER</span>
-          </h1>
-
-          <p class="checker-desc">
-            Official eligibility &amp; tier allocation portal for <strong>1,999 Voxel Warriors</strong> on the <strong>Robinhood Network</strong>. The on-chain allocation snapshot is compiling.
-          </p>
+    <main class="checker-main">
+      
+      <!-- ── HERO SECTION ── -->
+      <section class="hero-clean-section">
+        <div class="kicker-pill">
+          <span class="pulse-dot"></span>
+          <span>OFFICIAL ALLOCATION ENGINE &bull; LIVE</span>
         </div>
 
-        <!-- TWO COLUMN HERO GRID: COCKPIT (LEFT) + MASCOT PANEL (RIGHT) -->
-        <div class="hero-split-grid">
+        <h1 class="page-title">
+          GENESIS <span class="highlight">CHECKER</span>
+        </h1>
 
-          <!-- ── COCKPIT (ALLOCATION ENGINE - HIGH VISIBILITY) ── -->
-          <div class="checker-cockpit" id="cockpit">
-            <div class="cockpit-top-bar">
-              <div class="locked-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span>DATABASE LOCKED &bull; COMING SOON</span>
-              </div>
-              <span class="lock-indicator-tag">Audit Phase</span>
+        <p class="page-subtitle">
+          Verify your official eligibility for <strong>GDT Guaranteed Allocation</strong> and <strong>FCFS (First-Come, First-Served)</strong> allocations for <strong>1,999 Voxel Warriors</strong> on the <strong>Robinhood Network</strong>.
+        </p>
+      </section>
+
+      <!-- ── MAIN SPLIT GRID (COCKPIT + MASCOT CARD) ── -->
+      <div class="main-split-container">
+
+        <!-- ── CHECKER COCKPIT ── -->
+        <div class="checker-cockpit" id="cockpit">
+          <div class="cockpit-header">
+            <div class="cockpit-header-left">
+              <span class="cockpit-chip">Robinhood EVM</span>
+              <span class="cockpit-chip status-live">Live Verification</span>
             </div>
+            <span class="cockpit-id-hint">Snapshot Finalized</span>
+          </div>
 
-            <h2 class="cockpit-title">Allocation Verification Engine</h2>
-            <p class="cockpit-subtitle">
-              The Genesis Round whitelist is actively compiling. Official wallet tier allocations will unlock and reveal in <strong>2&ndash;3 days</strong> following final audit.
-            </p>
+          <h2 class="cockpit-heading">Check Your Allocation</h2>
+          <p class="cockpit-subtext">Enter or paste your EVM wallet address below to instantly verify your allocation tier.</p>
 
-            <!-- Locked Form Display -->
-            <div class="scanner-locked-box">
-              <div class="scanner-input-wrap is-locked">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <input 
-                  type="text" 
-                  class="scanner-input locked" 
-                  placeholder="Verification engine opens when official Merkle database is published in 2-3 days..."
-                  disabled
-                  readonly
-                >
-              </div>
-              <button type="button" class="btn-scan is-locked" disabled>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span>LOCKED (SOON)</span>
+          <!-- Search Form -->
+          <form id="checkerForm" class="search-form" onsubmit="handleAllocationCheck(event)">
+            <div class="input-container">
+              <span class="input-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </span>
+              <input 
+                type="text" 
+                id="walletInput" 
+                class="wallet-input" 
+                placeholder="Enter or paste EVM address (0x...)"
+                autocomplete="off"
+                spellcheck="false"
+                required
+              >
+              <button type="button" class="btn-paste" id="btnPaste" onclick="pasteWallet()" title="Paste from clipboard">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                <span>PASTE</span>
               </button>
             </div>
+            <button type="submit" class="btn-check" id="btnScan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+              <span id="btnScanText">CHECK ALLOCATION</span>
+            </button>
+          </form>
 
-            <!-- Snapshot Progress Tracker Card (Dark Terminal Accent) -->
-            <div class="snapshot-progress-card">
-              <div class="progress-info-row">
-                <div class="progress-info-left">
-                  <span class="progress-pulse-dot"></span>
-                  <span class="progress-label-text">SNAPSHOT STATUS:</span>
-                </div>
-                <span class="progress-status-val" id="progressStatusVal">FINAL ROUND COMPILING</span>
-              </div>
+          <!-- Dynamic Result Area -->
+          <div id="checkerResultArea" class="result-mount" style="display: none;"></div>
 
-              <div class="progress-bar-track">
-                <div class="progress-bar-fill"></div>
-              </div>
-
-              <div class="progress-meta-row">
-                <span>Merkle Tree Root: <code>0x7f9a...c32d (Compiling)</code></span>
-                <span>Network: <strong>Robinhood EVM</strong></span>
-              </div>
+          <!-- Bottom Micro Stats Bar -->
+          <div class="cockpit-micro-stats">
+            <div class="micro-stat">
+              <span class="micro-val">1,999</span>
+              <span class="micro-lbl">Total Supply</span>
             </div>
-
-            <!-- Round Timer Box Inside Cockpit -->
-            <div class="cockpit-timer-card">
-              <div class="status-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                <span>GENESIS ROUND</span>
-              </div>
-              <div class="status-timer-text" id="statusTimerContainer">
-                <span id="timerLabelText">ROUND CLOSES IN:</span>
-                <div class="status-timer-digits" id="chkTimer">
-                  <span id="chkHours">08</span>h 
-                  <span id="chkMins">00</span>m 
-                  <span id="chkSecs">00</span>s
-                </div>
-              </div>
+            <div class="micro-stat-divider"></div>
+            <div class="micro-stat">
+              <span class="micro-val">Robinhood</span>
+              <span class="micro-lbl">EVM Network</span>
             </div>
-
-            <!-- Action CTAs for users -->
-            <div class="locked-action-row">
-              <a href="/whitelist" class="btn-cockpit-primary">
-                <span>Join Whitelist Before Round Closes &rarr;</span>
-              </a>
-              <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="btn-cockpit-secondary">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                <span>Follow @DudesCraft on X</span>
-              </a>
+            <div class="micro-stat-divider"></div>
+            <div class="micro-stat">
+              <span class="micro-val">Audited</span>
+              <span class="micro-lbl">Merkle Snapshot</span>
             </div>
           </div>
-
-          <!-- ── MASCOT STAGE PANEL (RIGHT) ── -->
-          <div class="mascot-side-panel">
-            <div class="mascot-stage" id="mascotStage" title="Dudes Craft Genesis Mascot">
-              <div class="mascot-pedestal"></div>
-              <div class="mascot-pedestal-ring"></div>
-              <img src="/mascot_transparent.webp" alt="Dudes Craft Transparent Mascot" class="mascot-img" id="mascotImg">
-            </div>
-
-            <!-- Mascot Switcher Bar -->
-            <div class="mascot-toggle-bar">
-              <button type="button" class="mascot-btn active" id="btnMascotKing" onclick="switchMascot('king')">👑 Royal King</button>
-              <button type="button" class="mascot-btn" id="btnMascotCyber" onclick="switchMascot('cyber')">⚡ Cyber Visor</button>
-            </div>
-
-            <!-- Collection Snapshot Stats -->
-            <div class="mascot-stats-grid">
-              <div class="stat-badge-box">
-                <span class="stat-val">1,999</span>
-                <span class="stat-sub">Total Supply</span>
-              </div>
-              <div class="stat-badge-box legend-gold">
-                <span class="stat-val">25</span>
-                <span class="stat-sub">👑 Crown Legends</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ── 4-TIER ALLOCATION MATRIX (MATCHING EXACT OUTPUT METADATA) ── -->
-      <section class="tiers-section">
-        <div class="tiers-header">
-          <span class="section-kicker">ON-CHAIN DISTRIBUTION</span>
-          <h2>Genesis Allocation Tiers</h2>
-          <p>
-            1,999 algorithmically verified generative 3D voxel warriors on the Robinhood Network across 4 official rarity tiers.
-          </p>
         </div>
 
-        <div class="tiers-grid">
-          <!-- COMMON (288 Warriors) -->
-          <div class="tier-card common">
-            <div class="tier-card-top">
-              <span class="tier-badge common-badge">Common Tier</span>
-              <span class="tier-pct">14.4%</span>
-            </div>
-            <h3 class="tier-name">Voxel Scout</h3>
-            <div class="tier-alloc">Pool: <strong>288 Warriors</strong></div>
-            <ul class="tier-perks">
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>1x Guaranteed Genesis Mint</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Standard Robinhood Gas Priority</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Genesis Discord Citizen Role</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Base Metadata Verification</span>
-              </li>
-            </ul>
+        <!-- ── MASCOT COMPANION CARD ── -->
+        <aside class="mascot-companion-card">
+          <div class="mascot-preview-box">
+            <div class="pedestal-glow"></div>
+            <img src="/mascot_transparent.webp" alt="Dudes Craft Mascot" class="mascot-sprite" id="mascotImg">
           </div>
 
-          <!-- RARE (916 Warriors) -->
-          <div class="tier-card rare">
-            <div class="tier-card-top">
-              <span class="tier-badge rare-badge">Rare Tier</span>
-              <span class="tier-pct">45.8%</span>
-            </div>
-            <h3 class="tier-name">Block Guardian</h3>
-            <div class="tier-alloc">Pool: <strong>916 Warriors</strong></div>
-            <ul class="tier-perks">
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>2x Guaranteed Genesis Mints</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Early Wave 1 Access</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Rare DNA Trait Reroll Token</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Priority Alpha Discord Role</span>
-              </li>
-            </ul>
+          <div class="mascot-switch-row">
+            <button type="button" class="mascot-switch-btn active" id="btnMascotKing" onclick="switchMascot('king')">👑 Royal King</button>
+            <button type="button" class="mascot-switch-btn" id="btnMascotCyber" onclick="switchMascot('cyber')">⚡ Cyber Visor</button>
           </div>
 
-          <!-- EPIC (770 Warriors) -->
-          <div class="tier-card epic">
-            <div class="tier-card-top">
-              <span class="tier-badge epic-badge">Epic Tier</span>
-              <span class="tier-pct">38.5%</span>
-            </div>
-            <h3 class="tier-name">Genesis Paladin</h3>
-            <div class="tier-alloc">Pool: <strong>770 Warriors</strong></div>
-            <ul class="tier-perks">
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>3x Guaranteed Genesis Mints</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>VIP Mint Window (Zero Front-running)</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Exclusive DNA Forge Beta Access</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Custom Voxel Weapon Skin Airdrop</span>
-              </li>
-            </ul>
+          <div class="mascot-info-card">
+            <div class="info-title">Dudes Craft Genesis</div>
+            <p class="info-desc">Generative 3D Voxel Warriors cryptographically anchored to Robinhood Network. 100% on-chain provenance.</p>
           </div>
+        </aside>
 
-          <!-- LEGENDARY (25 Crown Kings) -->
-          <div class="tier-card legendary">
-            <div class="tier-card-top">
-              <span class="tier-badge legendary-badge">👑 Legendary Tier</span>
-              <span class="tier-pct crown-glow">1.3%</span>
-            </div>
-            <h3 class="tier-name">Royal Sovereign</h3>
-            <div class="tier-alloc">Pool: <strong>25 Crown Kings</strong></div>
-            <ul class="tier-perks">
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>5x Guaranteed Free Mint Allotment</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>0% Secondary Royalties Allocation Share</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Divine Crown VIP Mint Pass</span>
-              </li>
-              <li>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Direct DAO Council Governance Seat</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      </div>
 
-      <!-- ── FAQ SECTION ── -->
-      <section class="faq-section">
-        <div class="faq-header">
-          <span class="section-kicker">KNOWLEDGE BASE</span>
-          <h2>Allocation FAQ</h2>
-        </div>
-        <div class="faq-list">
-          <div class="faq-card">
-            <div class="faq-q">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span>When does the live allocation checker open?</span>
-            </div>
-            <p class="faq-a">
-              The Genesis Whitelist submission closes when the current countdown concludes. Following closure, our team performs anti-bot and deduplication audits before deploying the final allocation Merkle tree. The live allocation checker will officially reveal in <strong>2&ndash;3 days</strong>.
-            </p>
-          </div>
-
-          <div class="faq-card">
-            <div class="faq-q">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span>Can anyone check their wallet after the 8-hour countdown?</span>
-            </div>
-            <p class="faq-a">
-              No. When the 8-hour timer reaches zero, the round closes and the verification engine remains <strong>LOCKED &bull; COMING SOON</strong> during the auditing phase. Nobody can query until the official dataset is uploaded and published in 2&ndash;3 days.
-            </p>
-          </div>
-
-          <div class="faq-card">
-            <div class="faq-q">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span>What are the exact allocation numbers?</span>
-            </div>
-            <p class="faq-a">
-              Our total supply consists of strictly <strong>1,999 Voxel Warriors</strong>: <strong>288 Common</strong> (14.4%), <strong>916 Rare</strong> (45.8%), <strong>770 Epic</strong> (38.5%), and <strong>25 Legendary Divine Crown Kings</strong> (1.3%).
-            </p>
-          </div>
-
-          <div class="faq-card">
-            <div class="faq-q">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span>What if I haven't registered my wallet yet?</span>
-            </div>
-            <p class="faq-a">
-              You can still claim your spot before the round closes! Head over to the <a href="/whitelist" style="color:var(--obsidian); font-weight:700; text-decoration:underline;">Genesis Whitelist</a> page and complete the quick 4-step initiation quest.
-            </p>
-          </div>
-        </div>
-      </section>
     </main>
 
     <!-- ── FOOTER ── -->
     <footer class="checker-footer">
-      <p>&copy; 2026 DUDES CRAFT &bull; All Rights Reserved &bull; <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer">@DudesCraft on X</a> &bull; Robinhood Network</p>
+      <div class="footer-links">
+        <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer">Official X (@DudesCraft)</a>
+        <span>&bull;</span>
+        <a href="/">Dudes Craft Official</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Dudes Craft &bull; Built on Robinhood Network &bull; All Rights Reserved</p>
     </footer>
 
   </div>
 
-  <!-- ── RUNTIME SCRIPT ── -->
   <script>
-    // ── MASCOT SWITCHER ──
+    // ── MASCOT TOGGLE ──
     function switchMascot(type) {
       const img = document.getElementById('mascotImg');
       const btnKing = document.getElementById('btnMascotKing');
       const btnCyber = document.getElementById('btnMascotCyber');
-      
       if (!img) return;
-      
+
       if (type === 'cyber') {
         img.src = '/mascot_cyber_transparent.webp';
         btnCyber.classList.add('active');
@@ -404,51 +206,351 @@
       }
     }
 
-    // ── COUNTDOWN TIMER SYNC & STRICT LOCK ENFORCEMENT ──
-    (function initTimer() {
-      // Synchronize to 2026-08-29 11:00 AM + 168 hours (Sept 5, 11:00 AM BD Time)
-      const startMs = Date.UTC(2026, 7, 29, 5, 0); // 11:00 BD = 05:00 UTC
-      const durationMs = 168 * 3600 * 1000;
-      const endTime = startMs + durationMs;
-
-      const hEl = document.getElementById('chkHours');
-      const mEl = document.getElementById('chkMins');
-      const sEl = document.getElementById('chkSecs');
-      const timerContainer = document.getElementById('statusTimerContainer');
-      const progressVal = document.getElementById('progressStatusVal');
-
-      function update() {
-        const now = Date.now();
-        const rem = endTime - now;
-        
-        if (rem <= 0) {
-          if (hEl) hEl.textContent = '00';
-          if (mEl) mEl.textContent = '00';
-          if (sEl) sEl.textContent = '00';
-          
-          // User requested: After 8 hours, it must still show Coming Soon / Locked because team reveals in 2-3 days
-          if (timerContainer) {
-            timerContainer.innerHTML = '<span class="round-closed-pill">ROUND CLOSED &bull; AUDIT IN PROGRESS (REVEALING IN 2&ndash;3 DAYS)</span>';
+    // ── CLIPBOARD PASTE ──
+    async function pasteWallet() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          const text = await navigator.clipboard.readText();
+          const clean = text.trim();
+          if (clean) {
+            const input = document.getElementById('walletInput');
+            if (input) {
+              input.value = clean;
+              input.focus();
+            }
           }
-          if (progressVal) {
-            progressVal.textContent = 'SNAPSHOT AUDIT IN PROGRESS (REVEALING IN 2-3 DAYS)';
-          }
-          return;
         }
+      } catch (_) {}
+    }
 
-        const totalSecs = Math.floor(rem / 1000);
-        const hours = Math.floor(totalSecs / 3600);
-        const mins = Math.floor((totalSecs % 3600) / 60);
-        const secs = totalSecs % 60;
+    // ── CLIPBOARD COPY ──
+    function copyText(str, btn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(str).then(() => {
+          if (btn) {
+            const orig = btn.textContent;
+            btn.textContent = 'COPIED!';
+            setTimeout(() => { btn.textContent = orig; }, 2000);
+          }
+        });
+      }
+    }
 
-        if (hEl) hEl.textContent = String(hours).padStart(2, '0');
-        if (mEl) mEl.textContent = String(mins).padStart(2, '0');
-        if (sEl) sEl.textContent = String(secs).padStart(2, '0');
+    function resetChecker() {
+      const resultArea = document.getElementById('checkerResultArea');
+      const input = document.getElementById('walletInput');
+      if (resultArea) resultArea.style.display = 'none';
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    // ── ULTRA-LIGHTWEIGHT CANVAS CONFETTI ──
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ['#C6F221', '#FFD700', '#22C55E', '#00F0FF', '#FFFFFF', '#F59E0B'];
+      const particles = [];
+      const count = 75;
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+          y: canvas.height * 0.35 + (Math.random() - 0.5) * 100,
+          vx: (Math.random() - 0.5) * 12,
+          vy: Math.random() * -10 - 4,
+          size: Math.random() * 8 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          life: 1.0,
+          decay: Math.random() * 0.015 + 0.008
+        });
       }
 
-      update();
-      setInterval(update, 1000);
-    })();
+      let animId;
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = 0;
+
+        for (let p of particles) {
+          if (p.life > 0) {
+            alive++;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.35; // gravity
+            p.rotation += p.vRot;
+            p.life -= p.decay;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+            ctx.restore();
+          }
+        }
+
+        if (alive > 0) {
+          animId = requestAnimationFrame(render);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          cancelAnimationFrame(animId);
+        }
+      }
+
+      render();
+    }
+
+    // ── ALLOCATION VERIFICATION LOGIC ──
+    async function handleAllocationCheck(event) {
+      if (event) event.preventDefault();
+
+      const input = document.getElementById('walletInput');
+      const btnScan = document.getElementById('btnScan');
+      const btnScanText = document.getElementById('btnScanText');
+      const resultArea = document.getElementById('checkerResultArea');
+
+      if (!input) return;
+      const rawWallet = input.value.trim();
+      const normWallet = rawWallet.toLowerCase();
+
+      if (!/^0x[a-fA-F0-9]{40}$/.test(rawWallet)) {
+        alert('Please enter a valid 42-character EVM wallet address starting with 0x.');
+        input.focus();
+        return;
+      }
+
+      // Show Scanning State
+      btnScan.disabled = true;
+      btnScanText.innerHTML = '<span class="pulse-dot" style="display:inline-block; margin-right:6px;"></span> VERIFYING ALLOCATION...';
+      resultArea.style.display = 'none';
+
+      // 1. FAST LOCAL SNAPSHOT LOOKUP (0ms guaranteed check)
+      let localFoundGdt = false;
+      let localFoundFcfs = false;
+      if (window.GENESIS_SNAPSHOT) {
+        if (Array.isArray(window.GENESIS_SNAPSHOT.gdt) && window.GENESIS_SNAPSHOT.gdt.includes(normWallet)) {
+          localFoundGdt = true;
+        }
+        if (Array.isArray(window.GENESIS_SNAPSHOT.fcfs) && window.GENESIS_SNAPSHOT.fcfs.includes(normWallet)) {
+          localFoundFcfs = true;
+        }
+      }
+
+      // 2. LIVE APPS SCRIPT API CALL
+      const endpoint = (window.BLOCKBIT_CONFIG && window.BLOCKBIT_CONFIG.sheetEndpoint) || 
+        'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
+      const apiUrl = endpoint + '?action=check_allocation&wallet=' + encodeURIComponent(normWallet);
+
+      try {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 4000); // 4s timeout for fast response
+        const res = await fetch(apiUrl, { signal: ctrl.signal });
+        clearTimeout(tid);
+        const data = await res.json();
+        renderResult(data, rawWallet);
+      } catch (err) {
+        console.warn('Live API slow or offline, evaluating with verified local snapshot:', err);
+        // Fallback to local snapshot
+        let fallbackData = {};
+        if (localFoundGdt && localFoundFcfs) {
+          fallbackData = {
+            ok: true, eligible: true, tier: 'BOTH',
+            headline: 'Dual Allocation Confirmed! 🎉',
+            message: 'Congratulations! You are eligible for BOTH the GDT Guaranteed Allocation and the FCFS Allocation!',
+            badgeText: '👑 GDT GUARANTEED + ⚡ FCFS ALLOCATION',
+            serial: 'DC-GENESIS-DUAL',
+            gdtSerial: 'DC-GDT-' + normWallet.slice(2, 6).toUpperCase(),
+            fcfsSerial: 'DC-FCFS-' + normWallet.slice(-4).toUpperCase(),
+            allocations: ['GDT Guaranteed Allocation', 'FCFS Allocation']
+          };
+        } else if (localFoundGdt) {
+          fallbackData = {
+            ok: true, eligible: true, tier: 'GDT',
+            headline: 'Guaranteed Allocation Confirmed! 👑',
+            message: 'Congratulations! You are eligible for the GDT Guaranteed Allocation (100% Guaranteed Mint Slot)!',
+            badgeText: '👑 GDT GUARANTEED MINT',
+            serial: 'DC-GDT-' + normWallet.slice(2, 6).toUpperCase(),
+            allocations: ['GDT Guaranteed Allocation']
+          };
+        } else if (localFoundFcfs) {
+          fallbackData = {
+            ok: true, eligible: true, tier: 'FCFS',
+            headline: 'FCFS Allocation Confirmed! ⚡',
+            message: 'Congratulations! You are eligible for the FCFS (First-Come, First-Served) Allocation!',
+            badgeText: '⚡ FCFS ALLOCATION',
+            serial: 'DC-FCFS-' + normWallet.slice(-4).toUpperCase(),
+            allocations: ['FCFS Allocation']
+          };
+        } else {
+          fallbackData = {
+            ok: true, eligible: false, tier: 'NONE',
+            headline: 'Wallet Not Eligible ❌',
+            message: 'This wallet address was not found in the official Genesis GDT or FCFS snapshot records.',
+            badgeText: 'NOT ELIGIBLE',
+            allocations: []
+          };
+        }
+        renderResult(fallbackData, rawWallet);
+      } finally {
+        btnScan.disabled = false;
+        btnScanText.textContent = 'CHECK ALLOCATION';
+      }
+    }
+
+    function renderResult(data, wallet) {
+      const resultArea = document.getElementById('checkerResultArea');
+      if (!resultArea) return;
+
+      const isEligible = !!(data && data.eligible);
+      const tier = (data && data.tier) ? data.tier : (isEligible ? 'GDT' : 'NONE');
+      const serial = data.serial || ('DC-' + wallet.slice(2, 6).toUpperCase() + '-' + wallet.slice(-4).toUpperCase());
+      const shortWallet = wallet.slice(0, 6) + '...' + wallet.slice(-4);
+
+      if (isEligible) {
+        triggerConfetti();
+      }
+
+      let cardTheme = 'theme-none';
+      let tweetText = '';
+      let allocBadgesHtml = '';
+
+      if (tier === 'BOTH') {
+        cardTheme = 'theme-both';
+        allocBadgesHtml = `
+          <div class="alloc-tag-chip tag-gdt">👑 Wave 1: GDT Guaranteed Mint Slot (100% Guaranteed)</div>
+          <div class="alloc-tag-chip tag-fcfs">⚡ Wave 2: FCFS Allocation (Priority Mint Access)</div>
+        `;
+        tweetText = `I just verified my @DudesCraft Genesis Allocation: Eligible for BOTH GDT Guaranteed Mint & FCFS! 👑⚡ Verified on Robinhood Network. Check yours: https://dudescraft.store/checker`;
+      } else if (tier === 'GDT') {
+        cardTheme = 'theme-gdt';
+        allocBadgesHtml = `
+          <div class="alloc-tag-chip tag-gdt">👑 Wave 1: GDT Guaranteed Mint Slot (100% Guaranteed)</div>
+        `;
+        tweetText = `I just verified my @DudesCraft GDT Guaranteed Genesis Allocation! 👑 Total supply: 1,999 Voxel Warriors. Check yours: https://dudescraft.store/checker`;
+      } else if (tier === 'FCFS') {
+        cardTheme = 'theme-fcfs';
+        allocBadgesHtml = `
+          <div class="alloc-tag-chip tag-fcfs">⚡ Wave 2: FCFS Allocation (First-Come, First-Served)</div>
+        `;
+        tweetText = `I just verified my @DudesCraft FCFS Allocation! ⚡ Total supply: 1,999 Voxel Warriors on Robinhood Network. Check yours: https://dudescraft.store/checker`;
+      } else {
+        cardTheme = 'theme-none';
+      }
+
+      const tweetUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweetText);
+
+      let detailRowsHtml = '';
+      if (tier === 'BOTH') {
+        detailRowsHtml = `
+          <div class="info-row">
+            <span class="info-lbl">Verified Wallet</span>
+            <span class="info-val monospace">
+              <span>${shortWallet}</span>
+              <button type="button" class="btn-copy-micro" onclick="copyText('${wallet}', this)">COPY</button>
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">GDT Pass Serial</span>
+            <span class="info-val monospace highlight-gold">${data.gdtSerial || serial}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">FCFS Pass Serial</span>
+            <span class="info-val monospace highlight-cyan">${data.fcfsSerial || serial}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Network Ecosystem</span>
+            <span class="info-val">Robinhood Network (EVM)</span>
+          </div>
+        `;
+      } else if (isEligible) {
+        detailRowsHtml = `
+          <div class="info-row">
+            <span class="info-lbl">Verified Wallet</span>
+            <span class="info-val monospace">
+              <span>${shortWallet}</span>
+              <button type="button" class="btn-copy-micro" onclick="copyText('${wallet}', this)">COPY</button>
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Genesis Pass ID</span>
+            <span class="info-val monospace highlight-lime">${serial}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Allocation Pool</span>
+            <span class="info-val">${tier === 'GDT' ? 'GDT Guaranteed Mint (Wave 1)' : 'FCFS Allocation (Wave 2)'}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Network Ecosystem</span>
+            <span class="info-val">Robinhood Network (EVM)</span>
+          </div>
+        `;
+      } else {
+        detailRowsHtml = `
+          <div class="info-row">
+            <span class="info-lbl">Searched Address</span>
+            <span class="info-val monospace">${shortWallet}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Snapshot Database</span>
+            <span class="info-val" style="color:#DC2626;">Not Registered in GDT or FCFS</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Registration Status</span>
+            <span class="info-val">Genesis Round Officially Closed</span>
+          </div>
+        `;
+      }
+
+      resultArea.innerHTML = `
+        <div class="result-card-box ${cardTheme}">
+          <!-- Top Badge -->
+          <div class="result-top-bar">
+            <span class="result-pill-badge">${data.badgeText || (isEligible ? 'CONFIRMED ALLOCATION' : 'NOT ELIGIBLE')}</span>
+            ${isEligible ? `<span class="result-serial-chip">${serial}</span>` : ''}
+          </div>
+
+          <!-- Congratulations Title -->
+          <h3 class="result-hero-title">
+            ${isEligible ? '🎉 Congratulations, Dude!' : 'Wallet Not Eligible 🔒'}
+          </h3>
+
+          <p class="result-hero-desc">
+            ${data.message || (isEligible ? 'Your wallet address is officially whitelisted in the Genesis allocation!' : 'This wallet address is not currently on the Genesis Allocation Whitelist.')}
+          </p>
+
+          ${allocBadgesHtml ? `<div class="alloc-tags-container">${allocBadgesHtml}</div>` : ''}
+
+          <!-- Detail Table -->
+          <div class="result-info-table">
+            ${detailRowsHtml}
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="result-footer-actions">
+            ${isEligible ? `
+              <a href="${tweetUrl}" target="_blank" rel="noopener noreferrer" class="btn-action-x">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>Share On X</span>
+              </a>
+            ` : ''}
+            <button type="button" class="btn-action-reset" onclick="resetChecker()">
+              &larr; Check Another Address
+            </button>
+          </div>
+        </div>
+      `;
+
+      resultArea.style.display = 'block';
+      resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   </script>
 </body>
 </html>

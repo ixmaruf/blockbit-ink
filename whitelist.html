@@ -86,7 +86,7 @@
     </div>
 
     <!-- COMING SOON / CLOSED SECTION -->
-    <div class="wl-coming-soon" id="wlComingSoon" style="display:none;">
+    <div class="wl-coming-soon" id="wlComingSoon" style="display:block;">
       <div class="wl-closed-card">
         <div class="closed-badge">
           <span class="status-pulse-dot"></span>
@@ -100,8 +100,8 @@
           </svg>
         </div>
 
-        <h2 id="comingSoonTitle" class="closed-title">Whitelist Allocation Closed</h2>
-        <p id="comingSoonMsg" class="closed-desc">The Genesis Robinhood Whitelist round is currently closed. Stay connected on X for future allocation waves and mint updates.</p>
+        <h2 id="comingSoonTitle" class="closed-title">Genesis Whitelist Registration Closed</h2>
+        <p id="comingSoonMsg" class="closed-desc">The Genesis Whitelist registration is officially closed and the database snapshot has been finalized. You can now verify your wallet allocation status on the live checker.</p>
 
         <div class="closed-meta-box">
           <div class="closed-meta-row">
@@ -112,25 +112,30 @@
             <span class="closed-meta-label">GENESIS SUPPLY</span>
             <span class="closed-meta-value highlight">1,999 3D VOXEL PASSES</span>
           </div>
-          <div class="closed-meta-row" id="comingSoonDateRow" style="display:none;">
-            <span class="closed-meta-label">OPENING DATE</span>
-            <span class="closed-meta-value highlight" id="comingSoonDate">TBA</span>
+          <div class="closed-meta-row">
+            <span class="closed-meta-label">ALLOCATION CHECKER</span>
+            <span class="closed-meta-value highlight" style="color:#22C55E;">ONLINE &amp; LIVE</span>
           </div>
         </div>
 
-        <div class="closed-actions">
-          <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="btn-closed-x">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            <span>Follow @DudesCraft on X</span>
+        <div class="closed-actions" style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+          <a href="/checker" class="btn-lemon" style="background:#C6F221; color:#0A0B0D; font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:1rem; padding:14px 28px; border:2px solid #0A0B0D; border-radius:8px; box-shadow:4px 4px 0px #0A0B0D; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+            <span>CHECK ALLOCATION STATUS &rarr;</span>
           </a>
-          <a href="/" class="btn-closed-home">
-            <span>&larr; Return to Home</span>
-          </a>
+          <div style="display:flex; gap:10px; margin-top:8px;">
+            <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="btn-closed-x">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <span>Follow @DudesCraft</span>
+            </a>
+            <a href="/" class="btn-closed-home">
+              <span>&larr; Home</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="wl-wrap">
+    <div class="wl-wrap" style="display:none;">
       <div class="wl-container">
         <!-- Header with Robinhood Timer Badge -->
         <div class="wl-header">
