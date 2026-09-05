@@ -6,9 +6,9 @@
   <title>Genesis Allocation Checker &mdash; DUDES CRAFT</title>
   <meta name="description" content="Official allocation verification engine for Dudes Craft Genesis on Robinhood Network. Check your GDT Guaranteed and FCFS allocation status.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260906_v99">
-  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260906_v99">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260906_v99">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260906_v105">
+  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260906_v105">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260906_v105">
   <link rel="canonical" href="https://dudescraft.store/checker">
 
   <!-- Aggressive Anti-Cache Headers -->
@@ -90,9 +90,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/checker.css?v=20260906_v99">
-  <script src="/whitelist-config.js?v=20260906_v99"></script>
-  <script src="/checker-data.js?v=20260906_v99"></script>
+  <link rel="stylesheet" href="/checker.css?v=20260906_v105">
+  <script src="/whitelist-config.js?v=20260906_v105"></script>
+  <script src="/checker-data.js?v=20260906_v105"></script>
 </head>
 <body class="checker-body">
 
@@ -104,7 +104,7 @@
     <!-- ── NAVIGATION BAR ── -->
     <header class="checker-nav">
       <a href="/" class="checker-brand">
-        <img src="/logo.webp?v=20260906_v99" alt="Dudes Craft" width="38" height="38">
+        <img src="/logo.webp?v=20260906_v105" alt="Dudes Craft" width="38" height="38">
         <div class="checker-brand-text">
           <span class="checker-brand-name">DUDES CRAFT</span>
           <span class="checker-brand-chain">Robinhood Network</span>
@@ -442,14 +442,19 @@
       fetch(apiUrl)
         .then(res => res.json())
         .then(data => {
-          if (data && data.ok && data.serial) {
-            // Update serial numbers seamlessly if server returns custom serials
-            const serialEl = document.getElementById('dynSerial');
-            if (serialEl) serialEl.textContent = data.serial;
-            const gdtEl = document.getElementById('dynGdtSerial');
-            if (gdtEl && data.gdtSerial) gdtEl.textContent = data.gdtSerial;
-            const fcfsEl = document.getElementById('dynFcfsSerial');
-            if (fcfsEl && data.fcfsSerial) fcfsEl.textContent = data.fcfsSerial;
+          if (data && data.ok) {
+            // If server returns eligible or different tier from local snapshot, re-render immediately!
+            if (data.eligible !== immediateData.eligible || data.tier !== immediateData.tier) {
+              renderResult(data, rawWallet);
+            } else if (data.serial) {
+              // Update serial numbers seamlessly if server returns custom serials
+              const serialEl = document.getElementById('dynSerial');
+              if (serialEl) serialEl.textContent = data.serial;
+              const gdtEl = document.getElementById('dynGdtSerial');
+              if (gdtEl && data.gdtSerial) gdtEl.textContent = data.gdtSerial;
+              const fcfsEl = document.getElementById('dynFcfsSerial');
+              if (fcfsEl && data.fcfsSerial) fcfsEl.textContent = data.fcfsSerial;
+            }
           }
         })
         .catch(function () {});
