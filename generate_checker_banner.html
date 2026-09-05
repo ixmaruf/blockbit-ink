@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dudes Craft — Genesis Allocation Checker OG Banner (1200x630)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Space+Grotesk:wght@600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    background-color: #0A0B0D;
+    background-image: 
+      linear-gradient(rgba(198, 242, 33, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(198, 242, 33, 0.08) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px, 60px 60px, 15px 15px, 15px 15px;
+    background-position: -1px -1px;
+    color: #FFFFFF;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 42px 48px;
+    position: relative;
+    border: 10px solid #0A0B0D;
+    outline: 4px solid #C6F221;
+  }
+
+  /* Ambient corner glow */
+  body::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(198, 242, 33, 0.25) 0%, rgba(10, 11, 13, 0) 70%);
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.18) 0%, rgba(10, 11, 13, 0) 70%);
+    pointer-events: none;
+  }
+
+  /* Top Bar */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-box {
+    width: 50px;
+    height: 50px;
+    background: #C6F221;
+    border: 2px solid #FFFFFF;
+    box-shadow: 3px 3px 0px #C6F221;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    line-height: 1.1;
+  }
+
+  .brand-title span {
+    color: #C6F221;
+  }
+
+  .brand-chain {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94A3B8;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .live-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1.5px solid #22C55E;
+    color: #4ADE80;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+  }
+
+  .pulse-dot {
+    width: 9px;
+    height: 9px;
+    background-color: #22C55E;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22C55E;
+  }
+
+  /* Main Content Row */
+  .content-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+    position: relative;
+    z-index: 2;
+    margin: 8px 0;
+  }
+
+  .left-col {
+    flex: 1;
+    max-width: 620px;
+  }
+
+  .sub-tag {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+    color: #C6F221;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: #FFFFFF;
+    margin-bottom: 14px;
+  }
+
+  .hero-title .highlight {
+    background: #C6F221;
+    color: #0A0B0D;
+    padding: 0 10px;
+    border-radius: 6px;
+    box-shadow: 4px 4px 0px #000000;
+    display: inline-block;
+  }
+
+  .hero-desc {
+    font-size: 1.08rem;
+    color: #94A3B8;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .hero-desc strong {
+    color: #FFFFFF;
+  }
+
+  /* Feature Badges */
+  .badge-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .feature-chip {
+    background: #161920;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #E2E8F0;
+  }
+
+  .feature-chip.chip-gold {
+    border-color: #F59E0B;
+    background: rgba(245, 158, 11, 0.12);
+    color: #FCD34D;
+  }
+
+  .feature-chip.chip-cyan {
+    border-color: #0284C7;
+    background: rgba(2, 132, 199, 0.12);
+    color: #7DD3FC;
+  }
+
+  .feature-chip.chip-lime {
+    border-color: #C6F221;
+    background: rgba(198, 242, 33, 0.12);
+    color: #C6F221;
+  }
+
+  /* Right Mascot Showcase */
+  .right-col {
+    width: 440px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mascot-display-card {
+    background: linear-gradient(180deg, #161920 0%, #0F1217 100%);
+    border: 2px solid rgba(198, 242, 33, 0.5);
+    box-shadow: 6px 6px 0px #000000, 0 0 30px rgba(198, 242, 33, 0.2);
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+  }
+
+  .card-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #C6F221;
+    background: rgba(198, 242, 33, 0.15);
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .card-serial {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #94A3B8;
+  }
+
+  .card-center-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 180px;
+  }
+
+  .stage-pedestal {
+    position: absolute;
+    bottom: 0px;
+    width: 160px;
+    height: 32px;
+    background: radial-gradient(ellipse at center, rgba(198, 242, 33, 0.6) 0%, rgba(198, 242, 33, 0.1) 60%, transparent 80%);
+    border-radius: 50%;
+    filter: blur(4px);
+  }
+
+  .stage-mascot {
+    max-height: 175px;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+  }
+
+  .card-stats-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: #0A0B0D;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 12px;
+  }
+
+  .mini-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mini-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    font-size: 0.98rem;
+    color: #FFFFFF;
+    line-height: 1.1;
+  }
+
+  .mini-lbl {
+    font-size: 0.65rem;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .mini-divider {
+    width: 1px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Bottom Bar */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+    padding-top: 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .bottom-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem;
+    color: #94A3B8;
+  }
+
+  .bottom-left strong {
+    color: #C6F221;
+  }
+
+  .bottom-right {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .arrow-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: #C6F221;
+    color: #0A0B0D;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="brand-group">
+      <div class="logo-box">
+        <img src="/logo.webp" alt="Dudes Craft">
+      </div>
+      <div class="brand-text">
+        <div class="brand-title">DUDES<span>CRAFT</span></div>
+        <div class="brand-chain">Robinhood Network &bull; Web3 EVM</div>
+      </div>
+    </div>
+
+    <div class="live-pill">
+      <span class="pulse-dot"></span>
+      <span>ALLOCATION CHECKER LIVE</span>
+    </div>
+  </div>
+
+  <!-- Center Content -->
+  <div class="content-row">
+    <div class="left-col">
+      <span class="sub-tag">&bull; GENESIS SNAPSHOT VERIFIED</span>
+      <h1 class="hero-title">
+        GENESIS <span class="highlight">CHECKER</span>
+      </h1>
+      <p class="hero-desc">
+        Official eligibility &amp; tier allocation portal for <strong>1,999 Voxel Warriors</strong> on the <strong>Robinhood Network</strong>. Verify your wallet instantly.
+      </p>
+
+      <div class="badge-grid">
+        <div class="feature-chip chip-gold">
+          <span>👑</span>
+          <span>GDT Guaranteed Mint</span>
+        </div>
+        <div class="feature-chip chip-cyan">
+          <span>⚡</span>
+          <span>FCFS Allocation Pool</span>
+        </div>
+        <div class="feature-chip chip-lime">
+          <span>🛡️</span>
+          <span>Robinhood Network EVM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Mascot Showcase -->
+    <div class="right-col">
+      <div class="mascot-display-card">
+        <div class="card-header-badge">
+          <span class="card-chip">Verified Snapshot</span>
+          <span class="card-serial">DC-ROBINHOOD-EVM</span>
+        </div>
+
+        <div class="card-center-stage">
+          <div class="stage-pedestal"></div>
+          <img src="/mascot_transparent.webp" alt="Genesis Mascot" class="stage-mascot">
+        </div>
+
+        <div class="card-stats-row">
+          <div class="mini-stat">
+            <span class="mini-val">1,999</span>
+            <span class="mini-lbl">Supply</span>
+          </div>
+          <div class="mini-divider"></div>
+          <div class="mini-stat">
+            <span class="mini-val" style="color:#C6F221;">Robinhood</span>
+            <span class="mini-lbl">Network</span>
+          </div>
+          <div class="mini-divider"></div>
+          <div class="mini-stat">
+            <span class="mini-val" style="color:#4ADE80;">Audited</span>
+            <span class="mini-lbl">Merkle Root</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-left">
+      <span>Official Portal:</span>
+      <strong>https://dudescraft.store/checker</strong>
+    </div>
+    <div class="bottom-right">
+      <span>Check Your Allocation Status</span>
+      <span class="arrow-btn">&rarr;</span>
+    </div>
+  </div>
+
+</body>
+</html>
