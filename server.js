@@ -71,9 +71,12 @@ http.createServer((req, res) => {
       return;
     }
     const ext = path.extname(fp).toLowerCase();
+    const isAssetToNotCache = ext === '.html' || ext === '.js' || ext === '.css' || ext === '.json';
     const headers = {
       'Content-Type': MIME[ext] || 'application/octet-stream',
-      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=3600',
+      'Cache-Control': isAssetToNotCache ? 'no-cache, no-store, must-revalidate' : 'public, max-age=3600',
+      'Pragma': 'no-cache',
+      'Expires': '0',
       ...SECURITY_HEADERS
     };
     if (req.method === 'HEAD') {
