@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Genesis Allocation Checker &mdash; DUDES CRAFT</title>
-  <meta name="description" content="Official allocation verification engine for Dudes Craft Genesis on Robinhood Network. Check your GDT Guaranteed and FCFS allocation status.">
+  <meta name="description" content="Official allocation verification engine for Dudes Craft Genesis on Robinhood Network. Check your GTD Guaranteed and FCFS allocation status.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260906_v106">
-  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260906_v106">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260906_v106">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260906_v108">
+  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260906_v108">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260906_v108">
   <link rel="canonical" href="https://dudescraft.store/checker">
 
   <!-- Aggressive Anti-Cache Headers -->
@@ -27,7 +27,7 @@
       }
 
       // 2. Global version check & auto hard-refresh
-      var CHECKER_VERSION = 'v20_20260906_dual_gdt_v106';
+      var CHECKER_VERSION = 'v20_20260906_dual_gtd_v108';
       try {
         var savedVer = localStorage.getItem('dc_checker_app_version');
         if (savedVer !== CHECKER_VERSION) {
@@ -67,7 +67,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Dudes Craft">
   <meta property="og:title" content="Genesis Allocation Checker &mdash; DUDES CRAFT">
-  <meta property="og:description" content="Verify your GDT Guaranteed and FCFS Genesis Allocation for 1,999 Voxel Warriors on Robinhood Network.">
+  <meta property="og:description" content="Verify your GTD Guaranteed and FCFS Genesis Allocation for 1,999 Voxel Warriors on Robinhood Network.">
   <meta property="og:url" content="https://dudescraft.store/checker?v=genesis">
   <meta property="og:image" content="https://dudescraft.store/checker-banner-white.png">
   <meta property="og:image:secure_url" content="https://dudescraft.store/checker-banner-white.png">
@@ -81,7 +81,7 @@
   <meta name="twitter:site" content="@DudesCraft">
   <meta name="twitter:creator" content="@DudesCraft">
   <meta name="twitter:title" content="Genesis Allocation Checker &mdash; DUDES CRAFT">
-  <meta name="twitter:description" content="Verify your GDT Guaranteed and FCFS Genesis Allocation for 1,999 Voxel Warriors on Robinhood Network.">
+  <meta name="twitter:description" content="Verify your GTD Guaranteed and FCFS Genesis Allocation for 1,999 Voxel Warriors on Robinhood Network.">
   <meta name="twitter:image" content="https://dudescraft.store/checker-banner-white.png">
   <meta name="twitter:image:alt" content="Dudes Craft Genesis Allocation Checker — Robinhood Network">
 
@@ -90,9 +90,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/checker.css?v=20260906_v106">
-  <script src="/whitelist-config.js?v=20260906_v106"></script>
-  <script src="/checker-data.js?v=20260906_v106"></script>
+  <link rel="stylesheet" href="/checker.css?v=20260906_v108">
+  <script src="/whitelist-config.js?v=20260906_v108"></script>
+  <script src="/checker-data.js?v=20260906_v108"></script>
 </head>
 <body class="checker-body">
 
@@ -104,7 +104,7 @@
     <!-- ── NAVIGATION BAR ── -->
     <header class="checker-nav">
       <a href="/" class="checker-brand">
-        <img src="/logo.webp?v=20260906_v106" alt="Dudes Craft" width="38" height="38">
+        <img src="/logo.webp?v=20260906_v108" alt="Dudes Craft" width="38" height="38">
         <div class="checker-brand-text">
           <span class="checker-brand-name">DUDES CRAFT</span>
           <span class="checker-brand-chain">Robinhood Network</span>
@@ -137,7 +137,7 @@
         </h1>
 
         <p class="page-subtitle">
-          Verify your official eligibility for <strong>GDT Guaranteed Allocation</strong> and <strong>FCFS (First-Come, First-Served)</strong> allocations for <strong>1,999 Voxel Warriors</strong> on the <strong>Robinhood Network</strong>.
+          Verify your official eligibility for <strong>GTD Guaranteed Allocation</strong> and <strong>FCFS (First-Come, First-Served)</strong> allocations for <strong>1,999 Voxel Warriors</strong> on the <strong>Robinhood Network</strong>.
         </p>
       </section>
 
@@ -379,11 +379,11 @@
       }
 
       // 1. INSTANT LOCAL SNAPSHOT CHECK (<10ms)
-      let localFoundGdt = false;
+      let localFoundGTD = false;
       let localFoundFcfs = false;
       if (window.GENESIS_SNAPSHOT) {
-        if (Array.isArray(window.GENESIS_SNAPSHOT.gdt) && window.GENESIS_SNAPSHOT.gdt.includes(normWallet)) {
-          localFoundGdt = true;
+        if (Array.isArray(window.GENESIS_SNAPSHOT.gtd) && window.GENESIS_SNAPSHOT.gtd.includes(normWallet)) {
+          localFoundGTD = true;
         }
         if (Array.isArray(window.GENESIS_SNAPSHOT.fcfs) && window.GENESIS_SNAPSHOT.fcfs.includes(normWallet)) {
           localFoundFcfs = true;
@@ -392,25 +392,25 @@
 
       // Generate immediate payload so the user has ZERO lag
       let immediateData = null;
-      if (localFoundGdt && localFoundFcfs) {
+      if (localFoundGTD && localFoundFcfs) {
         immediateData = {
           ok: true, eligible: true, tier: 'BOTH',
           headline: 'Dual Allocation Confirmed!',
-          message: 'Congratulations! You are eligible for BOTH the GDT Guaranteed Allocation and the FCFS Allocation.',
-          badgeText: 'GDT GUARANTEED + FCFS ALLOCATION',
+          message: 'Congratulations! You are eligible for BOTH the GTD Guaranteed Allocation and the FCFS Allocation.',
+          badgeText: 'GTD GUARANTEED + FCFS ALLOCATION',
           serial: 'DC-DUAL-' + normWallet.slice(2, 6).toUpperCase(),
-          gdtSerial: 'DC-GDT-' + normWallet.slice(2, 6).toUpperCase(),
+          gtdSerial: 'DC-GTD-' + normWallet.slice(2, 6).toUpperCase(),
           fcfsSerial: 'DC-FCFS-' + normWallet.slice(-4).toUpperCase(),
-          allocations: ['GDT Guaranteed Allocation', 'FCFS Allocation']
+          allocations: ['GTD Guaranteed Allocation', 'FCFS Allocation']
         };
-      } else if (localFoundGdt) {
+      } else if (localFoundGTD) {
         immediateData = {
-          ok: true, eligible: true, tier: 'GDT',
+          ok: true, eligible: true, tier: 'GTD',
           headline: 'Guaranteed Allocation Confirmed!',
-          message: 'Congratulations! You are eligible for the GDT Guaranteed Allocation (100% Guaranteed Mint Slot).',
-          badgeText: 'GDT GUARANTEED MINT',
-          serial: 'DC-GDT-' + normWallet.slice(2, 6).toUpperCase(),
-          allocations: ['GDT Guaranteed Allocation']
+          message: 'Congratulations! You are eligible for the GTD Guaranteed Allocation (100% Guaranteed Mint Slot).',
+          badgeText: 'GTD GUARANTEED MINT',
+          serial: 'DC-GTD-' + normWallet.slice(2, 6).toUpperCase(),
+          allocations: ['GTD Guaranteed Allocation']
         };
       } else if (localFoundFcfs) {
         immediateData = {
@@ -422,11 +422,13 @@
           allocations: ['FCFS Allocation']
         };
       } else {
+        // Not in the instant snapshot — do NOT declare ineligible yet.
+        // The live database check below is authoritative; show a pending state meanwhile.
         immediateData = {
-          ok: true, eligible: false, tier: 'NONE',
-          headline: 'Wallet Not Eligible',
-          message: 'This wallet address was not found in the official Genesis GDT or FCFS snapshot records.',
-          badgeText: 'NOT ELIGIBLE',
+          ok: true, eligible: false, pending: true, tier: 'PENDING',
+          headline: 'Verifying Live Records...',
+          message: 'Not found in the instant snapshot — checking the live Genesis database, please wait...',
+          badgeText: 'VERIFYING...',
           allocations: []
         };
       }
@@ -442,22 +444,40 @@
       fetch(apiUrl)
         .then(res => res.json())
         .then(data => {
+          // Ignore stale responses if the user already searched another address / reset.
+          const curInput = document.getElementById('walletInput');
+          if (!curInput || curInput.value.trim().toLowerCase() !== normWallet) return;
           if (data && data.ok) {
             // If server returns eligible or different tier from local snapshot, re-render immediately!
+            // (A pending snapshot always differs, so the live verdict always replaces it.)
             if (data.eligible !== immediateData.eligible || data.tier !== immediateData.tier) {
               renderResult(data, rawWallet);
             } else if (data.serial) {
               // Update serial numbers seamlessly if server returns custom serials
               const serialEl = document.getElementById('dynSerial');
               if (serialEl) serialEl.textContent = data.serial;
-              const gdtEl = document.getElementById('dynGdtSerial');
-              if (gdtEl && data.gdtSerial) gdtEl.textContent = data.gdtSerial;
+              const gtdEl = document.getElementById('dynGtdSerial');
+              if (gtdEl && data.gtdSerial) gtdEl.textContent = data.gtdSerial;
               const fcfsEl = document.getElementById('dynFcfsSerial');
               if (fcfsEl && data.fcfsSerial) fcfsEl.textContent = data.fcfsSerial;
             }
           }
         })
-        .catch(function () {});
+        .catch(function () {
+          // Network failure: only finalize as NOT ELIGIBLE if we were still pending
+          // and the user hasn't moved on to another search.
+          const curInput = document.getElementById('walletInput');
+          if (!curInput || curInput.value.trim().toLowerCase() !== normWallet) return;
+          if (immediateData && immediateData.pending) {
+            renderResult({
+              ok: true, eligible: false, tier: 'NONE',
+              headline: 'Wallet Not Eligible',
+              message: 'Live verification unreachable and address not in the local snapshot. Check your connection and try again.',
+              badgeText: 'NOT ELIGIBLE',
+              allocations: []
+            }, rawWallet);
+          }
+        });
     }
 
     function renderResult(data, wallet) {
@@ -465,7 +485,7 @@
       if (!resultArea) return;
 
       const isEligible = !!(data && data.eligible);
-      const tier = (data && data.tier) ? data.tier : (isEligible ? 'GDT' : 'NONE');
+      const tier = (data && data.tier) ? data.tier : (isEligible ? 'GTD' : 'NONE');
       const serial = data.serial || ('DC-' + wallet.slice(2, 6).toUpperCase() + '-' + wallet.slice(-4).toUpperCase());
       const shortWallet = wallet.slice(0, 6) + '...' + wallet.slice(-4);
 
@@ -481,28 +501,28 @@
       if (tier === 'BOTH') {
         cardTheme = 'theme-both';
         allocBadgesHtml = `
-          <div class="alloc-tag-chip tag-gdt">Wave 1: GDT Guaranteed Mint Slot (100% Guaranteed)</div>
+          <div class="alloc-tag-chip tag-gtd">Wave 1: GTD Guaranteed Mint Slot (100% Guaranteed)</div>
           <div class="alloc-tag-chip tag-fcfs">Wave 2: FCFS Allocation (Priority Mint Access)</div>
         `;
         tweetText = [
           'Verified Genesis Allocation on @DudesCraft',
           '',
-          'Tier: GDT Guaranteed + FCFS Dual Access',
+          'Tier: GTD Guaranteed + FCFS Dual Access',
           'Network: Robinhood EVM',
           'Supply: 1,999 Warriors',
           '',
           'Check your allocation status:',
           'https://dudescraft.store/checker?v=genesis'
         ].join('\n');
-      } else if (tier === 'GDT') {
-        cardTheme = 'theme-gdt';
+      } else if (tier === 'GTD') {
+        cardTheme = 'theme-gtd';
         allocBadgesHtml = `
-          <div class="alloc-tag-chip tag-gdt">Wave 1: GDT Guaranteed Mint Slot (100% Guaranteed)</div>
+          <div class="alloc-tag-chip tag-gtd">Wave 1: GTD Guaranteed Mint Slot (100% Guaranteed)</div>
         `;
         tweetText = [
           'Verified Genesis Allocation on @DudesCraft',
           '',
-          'Tier: GDT Guaranteed Mint (Wave 1)',
+          'Tier: GTD Guaranteed Mint (Wave 1)',
           'Network: Robinhood EVM',
           'Supply: 1,999 Warriors',
           '',
@@ -541,8 +561,8 @@
             </span>
           </div>
           <div class="info-row">
-            <span class="info-lbl">GDT Pass Serial</span>
-            <span class="info-val monospace highlight-gold" id="dynGdtSerial">${data.gdtSerial || serial}</span>
+            <span class="info-lbl">GTD Pass Serial</span>
+            <span class="info-val monospace highlight-gold" id="dynGtdSerial">${data.gtdSerial || serial}</span>
           </div>
           <div class="info-row">
             <span class="info-lbl">FCFS Pass Serial</span>
@@ -568,11 +588,26 @@
           </div>
           <div class="info-row">
             <span class="info-lbl">Allocation Pool</span>
-            <span class="info-val">${tier === 'GDT' ? 'GDT Guaranteed Mint (Wave 1)' : 'FCFS Allocation (Wave 2)'}</span>
+            <span class="info-val">${tier === 'GTD' ? 'GTD Guaranteed Mint (Wave 1)' : 'FCFS Allocation (Wave 2)'}</span>
           </div>
           <div class="info-row">
             <span class="info-lbl">Network Ecosystem</span>
             <span class="info-val">Robinhood Network (EVM)</span>
+          </div>
+        `;
+      } else if (data && data.pending) {
+        detailRowsHtml = `
+          <div class="info-row">
+            <span class="info-lbl">Searched Address</span>
+            <span class="info-val monospace">${shortWallet}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Snapshot Database</span>
+            <span class="info-val">Not in instant snapshot — verifying...</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">Live Database</span>
+            <span class="info-val">Checking Genesis records, please wait</span>
           </div>
         `;
       } else {
@@ -583,7 +618,7 @@
           </div>
           <div class="info-row">
             <span class="info-lbl">Snapshot Database</span>
-            <span class="info-val" style="color:#DC2626;">Not Registered in GDT or FCFS</span>
+            <span class="info-val" style="color:#DC2626;">Not Registered in GTD or FCFS</span>
           </div>
           <div class="info-row">
             <span class="info-lbl">Registration Status</span>
@@ -602,7 +637,7 @@
 
           <!-- Congratulations Title -->
           <h3 class="result-hero-title">
-            ${isEligible ? 'Congratulations, Dude!' : 'Wallet Not Eligible'}
+            ${isEligible ? 'Congratulations, Dude!' : (data.pending ? 'Verifying...' : 'Wallet Not Eligible')}
           </h3>
 
           <p class="result-hero-desc">

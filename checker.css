@@ -447,7 +447,7 @@ body.checker-body {
 }
 
 /* Theme: GDT */
-.result-card-box.theme-gdt {
+.result-card-box.theme-gtd {
   background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%);
   border-color: #15803D;
 }
@@ -490,7 +490,7 @@ body.checker-body {
   border-color: #FCD34D;
 }
 
-.theme-gdt .result-pill-badge {
+.theme-gtd .result-pill-badge {
   background: #DCFCE7;
   color: #15803D;
   border-color: #86EFAC;
@@ -558,7 +558,7 @@ body.checker-body {
   border: 1.5px solid transparent;
 }
 
-.alloc-tag-chip.tag-gdt {
+.alloc-tag-chip.tag-gtd {
   background: #DCFCE7;
   color: #14532D;
   border-color: #86EFAC;
