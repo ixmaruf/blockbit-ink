@@ -27,7 +27,7 @@
       }
 
       // 2. Global version check & auto hard-refresh
-      var CHECKER_VERSION = 'v20_20260906_dual_gtd_v108';
+      var CHECKER_VERSION = 'v20_20260906_dual_gtd_v109';
       try {
         var savedVer = localStorage.getItem('dc_checker_app_version');
         if (savedVer !== CHECKER_VERSION) {
@@ -92,7 +92,7 @@
 
   <link rel="stylesheet" href="/checker.css?v=20260906_v108">
   <script src="/whitelist-config.js?v=20260906_v108"></script>
-  <script src="/checker-data.js?v=20260906_v108"></script>
+  <script src="/checker-data.js?v=20260906_v109"></script>
 </head>
 <body class="checker-body">
 
@@ -448,9 +448,15 @@
           const curInput = document.getElementById('walletInput');
           if (!curInput || curInput.value.trim().toLowerCase() !== normWallet) return;
           if (data && data.ok) {
-            // If server returns eligible or different tier from local snapshot, re-render immediately!
-            // (A pending snapshot always differs, so the live verdict always replaces it.)
-            if (data.eligible !== immediateData.eligible || data.tier !== immediateData.tier) {
+            // v109: embedded snapshot is the fresh canonical set (superset of Sheet).
+            // Server may lag behind — only allow it to UPGRADE, never downgrade.
+            // (Prevents stale Sheet verdicts from overriding correct local results.)
+            var localRank = { 'NONE': 0, 'PENDING': 0, 'FCFS': 1, 'GTD': 2, 'BOTH': 3 };
+            // Local PENDING means "not in snapshot" — server verdict resolves it either way.
+            var serverBetter = (immediateData.tier === 'PENDING') ||
+              (data.eligible && (!immediateData.eligible ||
+              (localRank[data.tier] || 0) > (localRank[immediateData.tier] || 0)));
+            if (serverBetter) {
               renderResult(data, rawWallet);
             } else if (data.serial) {
               // Update serial numbers seamlessly if server returns custom serials
