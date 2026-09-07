@@ -9,7 +9,7 @@
   }
 
   // ── GLOBAL CACHE-BUST & AUTO-UPDATE ──
-  const CURRENT_APP_VERSION = 'v8.4_20260905';
+  const CURRENT_APP_VERSION = 'v20260907_opensea_live_v120';
   try {
     const storedVer = localStorage.getItem('dudescraft_app_version');
     if (storedVer !== CURRENT_APP_VERSION) {
@@ -19,6 +19,8 @@
       localStorage.removeItem('dudescraft_settings_v3');
       localStorage.removeItem('dudescraft_settings_v4');
       localStorage.removeItem('dudescraft_settings_v5');
+      localStorage.removeItem('dudescraft_settings_v6');
+      localStorage.removeItem('dudescraft_settings_v7');
     }
   } catch (_) {}
 
@@ -241,19 +243,19 @@
   /* ─── Endpoint Config & Settings ─── */
   const DEFAULT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyy_q-cX2WCgTSrbvjlxuRBHuzFiPQYDroGolgcPD_UWXEctuDybTwpK56-iT7pyHY/exec';
   const DEFAULT_WL_SETTINGS = {
-    whitelistOpen: 'On',
+    whitelistOpen: 'Off',
     timerStart: '2026-08-29 11:00',
     timerDuration: '168',
     postUrl: 'https://x.com/dudescraft/status/2093534635510702415',
-    _isServerConfirmed: false
+    _isServerConfirmed: true
   };
 
-  const STORAGE_KEY = 'dudescraft_settings_v6';
+  const STORAGE_KEY = 'dudescraft_settings_v7';
 
   // Automatically purge legacy localStorage from previous visits
   (function autoPurgeLegacyCache() {
     try {
-      ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4', 'dudescraft_settings_v5'].forEach(function (k) {
+      ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4', 'dudescraft_settings_v5', 'dudescraft_settings_v6'].forEach(function (k) {
         localStorage.removeItem(k);
         sessionStorage.removeItem(k);
       });
@@ -338,23 +340,10 @@
     var isOpen = settings.whitelistOpen !== 'false' && settings.whitelistOpen !== 'Off' && settings.whitelistOpen !== false;
 
     if (!isOpen) {
-      // Never close based on unconfirmed fallback data while server request is in flight
-      if (!authoritative) {
-        if (comingSoonEl) comingSoonEl.style.display = 'none';
-        if (containerEl) containerEl.style.display = 'block';
-        if (timerEl) timerEl.style.display = 'inline-flex';
-        return;
-      }
       if (timerEl) timerEl.style.display = 'none';
       if (comingSoonEl) {
         comingSoonEl.style.display = 'block';
-        var titleEl = document.getElementById('comingSoonTitle');
-        var msgEl = document.getElementById('comingSoonMsg');
-        var badgeEl = document.getElementById('closedBadgeText');
         var dateRow = document.getElementById('comingSoonDateRow');
-        if (titleEl) titleEl.textContent = 'Whitelist Allocation Closed';
-        if (msgEl) msgEl.textContent = 'The Genesis Robinhood Whitelist round is currently closed. Stay tuned for future allocation waves and mint updates.';
-        if (badgeEl) badgeEl.textContent = 'GENESIS STATUS: CLOSED';
         if (dateRow) dateRow.style.display = 'none';
       }
       if (containerEl) containerEl.style.display = 'none';
@@ -406,30 +395,10 @@
       }
 
       if (now >= endTime) {
-        if (!authoritative) {
-          // Fallback / default timer ran out, but server fetch is in-flight!
-          // Keep form completely OPEN and interactive. Never show "ENDED" on fallback defaults.
-          if (comingSoonEl) comingSoonEl.style.display = 'none';
-          if (containerEl) containerEl.style.display = 'block';
-          if (timerEl) timerEl.style.display = 'inline-flex';
-          var hEl = document.getElementById('timerHours');
-          var mEl = document.getElementById('timerMins');
-          var sEl = document.getElementById('timerSecs');
-          if (hEl) hEl.textContent = '00';
-          if (mEl) mEl.textContent = '00';
-          if (sEl) sEl.textContent = '00';
-          return;
-        }
-
+        if (timerEl) timerEl.style.display = 'none';
         if (comingSoonEl) {
           comingSoonEl.style.display = 'block';
-          var titleEl = document.getElementById('comingSoonTitle');
-          var msgEl = document.getElementById('comingSoonMsg');
-          var badgeEl = document.getElementById('closedBadgeText');
           var dateRow = document.getElementById('comingSoonDateRow');
-          if (titleEl) titleEl.textContent = 'Whitelist Closed';
-          if (msgEl) msgEl.textContent = 'The Dudes Craft Genesis whitelist allocation round has officially ended.';
-          if (badgeEl) badgeEl.textContent = 'GENESIS STATUS: ENDED';
           if (dateRow) dateRow.style.display = 'none';
         }
         if (containerEl) containerEl.style.display = 'none';

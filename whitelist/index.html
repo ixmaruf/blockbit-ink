@@ -6,11 +6,60 @@
   <title>Genesis Whitelist &mdash; DUDES CRAFT</title>
   <meta name="description" content="Join the Dudes Craft whitelist on Robinhood Network. Complete the initiation quest to claim your guaranteed Genesis Mint Pass.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260902_v80">
-  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260902_v80">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260902_v80">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260902_v80">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260907_opensea_live_v120">
+  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260907_opensea_live_v120">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260907_opensea_live_v120">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260907_opensea_live_v120">
   <link rel="canonical" href="https://dudescraft.store/whitelist">
+
+  <!-- Instant Cache-Buster & Auto-Refresh for Returning Visitors -->
+  <script>
+    (function () {
+      if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('.html')) {
+        var clean = window.location.pathname.replace(/(?:index)?\.html$/, '');
+        window.location.replace((clean || '/') + window.location.search + window.location.hash);
+        return;
+      }
+
+      var CURRENT_RELEASE_VERSION = 'v20260907_opensea_live_v120';
+      try {
+        var prevVer = localStorage.getItem('dc_release_version');
+        if (prevVer !== CURRENT_RELEASE_VERSION) {
+          localStorage.setItem('dc_release_version', CURRENT_RELEASE_VERSION);
+          
+          for (var i = localStorage.length - 1; i >= 0; i--) {
+            var k = localStorage.key(i);
+            if (k && k !== 'dc_release_version') {
+              localStorage.removeItem(k);
+            }
+          }
+          sessionStorage.clear();
+
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              for (var j = 0; j < regs.length; j++) {
+                regs[j].unregister();
+              }
+            }).catch(function () {});
+          }
+
+          if ('caches' in window) {
+            caches.keys().then(function (names) {
+              for (var c = 0; c < names.length; c++) {
+                caches.delete(names[c]);
+              }
+            }).catch(function () {});
+          }
+
+          if (!window.location.search.includes('_cb=')) {
+            var sep = window.location.search ? '&' : '?';
+            window.location.replace(window.location.pathname + window.location.search + sep + '_cb=' + Date.now() + window.location.hash);
+            return;
+          }
+        }
+      } catch (_) {}
+    })();
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -18,7 +67,7 @@
   <meta property="og:title" content="DUDES CRAFT &mdash; Genesis Whitelist on Robinhood">
   <meta property="og:description" content="1,999 unique 3D voxel warriors launching on Robinhood Network. Claim your guaranteed VIP Mint Pass.">
   <meta property="og:url" content="https://dudescraft.store/whitelist">
-  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260902_v80">
+  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260907_opensea_live_v120">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
 
@@ -28,7 +77,7 @@
   <meta name="twitter:creator" content="@DudesCraft">
   <meta name="twitter:title" content="DUDES CRAFT &mdash; Genesis Whitelist on Robinhood">
   <meta name="twitter:description" content="1,999 unique 3D voxel warriors launching on Robinhood Network. Claim your guaranteed VIP Mint Pass.">
-  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260902_v80">
+  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260907_opensea_live_v120">
 
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -40,8 +89,8 @@
   <!-- Cloudflare Turnstile Anti-Bot Shield -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-  <link rel="stylesheet" href="/style.css?v=20260902_v80">
-  <link rel="stylesheet" href="/whitelist.css?v=20260902_v80">
+  <link rel="stylesheet" href="/style.css?v=20260907_opensea_live_v120">
+  <link rel="stylesheet" href="/whitelist.css?v=20260907_opensea_live_v120">
 </head>
 <body>
   <!-- Ambient Animations -->
@@ -64,6 +113,10 @@
           <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="nav-social" aria-label="Official X Profile">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
+          <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="nav-opensea-btn" style="display:inline-flex; align-items:center; gap:8px; background:#0A0B0D; color:#FFFFFF; font-family:var(--font-display); font-size:0.86rem; font-weight:700; text-transform:uppercase; text-decoration:none; padding:0.5rem 1.1rem; border-radius:var(--r-sm); border:1.5px solid #2081E2; box-shadow:2px 2px 0px #2081E2;">
+            <img src="/opensea-logo.svg" alt="OpenSea" width="16" height="16">
+            <span>Mint Live</span>
+          </a>
           <a href="/" class="btn-outline nav-back-btn">&larr; Return Home</a>
           <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -75,12 +128,16 @@
     <!-- MOBILE MENU OVERLAY -->
     <div class="mobile-menu-overlay" id="mobile-menu">
       <div class="mobile-menu-links">
+        <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" style="color:#2081E2; display:inline-flex; align-items:center; gap:8px;">
+          <img src="/opensea-logo.svg" alt="OpenSea" width="20" height="20">
+          <span>Mint on OpenSea</span>
+        </a>
         <a href="/">Return Home</a>
       </div>
     </div>
 
     <!-- COMING SOON / CLOSED SECTION -->
-    <div class="wl-coming-soon" id="wlComingSoon" style="display:none;">
+    <div class="wl-coming-soon" id="wlComingSoon" style="display:block;">
       <div class="wl-closed-card">
         <div class="closed-badge">
           <span class="status-pulse-dot"></span>
@@ -94,8 +151,8 @@
           </svg>
         </div>
 
-        <h2 id="comingSoonTitle" class="closed-title">Whitelist Allocation Closed</h2>
-        <p id="comingSoonMsg" class="closed-desc">The Genesis Robinhood Whitelist round is currently closed. Stay connected on X for future allocation waves and mint updates.</p>
+        <h2 id="comingSoonTitle" class="closed-title">Genesis Whitelist Registration Closed</h2>
+        <p id="comingSoonMsg" class="closed-desc">The Genesis Whitelist registration is officially closed and the database snapshot has been finalized. Genesis Mint is now live on OpenSea!</p>
 
         <div class="closed-meta-box">
           <div class="closed-meta-row">
@@ -106,25 +163,35 @@
             <span class="closed-meta-label">GENESIS SUPPLY</span>
             <span class="closed-meta-value highlight">1,999 3D VOXEL PASSES</span>
           </div>
-          <div class="closed-meta-row" id="comingSoonDateRow" style="display:none;">
-            <span class="closed-meta-label">OPENING DATE</span>
-            <span class="closed-meta-value highlight" id="comingSoonDate">TBA</span>
+          <div class="closed-meta-row">
+            <span class="closed-meta-label">OPENSEA MINT</span>
+            <span class="closed-meta-value highlight" style="color:#22C55E;">OFFICIALLY LIVE</span>
           </div>
         </div>
 
-        <div class="closed-actions">
-          <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="btn-closed-x">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            <span>Follow @DudesCraft on X</span>
+        <div class="closed-actions" style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+          <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="btn-opensea-closed" style="background:#0A0B0D; color:#FFFFFF; font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:1.05rem; padding:15px 32px; border:2px solid #2081E2; border-radius:8px; box-shadow:4px 4px 0px #2081E2; text-decoration:none; display:inline-flex; align-items:center; gap:10px; transition:transform 0.15s ease;">
+            <img src="/opensea-logo.svg" alt="OpenSea" width="22" height="22">
+            <span>MINT LIVE ON OPENSEA &rarr;</span>
+            <span style="background:#22C55E; color:#0A0B0D; font-family:var(--font-pixel, monospace); font-size:0.62rem; font-weight:700; padding:2px 6px; border-radius:3px;">LIVE</span>
           </a>
-          <a href="/" class="btn-closed-home">
-            <span>&larr; Return to Home</span>
+          <a href="/checker" class="btn-lemon" style="background:#C6F221; color:#0A0B0D; font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:0.95rem; padding:12px 26px; border:2px solid #0A0B0D; border-radius:8px; box-shadow:3px 3px 0px #0A0B0D; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+            <span>CHECK ALLOCATION STATUS &rarr;</span>
           </a>
+          <div style="display:flex; gap:10px; margin-top:8px;">
+            <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="btn-closed-x">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <span>Follow @DudesCraft</span>
+            </a>
+            <a href="/" class="btn-closed-home">
+              <span>&larr; Home</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="wl-wrap">
+    <div class="wl-wrap" style="display:none;">
       <div class="wl-container">
         <!-- Header with Robinhood Timer Badge -->
         <div class="wl-header">
@@ -343,8 +410,8 @@
     </div>
   </div>
 
-  <script src="/app.js?v=20260905_v84" defer></script>
-  <script src="/whitelist-config.js?v=20260905_v84" defer></script>
-  <script src="/whitelist.js?v=20260905_v84" defer></script>
+  <script src="/app.js?v=20260907_opensea_live_v120" defer></script>
+  <script src="/whitelist-config.js?v=20260907_opensea_live_v120" defer></script>
+  <script src="/whitelist.js?v=20260907_opensea_live_v120" defer></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ if (window.location.pathname.endsWith('.html')) {
 
 // ── GLOBAL CACHE-BUST & AUTO-UPDATE SYSTEM ──
 (function enforceLatestAppVersion() {
-  const CURRENT_APP_VERSION = 'v8.4_20260905';
+  const CURRENT_APP_VERSION = 'v20260907_opensea_live_v120';
   try {
     const storedVer = localStorage.getItem('dudescraft_app_version');
     if (storedVer !== CURRENT_APP_VERSION) {
@@ -23,6 +23,8 @@ if (window.location.pathname.endsWith('.html')) {
       localStorage.removeItem('dudescraft_settings_v3');
       localStorage.removeItem('dudescraft_settings_v4');
       localStorage.removeItem('dudescraft_settings_v5');
+      localStorage.removeItem('dudescraft_settings_v6');
+      localStorage.removeItem('dudescraft_settings_v7');
     }
   } catch (_) {}
 
@@ -323,12 +325,12 @@ const DEFAULT_WL_SETTINGS = {
   _isServerConfirmed: false
 };
 
-const STORAGE_KEY = 'dudescraft_settings_v6';
+const STORAGE_KEY = 'dudescraft_settings_v7';
 
 // Automatically purge legacy localStorage from previous visits
 (function autoPurgeLegacyCache() {
   try {
-    ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4', 'dudescraft_settings_v5'].forEach(function (k) {
+    ['bbi_wl_settings', 'blockbit_settings', 'dudescraft_settings_v3', 'dudescraft_settings_v4', 'dudescraft_settings_v5', 'dudescraft_settings_v6'].forEach(function (k) {
       localStorage.removeItem(k);
       sessionStorage.removeItem(k);
     });
@@ -354,6 +356,10 @@ let bannerInterval = null;
 
 function initTopBanner() {
   const bannerEl = document.getElementById('topBanner');
+  if (bannerEl && bannerEl.getAttribute('data-mode') === 'opensea') {
+    bannerEl.classList.add('is-ready');
+    return;
+  }
   const labelEl = document.getElementById('top-banner-label');
   const countEl = document.getElementById('top-countdown');
   const pulseEl = document.getElementById('bannerPulse');
