@@ -856,9 +856,45 @@ a { color: var(--obsidian); text-decoration: none; }
     padding: 6px 10px;
     font-size: 0.75rem;
   }
-  .step-btn-next {
-    padding: 11px 16px;
-    font-size: 0.85rem;
+  .nav-social {
+    display: none !important;
+  }
+  .nav-opensea-btn {
+    font-size: 0.74rem;
+    padding: 0.35rem 0.65rem !important;
+    gap: 5px !important;
+  }
+  .nav-opensea-btn img {
+    width: 14px;
+    height: 14px;
+  }
+  .btn-opensea-closed {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+    font-size: 0.88rem !important;
+    padding: 12px 14px !important;
+  }
+  .btn-lemon {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+    font-size: 0.84rem !important;
+    padding: 10px 14px !important;
+  }
+  .closed-actions {
+    width: 100% !important;
+  }
+  .closed-title {
+    font-size: 1.35rem !important;
+  }
+  .closed-desc {
+    font-size: 0.86rem !important;
+  }
+  .closed-meta-box {
+    padding: 12px 14px !important;
   }
 }
 
@@ -873,4 +909,9 @@ a { color: var(--obsidian); text-decoration: none; }
     font-size: 0.68rem;
     padding: 0.28rem 0.5rem;
   }
+  .nav-opensea-btn {
+    font-size: 0.7rem;
+    padding: 0.28rem 0.5rem !important;
+  }
 }
+

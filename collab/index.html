@@ -6,8 +6,8 @@
   <title>DUDES CRAFT — Official Partnership & Influencer Collab Kit</title>
   <meta name="description" content="Official Influencer & Creator Collaboration Kit for Dudes Craft on Robinhood Network. Guaranteed VIP allocations, copy-ready post templates, and collection specifications.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260907_opensea_live_v120">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260907_opensea_live_v120">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260908_soldout_v130">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260908_soldout_v130">
 
   <!-- Aggressive Anti-Cache Headers -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -23,14 +23,16 @@
         return;
       }
 
-      var CURRENT_RELEASE_VERSION = 'v20260907_opensea_live_v120';
+      var CURRENT_RELEASE_VERSION = 'v20260908_soldout_v130';
       try {
         var prevVer = localStorage.getItem('dc_release_version');
         if (prevVer !== CURRENT_RELEASE_VERSION) {
           localStorage.setItem('dc_release_version', CURRENT_RELEASE_VERSION);
+          localStorage.setItem('dc_checker_app_version', CURRENT_RELEASE_VERSION);
+          localStorage.setItem('dudescraft_app_version', CURRENT_RELEASE_VERSION);
           for (var i = localStorage.length - 1; i >= 0; i--) {
             var k = localStorage.key(i);
-            if (k && k !== 'dc_release_version') {
+            if (k && k !== 'dc_release_version' && k !== 'dc_checker_app_version' && k !== 'dudescraft_app_version') {
               localStorage.removeItem(k);
             }
           }
@@ -58,6 +60,31 @@
             return;
           }
         }
+      } catch (_) {}
+
+      // Clean up _cb parameter from address bar seamlessly
+      if (window.history && window.history.replaceState && window.location.search.includes('_cb=')) {
+        var cleanSearch = window.location.search.replace(/([?&])_cb=\d+(&|$)/, '$1').replace(/[?&]$/, '');
+        window.history.replaceState(null, document.title, window.location.pathname + cleanSearch + window.location.hash);
+      }
+
+      // Handle bfcache restore
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          window.location.reload();
+        }
+      });
+
+      // Background version verification
+      try {
+        fetch('/version.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d && d.version && d.version !== CURRENT_RELEASE_VERSION) {
+              localStorage.setItem('dc_release_version', d.version);
+              window.location.replace(window.location.pathname + '?_cb=' + Date.now() + window.location.hash);
+            }
+          }).catch(function () {});
       } catch (_) {}
     })();
   </script>
@@ -88,7 +115,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Press+Start+2P&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
-  <link rel="stylesheet" href="/style.css?v=20260907_opensea_live_v120">
+  <link rel="stylesheet" href="/style.css?v=20260908_soldout_v130">
 
   <style>
     /* ==========================================================================

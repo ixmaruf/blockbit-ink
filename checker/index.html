@@ -6,9 +6,9 @@
   <title>Genesis Allocation Checker &mdash; DUDES CRAFT</title>
   <meta name="description" content="Official allocation verification engine for Dudes Craft Genesis on Robinhood Network. Check your GTD Guaranteed and FCFS allocation status.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260907_opensea_live_v120">
-  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260907_opensea_live_v120">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260907_opensea_live_v120">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260908_soldout_v130">
+  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260908_soldout_v130">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260908_soldout_v130">
   <link rel="canonical" href="https://dudescraft.store/checker">
 
   <!-- Aggressive Anti-Cache Headers -->
@@ -27,16 +27,17 @@
       }
 
       // 2. Global version check & auto hard-refresh
-      var CURRENT_RELEASE_VERSION = 'v20260907_opensea_live_v120';
+      var CURRENT_RELEASE_VERSION = 'v20260908_soldout_v130';
       try {
         var savedVer = localStorage.getItem('dc_release_version');
         if (savedVer !== CURRENT_RELEASE_VERSION) {
           localStorage.setItem('dc_release_version', CURRENT_RELEASE_VERSION);
           localStorage.setItem('dc_checker_app_version', CURRENT_RELEASE_VERSION);
+          localStorage.setItem('dudescraft_app_version', CURRENT_RELEASE_VERSION);
           // Purge all legacy stored timer & settings caches
           for (var i = localStorage.length - 1; i >= 0; i--) {
             var k = localStorage.key(i);
-            if (k && k !== 'dc_release_version' && k !== 'dc_checker_app_version') {
+            if (k && k !== 'dc_release_version' && k !== 'dc_checker_app_version' && k !== 'dudescraft_app_version') {
               localStorage.removeItem(k);
             }
           }
@@ -66,6 +67,31 @@
             return;
           }
         }
+      } catch (_) {}
+
+      // Clean up _cb parameter from address bar seamlessly
+      if (window.history && window.history.replaceState && window.location.search.includes('_cb=')) {
+        var cleanSearch = window.location.search.replace(/([?&])_cb=\d+(&|$)/, '$1').replace(/[?&]$/, '');
+        window.history.replaceState(null, document.title, window.location.pathname + cleanSearch + window.location.hash);
+      }
+
+      // Handle bfcache restore
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          window.location.reload();
+        }
+      });
+
+      // Background version verification
+      try {
+        fetch('/version.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d && d.version && d.version !== CURRENT_RELEASE_VERSION) {
+              localStorage.setItem('dc_release_version', d.version);
+              window.location.replace(window.location.pathname + '?_cb=' + Date.now() + window.location.hash);
+            }
+          }).catch(function () {});
       } catch (_) {}
     })();
   </script>
@@ -97,9 +123,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/checker.css?v=20260907_opensea_live_v120">
-  <script src="/whitelist-config.js?v=20260907_opensea_live_v120"></script>
-  <script src="/checker-data.js?v=20260907_opensea_live_v120"></script>
+  <link rel="stylesheet" href="/checker.css?v=20260908_soldout_v130">
+  <script src="/whitelist-config.js?v=20260908_soldout_v130"></script>
+  <script src="/checker-data.js?v=20260908_soldout_v130"></script>
 </head>
 <body class="checker-body">
 
@@ -111,7 +137,7 @@
     <!-- ── NAVIGATION BAR ── -->
     <header class="checker-nav">
       <a href="/" class="checker-brand">
-        <img src="/logo.webp?v=20260907_opensea_live_v120" alt="Dudes Craft" width="38" height="38">
+        <img src="/logo.webp?v=20260908_soldout_v130" alt="Dudes Craft" width="38" height="38">
         <div class="checker-brand-text">
           <span class="checker-brand-name">DUDES CRAFT</span>
           <span class="checker-brand-chain">Robinhood Network</span>
@@ -121,8 +147,7 @@
       <div class="checker-nav-actions">
         <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="btn-nav-opensea">
           <img src="/opensea-logo.svg" alt="OpenSea" width="16" height="16">
-          <span>Mint Live</span>
-          <span class="nav-pulse-green"></span>
+          <span>Sold Out</span>
         </a>
         <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="btn-nav-outline" title="Official X">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -141,7 +166,7 @@
       <section class="hero-clean-section">
         <div class="kicker-pill">
           <span class="pulse-dot"></span>
-          <span>OFFICIAL ALLOCATION ENGINE &bull; LIVE</span>
+          <span>OFFICIAL ALLOCATION ENGINE &bull; 100% SOLD OUT</span>
         </div>
 
         <h1 class="page-title">
@@ -161,7 +186,7 @@
           <div class="cockpit-header">
             <div class="cockpit-header-left">
               <span class="cockpit-chip">Robinhood EVM</span>
-              <span class="cockpit-chip status-live">Live Verification</span>
+              <span class="cockpit-chip status-live" style="background:#052e16; border-color:#22c55e; color:#4ade80;">Sold Out (Complete)</span>
             </div>
             <span class="cockpit-id-hint">Snapshot Finalized</span>
           </div>
@@ -671,11 +696,11 @@
 
           <!-- Action Buttons -->
           <div class="result-footer-actions">
+            <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="btn-action-opensea">
+              <img src="/opensea-logo.svg" width="16" height="16" alt="OpenSea">
+              <span>View on OpenSea (Sold Out)</span>
+            </a>
             ${isEligible ? `
-              <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="btn-action-opensea">
-                <img src="/opensea-logo.svg" width="16" height="16" alt="OpenSea">
-                <span>Mint on OpenSea</span>
-              </a>
               <a href="${tweetUrl}" target="_blank" rel="noopener noreferrer" class="btn-action-x">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 <span>Share On X</span>

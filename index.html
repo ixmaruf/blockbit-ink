@@ -6,10 +6,10 @@
   <title>DUDES CRAFT — 1,999 Voxel Warriors on Robinhood Network</title>
   <meta name="description" content="1,999 unique 3D voxel warriors forged on the Robinhood Network. A next-gen Web3 pixel universe rising block by block.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=20260907_opensea_live_v120">
-  <link rel="icon" type="image/webp" href="favicon.webp?v=20260907_opensea_live_v120">
-  <link rel="shortcut icon" href="favicon.ico?v=20260907_opensea_live_v120">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260907_opensea_live_v120">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=20260908_soldout_v130">
+  <link rel="icon" type="image/webp" href="favicon.webp?v=20260908_soldout_v130">
+  <link rel="shortcut icon" href="favicon.ico?v=20260908_soldout_v130">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260908_soldout_v130">
   <link rel="canonical" href="https://dudescraft.store/">
   <!-- Instant Cache-Buster & Auto-Refresh for Returning Visitors -->
   <script>
@@ -20,15 +20,17 @@
         return;
       }
 
-      var CURRENT_RELEASE_VERSION = 'v20260907_opensea_live_v120';
+      var CURRENT_RELEASE_VERSION = 'v20260908_soldout_v130';
       try {
         var prevVer = localStorage.getItem('dc_release_version');
         if (prevVer !== CURRENT_RELEASE_VERSION) {
           localStorage.setItem('dc_release_version', CURRENT_RELEASE_VERSION);
+          localStorage.setItem('dc_checker_app_version', CURRENT_RELEASE_VERSION);
+          localStorage.setItem('dudescraft_app_version', CURRENT_RELEASE_VERSION);
           
           for (var i = localStorage.length - 1; i >= 0; i--) {
             var k = localStorage.key(i);
-            if (k && k !== 'dc_release_version') {
+            if (k && k !== 'dc_release_version' && k !== 'dc_checker_app_version' && k !== 'dudescraft_app_version') {
               localStorage.removeItem(k);
             }
           }
@@ -57,6 +59,31 @@
           }
         }
       } catch (_) {}
+
+      // Clean up _cb parameter from address bar seamlessly
+      if (window.history && window.history.replaceState && window.location.search.includes('_cb=')) {
+        var cleanSearch = window.location.search.replace(/([?&])_cb=\d+(&|$)/, '$1').replace(/[?&]$/, '');
+        window.history.replaceState(null, document.title, window.location.pathname + cleanSearch + window.location.hash);
+      }
+
+      // Handle bfcache restore
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          window.location.reload();
+        }
+      });
+
+      // Background version verification
+      try {
+        fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d && d.version && d.version !== CURRENT_RELEASE_VERSION) {
+              localStorage.setItem('dc_release_version', d.version);
+              window.location.replace(window.location.pathname + '?_cb=' + Date.now() + window.location.hash);
+            }
+          }).catch(function () {});
+      } catch (_) {}
     })();
   </script>
 
@@ -66,7 +93,7 @@
   <meta property="og:title" content="DUDES CRAFT — 1,999 Voxel Warriors on Robinhood Network">
   <meta property="og:description" content="1,999 unique 3D voxel warriors forged on the Robinhood Network. A next-gen Web3 pixel universe.">
   <meta property="og:url" content="https://dudescraft.store/">
-  <meta property="og:image" content="https://dudescraft.store/nft-preview/1.webp?v=20260907_opensea_live_v120">
+  <meta property="og:image" content="https://dudescraft.store/nft-preview/1.webp?v=20260908_soldout_v130">
   <meta property="og:image:width" content="600">
   <meta property="og:image:height" content="600">
   <meta property="og:locale" content="en_US">
@@ -75,7 +102,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="DUDES CRAFT — 1,999 Voxel Warriors on Robinhood Network">
   <meta name="twitter:description" content="1,999 unique 3D voxel warriors forged on the Robinhood Network.">
-  <meta name="twitter:image" content="https://dudescraft.store/nft-preview/1.webp?v=20260907_opensea_live_v120">
+  <meta name="twitter:image" content="https://dudescraft.store/nft-preview/1.webp?v=20260908_soldout_v130">
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -102,7 +129,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="style.css?v=20260907_opensea_live_v120">
+  <link rel="stylesheet" href="style.css?v=20260908_soldout_v130">
 </head>
 <body>
   <!-- Ambient Animations -->
@@ -115,10 +142,10 @@
     <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="top-banner is-ready top-banner-opensea" id="topBanner" data-mode="opensea">
       <div class="top-banner-content">
         <img src="opensea-logo.svg" alt="OpenSea" class="banner-opensea-icon" width="18" height="18">
-        <span class="banner-live-pill"><span class="banner-live-dot"></span> LIVE</span>
-        <span class="banner-text banner-text-desktop">MINT IS LIVE ON OPENSEA &bull; CLAIM YOUR GENESIS VOXEL WARRIOR</span>
-        <span class="banner-text banner-text-mobile">MINT IS LIVE ON OPENSEA</span>
-        <span class="banner-cta">MINT NOW &rarr;</span>
+        <span class="banner-sold-pill">100% SOLD OUT</span>
+        <span class="banner-text banner-text-desktop">GENESIS COLLECTION IS 100% SOLD OUT ON OPENSEA &bull; 1,999/1,999 MINTED</span>
+        <span class="banner-text banner-text-mobile">GENESIS IS 100% SOLD OUT</span>
+        <span class="banner-cta">VIEW ON OPENSEA &rarr;</span>
       </div>
     </a>
 
@@ -140,17 +167,16 @@
           <a href="#utility">Utility</a>
           <a href="#roadmap">Roadmap</a>
           <a href="#faq">FAQ</a>
-          <a href="checker" style="display:inline-flex; align-items:center; gap:6px;"><span>Checker</span><span style="background:var(--lemon); color:var(--obsidian); font-family:var(--font-pixel); font-size:0.55rem; font-weight:700; padding:1px 5px; border-radius:3px;">LIVE</span></a>
+          <a href="checker" style="display:inline-flex; align-items:center; gap:6px;"><span>Checker</span><span style="background:var(--lemon); color:var(--obsidian); font-family:var(--font-pixel); font-size:0.55rem; font-weight:700; padding:1px 5px; border-radius:3px;">OFFICIAL</span></a>
         </div>
 
         <div class="nav-actions">
           <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" class="nav-social" aria-label="Official X Profile">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
-          <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="nav-opensea-btn" aria-label="Mint on OpenSea">
-            <img src="opensea-logo.svg" alt="OpenSea" width="18" height="18">
-            <span>Mint Live</span>
-            <span class="nav-live-dot"></span>
+          <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="nav-opensea-btn" aria-label="View on OpenSea">
+            <img src="opensea-logo.svg" alt="OpenSea" width="16" height="16">
+            <span>Sold Out</span>
           </a>
           <a href="checker" class="nav-cta">Allocation</a>
           <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
@@ -165,8 +191,8 @@
       <div class="mobile-menu-links">
         <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="mobile-opensea-cta">
           <img src="opensea-logo.svg" alt="OpenSea" width="22" height="22">
-          <span>Mint on OpenSea</span>
-          <span class="mobile-badge-live">LIVE</span>
+          <span>View on OpenSea</span>
+          <span class="mobile-badge-sold">SOLD OUT</span>
         </a>
         <a href="#lore">Lore</a>
         <a href="#forge">DNA Forge</a>
@@ -174,7 +200,7 @@
         <a href="#utility">Utility</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#faq">FAQ</a>
-        <a href="checker" style="color:var(--lemon); display:flex; align-items:center; justify-content:center; gap:8px;"><span>Allocation Checker</span><span style="background:var(--lemon); color:var(--obsidian); font-family:var(--font-pixel); font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px;">LIVE</span></a>
+        <a href="checker" style="color:var(--lemon); display:flex; align-items:center; justify-content:center; gap:8px;"><span>Allocation Checker</span><span style="background:var(--lemon); color:var(--obsidian); font-family:var(--font-pixel); font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px;">OFFICIAL</span></a>
         <a href="whitelist" style="color:#9CA3AF; font-size:1.15rem;">Whitelist Info &rarr;</a>
         <a href="https://x.com/DudesCraft" target="_blank" rel="noopener noreferrer" style="color:#FFFFFF; display:flex; align-items:center; justify-content:center; gap:8px; border-top:1px solid rgba(255,255,255,0.15); padding-top:16px; margin-top:12px; font-size:1rem;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--lemon);"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -220,8 +246,8 @@
       <div class="hero-btns reveal-el">
         <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="btn-opensea-hero">
           <img src="opensea-logo.svg" alt="OpenSea" width="22" height="22">
-          <span>Mint on OpenSea</span>
-          <span class="btn-badge-live">LIVE</span>
+          <span>View on OpenSea</span>
+          <span class="btn-badge-sold">SOLD OUT</span>
         </a>
         <a href="checker" class="btn-outline">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -236,18 +262,17 @@
           <div class="opensea-hero-left">
             <div class="opensea-hero-icon-wrap">
               <img src="opensea-logo.svg" alt="OpenSea" width="28" height="28">
-              <span class="opensea-pulse-ring"></span>
             </div>
             <div class="opensea-hero-info">
               <div class="opensea-hero-title">
-                <span>Genesis Mint Live on OpenSea</span>
-                <span class="badge-opensea-live">MINTING NOW</span>
+                <span>Genesis Collection 100% Sold Out</span>
+                <span class="badge-opensea-sold">1,999/1,999 MINTED</span>
               </div>
               <span class="opensea-hero-sub">Dudes Craft Genesis &bull; Robinhood Network (EVM L2) &bull; 1,999 Total Supply</span>
             </div>
           </div>
           <div class="opensea-hero-cta">
-            <span>MINT ON OPENSEA</span>
+            <span>VIEW ON OPENSEA</span>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </a>
@@ -607,14 +632,14 @@
     <section class="section">
       <div class="container">
         <div class="cta-box reveal-el">
-          <p class="sec-kicker" style="color:var(--lemon)"><span class="line" style="background:var(--lemon)"></span>Genesis Mint Live</p>
-          <h2 class="sec-title" style="font-size:clamp(2rem,5vw,3.2rem)">Mint Your <span style="color:var(--lemon)">Voxel Warrior</span></h2>
-          <p class="sec-lead" style="max-width:600px;margin:0 auto 2.5rem">Genesis Mint is officially live on OpenSea. Secure your cryptographic 3D voxel pass on Robinhood Network before supply sells out.</p>
+          <p class="sec-kicker" style="color:var(--lemon)"><span class="line" style="background:var(--lemon)"></span>Genesis Collection Complete</p>
+          <h2 class="sec-title" style="font-size:clamp(2rem,5vw,3.2rem)">Genesis Drop <span style="color:var(--lemon)">Sold Out</span></h2>
+          <p class="sec-lead" style="max-width:600px;margin:0 auto 2.5rem">All 1,999 Genesis Voxel Warriors have been minted on Robinhood Network. Explore and trade the verified collection on OpenSea secondary marketplace.</p>
           <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
             <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="btn-opensea-hero" style="padding:1rem 2.2rem;">
               <img src="opensea-logo.svg" alt="OpenSea" width="22" height="22">
-              <span>Mint on OpenSea</span>
-              <span class="btn-badge-live">LIVE</span>
+              <span>View on OpenSea</span>
+              <span class="btn-badge-sold">SOLD OUT</span>
             </a>
             <a href="checker" class="btn-outline" style="padding:1rem 2rem;">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -648,9 +673,9 @@
     </footer>
   </div>
 
-  <script src="traits.js?v=20260907_opensea_live_v120" defer></script>
-  <script src="generator.js?v=20260907_opensea_live_v120" defer></script>
-  <script src="whitelist-config.js?v=20260907_opensea_live_v120" defer></script>
-  <script src="app.js?v=20260907_opensea_live_v120" defer></script>
+  <script src="traits.js?v=20260908_soldout_v130" defer></script>
+  <script src="generator.js?v=20260908_soldout_v130" defer></script>
+  <script src="whitelist-config.js?v=20260908_soldout_v130" defer></script>
+  <script src="app.js?v=20260908_soldout_v130" defer></script>
 </body>
 </html>

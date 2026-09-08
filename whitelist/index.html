@@ -6,10 +6,10 @@
   <title>Genesis Whitelist &mdash; DUDES CRAFT</title>
   <meta name="description" content="Join the Dudes Craft whitelist on Robinhood Network. Complete the initiation quest to claim your guaranteed Genesis Mint Pass.">
   <meta name="theme-color" content="#C6F221">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260907_opensea_live_v120">
-  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260907_opensea_live_v120">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260907_opensea_live_v120">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260907_opensea_live_v120">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=20260908_soldout_v130">
+  <link rel="icon" type="image/webp" href="/favicon.webp?v=20260908_soldout_v130">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260908_soldout_v130">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260908_soldout_v130">
   <link rel="canonical" href="https://dudescraft.store/whitelist">
 
   <!-- Instant Cache-Buster & Auto-Refresh for Returning Visitors -->
@@ -21,15 +21,17 @@
         return;
       }
 
-      var CURRENT_RELEASE_VERSION = 'v20260907_opensea_live_v120';
+      var CURRENT_RELEASE_VERSION = 'v20260908_soldout_v130';
       try {
         var prevVer = localStorage.getItem('dc_release_version');
         if (prevVer !== CURRENT_RELEASE_VERSION) {
           localStorage.setItem('dc_release_version', CURRENT_RELEASE_VERSION);
+          localStorage.setItem('dc_checker_app_version', CURRENT_RELEASE_VERSION);
+          localStorage.setItem('dudescraft_app_version', CURRENT_RELEASE_VERSION);
           
           for (var i = localStorage.length - 1; i >= 0; i--) {
             var k = localStorage.key(i);
-            if (k && k !== 'dc_release_version') {
+            if (k && k !== 'dc_release_version' && k !== 'dc_checker_app_version' && k !== 'dudescraft_app_version') {
               localStorage.removeItem(k);
             }
           }
@@ -58,6 +60,31 @@
           }
         }
       } catch (_) {}
+
+      // Clean up _cb parameter from address bar seamlessly
+      if (window.history && window.history.replaceState && window.location.search.includes('_cb=')) {
+        var cleanSearch = window.location.search.replace(/([?&])_cb=\d+(&|$)/, '$1').replace(/[?&]$/, '');
+        window.history.replaceState(null, document.title, window.location.pathname + cleanSearch + window.location.hash);
+      }
+
+      // Handle bfcache restore
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          window.location.reload();
+        }
+      });
+
+      // Background version verification
+      try {
+        fetch('/version.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d && d.version && d.version !== CURRENT_RELEASE_VERSION) {
+              localStorage.setItem('dc_release_version', d.version);
+              window.location.replace(window.location.pathname + '?_cb=' + Date.now() + window.location.hash);
+            }
+          }).catch(function () {});
+      } catch (_) {}
     })();
   </script>
 
@@ -67,7 +94,7 @@
   <meta property="og:title" content="DUDES CRAFT &mdash; Genesis Whitelist on Robinhood">
   <meta property="og:description" content="1,999 unique 3D voxel warriors launching on Robinhood Network. Claim your guaranteed VIP Mint Pass.">
   <meta property="og:url" content="https://dudescraft.store/whitelist">
-  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260907_opensea_live_v120">
+  <meta property="og:image" content="https://dudescraft.store/logo.webp?v=20260908_soldout_v130">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
 
@@ -77,7 +104,7 @@
   <meta name="twitter:creator" content="@DudesCraft">
   <meta name="twitter:title" content="DUDES CRAFT &mdash; Genesis Whitelist on Robinhood">
   <meta name="twitter:description" content="1,999 unique 3D voxel warriors launching on Robinhood Network. Claim your guaranteed VIP Mint Pass.">
-  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260907_opensea_live_v120">
+  <meta name="twitter:image" content="https://dudescraft.store/logo.webp?v=20260908_soldout_v130">
 
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -89,8 +116,8 @@
   <!-- Cloudflare Turnstile Anti-Bot Shield -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-  <link rel="stylesheet" href="/style.css?v=20260907_opensea_live_v120">
-  <link rel="stylesheet" href="/whitelist.css?v=20260907_opensea_live_v120">
+  <link rel="stylesheet" href="/style.css?v=20260908_soldout_v130">
+  <link rel="stylesheet" href="/whitelist.css?v=20260908_soldout_v130">
 </head>
 <body>
   <!-- Ambient Animations -->
@@ -115,7 +142,7 @@
           </a>
           <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="nav-opensea-btn" style="display:inline-flex; align-items:center; gap:8px; background:#0A0B0D; color:#FFFFFF; font-family:var(--font-display); font-size:0.86rem; font-weight:700; text-transform:uppercase; text-decoration:none; padding:0.5rem 1.1rem; border-radius:var(--r-sm); border:1.5px solid #2081E2; box-shadow:2px 2px 0px #2081E2;">
             <img src="/opensea-logo.svg" alt="OpenSea" width="16" height="16">
-            <span>Mint Live</span>
+            <span>Sold Out</span>
           </a>
           <a href="/" class="btn-outline nav-back-btn">&larr; Return Home</a>
           <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
@@ -130,7 +157,7 @@
       <div class="mobile-menu-links">
         <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" style="color:#2081E2; display:inline-flex; align-items:center; gap:8px;">
           <img src="/opensea-logo.svg" alt="OpenSea" width="20" height="20">
-          <span>Mint on OpenSea</span>
+          <span>View on OpenSea (Sold Out)</span>
         </a>
         <a href="/">Return Home</a>
       </div>
@@ -141,7 +168,7 @@
       <div class="wl-closed-card">
         <div class="closed-badge">
           <span class="status-pulse-dot"></span>
-          <span id="closedBadgeText">GENESIS STATUS: CLOSED</span>
+          <span id="closedBadgeText">GENESIS STATUS: 100% SOLD OUT</span>
         </div>
         
         <div class="closed-icon-wrap">
@@ -151,8 +178,8 @@
           </svg>
         </div>
 
-        <h2 id="comingSoonTitle" class="closed-title">Genesis Whitelist Registration Closed</h2>
-        <p id="comingSoonMsg" class="closed-desc">The Genesis Whitelist registration is officially closed and the database snapshot has been finalized. Genesis Mint is now live on OpenSea!</p>
+        <h2 id="comingSoonTitle" class="closed-title">Genesis Collection 100% Sold Out</h2>
+        <p id="comingSoonMsg" class="closed-desc">All 1,999 Genesis Voxel Warriors have officially minted out on OpenSea. Trade, explore, and verify passes below.</p>
 
         <div class="closed-meta-box">
           <div class="closed-meta-row">
@@ -164,16 +191,16 @@
             <span class="closed-meta-value highlight">1,999 3D VOXEL PASSES</span>
           </div>
           <div class="closed-meta-row">
-            <span class="closed-meta-label">OPENSEA MINT</span>
-            <span class="closed-meta-value highlight" style="color:#22C55E;">OFFICIALLY LIVE</span>
+            <span class="closed-meta-label">OPENSEA STATUS</span>
+            <span class="closed-meta-value highlight" style="color:#22C55E;">100% SOLD OUT</span>
           </div>
         </div>
 
         <div class="closed-actions" style="display:flex; flex-direction:column; gap:12px; align-items:center;">
           <a href="https://opensea.io/collection/dudes-craft-genesis/overview" target="_blank" rel="noopener noreferrer" class="btn-opensea-closed" style="background:#0A0B0D; color:#FFFFFF; font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:1.05rem; padding:15px 32px; border:2px solid #2081E2; border-radius:8px; box-shadow:4px 4px 0px #2081E2; text-decoration:none; display:inline-flex; align-items:center; gap:10px; transition:transform 0.15s ease;">
             <img src="/opensea-logo.svg" alt="OpenSea" width="22" height="22">
-            <span>MINT LIVE ON OPENSEA &rarr;</span>
-            <span style="background:#22C55E; color:#0A0B0D; font-family:var(--font-pixel, monospace); font-size:0.62rem; font-weight:700; padding:2px 6px; border-radius:3px;">LIVE</span>
+            <span>VIEW ON OPENSEA &rarr;</span>
+            <span style="background:#22C55E; color:#0A0B0D; font-family:var(--font-pixel, monospace); font-size:0.62rem; font-weight:700; padding:2px 6px; border-radius:3px;">SOLD OUT</span>
           </a>
           <a href="/checker" class="btn-lemon" style="background:#C6F221; color:#0A0B0D; font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:0.95rem; padding:12px 26px; border:2px solid #0A0B0D; border-radius:8px; box-shadow:3px 3px 0px #0A0B0D; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
             <span>CHECK ALLOCATION STATUS &rarr;</span>
@@ -410,8 +437,8 @@
     </div>
   </div>
 
-  <script src="/app.js?v=20260907_opensea_live_v120" defer></script>
-  <script src="/whitelist-config.js?v=20260907_opensea_live_v120" defer></script>
-  <script src="/whitelist.js?v=20260907_opensea_live_v120" defer></script>
+  <script src="/app.js?v=20260908_soldout_v130" defer></script>
+  <script src="/whitelist-config.js?v=20260908_soldout_v130" defer></script>
+  <script src="/whitelist.js?v=20260908_soldout_v130" defer></script>
 </body>
 </html>
